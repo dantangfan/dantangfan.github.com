@@ -6,6 +6,6 @@ paginate: 8
 permalink: /:title
 
 title: dantangfan.github.io
-url: http://dantangfan.github.io
+url: http://dantangfan.github.io/blog
 feed: /atom.xml
 author_info: <a href="http://dantangfan.github.io/">dantangfan</a>
