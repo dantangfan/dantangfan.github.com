@@ -21,7 +21,7 @@ HJ's blog
 Don't fall in love with me without my beautiful girlfriend's permission.
                                    @-@
 ```
-![myGirl](https://dantangfan/dantangfan.github.com/images/homepage/myGirl.JPG)
+![myGirl](https://dantangfan/dantangfan.github.com/images/homepage/myGirl.png)
 
 #### 其实我不会说英文
 * Last updated 2013-12-10
