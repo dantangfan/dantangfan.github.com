@@ -1,7 +1,27 @@
-#一点点说明
+HJ's blog
+=========
+## Click here to come to the main page
+### [Blog](http://dantangfan.github.io/blog)
 
-这是[BeiYuu.com](http://beiyuu.com)的源码,[使用Github Pages建独立博客](http://beiyuu.com/github-pages/)
+### Education
+* Undergradute in School of Software at SUN YAT-SEN UNIVERSITY
+* Expected to graduate in June 2015
 
-* 推荐阅读：[我为什么写博客？](http://beiyuu.com/why-blog/)
-* 转载也没问题，标个出处呗少年
+### Experience
+* Nothing special, still a lesser man
 
+### Connect ME
+* Email: dantangfan@gmail.com
+* Github: dantangfan
+* QQ: 374610406(Please tell me who you are before touching me)
+* Tel: @@@@@@@@@@
+
+```bash
+                                   @-@
+Don't fall in love with me without my beautiful girlfriend's permission.
+                                   @-@
+```
+![myGirl](https://dantangfan/dantangfan.github.com/images/homepage/myGirl.JPG)
+
+#### 其实我不会说英文
+* Last updated 2013-12-10
