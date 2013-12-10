@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+ 
+   <title>BeiYuu.com</title>
+   <link href="http://beiyuu.com/atom.xml" rel="self" type="application/atom+xml"/>
+   <link href="http://beiyuu.com" rel="alternate" type="text/html" />
+   <updated>2013-12-10T12:54:25+08:00</updated>
+   <id>http://beiyuu.com</id>
+   <author>
+     <name></name>
+     <email></email>
+   </author>
+
+   
+ 
+</feed>
