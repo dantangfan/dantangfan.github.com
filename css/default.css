@@ -83,15 +83,27 @@ pre ol{margin-left:25px;list-style-type:decimal;}
     background-size:cover;
     background-position:50% 50%;
 }
+/*
 .blog .aside{
   background-image:url(https://raw.github.com/dantangfan/dantangfan.github.com/master/images/homePage/myself.png)
 }
+
 .opinion .aside{
   background-image:url(https://raw.github.com/dantangfan/dantangfan.github.com/master/images/homePage/smile.jpeg)
 
 }
 .project .aside{
   background-image:url(https://raw.github.com/dantangfan/dantangfan.github.com/master/images/homePage/project.jpeg)
+}*/
+
+.blog .aside{
+  background-image:url(../images/homePage/myself.png);
+}
+.opinion .aside{
+  background-image:url(../images/homePage/smile.jpeg);
+}
+.project .aside{
+  background-image:url(../images/homePage/project.jpeg);
 }
 .index-content .section { margin-left:30%; padding-top:80px; padding-right:15%; ;}
 
