@@ -93,7 +93,7 @@ pre ol{margin-left:25px;list-style-type:decimal;}
 
 }
 .project .aside{
-  background-image:url(https://raw.github.com/dantangfan/dantangfan.github.com/master/images/homePage/project.jpeg)
+  background-image:url(https://raw.github.com/dantangfan/dantangfan.github.com/master/images/homePage/myself.png)
 }*/
 
 .blog .aside{
@@ -103,7 +103,7 @@ pre ol{margin-left:25px;list-style-type:decimal;}
   background-image:url(../images/homePage/smile.jpeg);
 }
 .project .aside{
-  background-image:url(../images/homePage/project.jpeg);
+  background-image:url(../images/homePage/myself.png);
 }
 .index-content .section { margin-left:30%; padding-top:80px; padding-right:15%; ;}
 
