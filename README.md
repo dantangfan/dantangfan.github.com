@@ -1,5 +1,6 @@
 HJ's blog
 =========
+Reprinted from [BerYuu](http://www.beiyuu.com). Thanks for sharing.
 ## Click here to come to the main page
 ### [Blog](http://dantangfan.github.io/)
 
