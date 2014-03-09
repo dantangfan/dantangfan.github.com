@@ -19,7 +19,6 @@ layout: home
                 <div class="title-desc">{{ post.description }}</div>
             </li>
         {% endfor %}
-        <a href="/Aboutme.html">About me</a>
         </ul>
     </div>
     <div class="aside">
