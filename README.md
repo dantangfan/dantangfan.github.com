@@ -1,7 +1,7 @@
 HJ's blog
 =========
 ## Click here to come to the main page
-### [Blog](http://dantangfan.github.io/blog)
+### [Blog](http://dantangfan.github.io/)
 
 ### Education
 * Undergradute in School of Software at SUN YAT-SEN UNIVERSITY
