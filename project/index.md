@@ -30,7 +30,7 @@ layout: home
       </h2>
       <div class="title-desc">
 	Undergradute in
-	<a href="http://http://ss.sysu.edu.cn/InformationSystem/">School of Software</a>
+	<a href="http://ss.sysu.edu.cn/InformationSystem/">School of Software</a>
 	at
 	<a href="http://www.sysu.edu.cn">SUN YAT-SEN UNIVERSITY</a>
 	Expected to graduate in June 2015
