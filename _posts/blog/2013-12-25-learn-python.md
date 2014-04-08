@@ -281,6 +281,29 @@ M多行匹配 re.findall(r,file,re.M)
 I大小写不敏感re.I
 ```
 
+##调用外部程序
+
+```python
+import subprocess
+subprocess.call('ls -l ', shell=True)#默认false，为true时使用shell执行命令
+subprocess.call(['ls','l','.'])相同效果，推荐使用上面
+dir(subprocess)
+
+import os
+os.system('ls -l')#执行正确返回0，错误返回其他数字。可以接收任何shell命令
+os.listdir('.')
+f = os.popen('ls')
+f.read()获得内容
+stdin, stdout = os.popen2('sort')#返回标准输入和输出
+stdin.write('a\n')
+stdin.write('c\n')
+stdin.write('b\n')
+stdin.close()
+stdout.read()
+```
+
+
+
 ##爬虫下载图片
 ###简单爬虫
 
@@ -462,6 +485,7 @@ while locket.locked():
     pass
 ```
 
+其实个人感觉python的多线程就是一个坑，很多情况下根本达不到多线程的效果，或者是我根本就不会用。估计是后者。。。orz...
 
 ##Json格式储存文件：
 
