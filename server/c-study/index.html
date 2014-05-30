@@ -5,7 +5,7 @@
     * Author:         dantangfan
     -->
     <meta charset="utf-8" />
-    <title>c语言编程内存管理(未完成) |  dantangfan </title>
+    <title>《c专家编程》学习笔记 |  dantangfan </title>
     <meta name="author" content="dantangfan" />
     <meta name="description" content="hj's Blog" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
@@ -41,33 +41,88 @@
 
 <div id="content">
     <div class="entry">
-        <h1 class="entry-title"><a href="/c-memory-manage-in-programs" title="c语言编程内存管理(未完成)">c语言编程内存管理(未完成)</a></h1>
-        <p class="entry-date">2013-03-15</p>
-        <ul>
-<li>本文翻译自<a href="http://www.nethack4.org/blog/memory.html">nethack4.org/blog/memory.html</a></li>
-<li>作者：Alex Smith</li>
-</ul>
+        <h1 class="entry-title"><a href="/c-study" title="《c专家编程》学习笔记">《c专家编程》学习笔记</a></h1>
+        <p class="entry-date">2013-05-12</p>
+        <h2>1.基本数据类型</h2>
 
+<h3>1.1 整型</h3>
 
-<p>C语言和其他语言最大的不同就是你必须要手动管理内存，而不像其他语言那样有垃圾回收器来帮你管理内存。要保证内存在某种特定的情况下被正确分配并不困难（并且有些操作几乎在所有语言中都需要手动完成）；困难的是要保证分配的内存足够大并且不再使用的时候能够回收。</p>
-
-<p>这里例举出几种可以应用在C语言的内存分配技术。其中很多都已被应用于NetHack 3.4.3；NetHack 4中应用得更广泛。我将在这篇博客中为大家分享这些方法的有点和缺点。在此，我最关心的是程序的正确性，而不是效率，因此，在性能差距不是特别大的情况下，我将尽量使用整洁的代码而不是高效的代码。</p>
-
-<h2>分配固定大小内存的技术</h2>
-
-<p>在这里我们关心两个问题：跟踪分配的内存的使用寿命，并且确保他们的大小是正确的。因此，我将从查看在编译时已经知道大小的内存开始，然后再转向可以处理未知大小内存的技术。</p>
-
-<h3>在栈中固定大小的缓冲区</h3>
-
-<p>在C语言中分配内存最简单的方法大概要数直接使用堆栈分配了。如果一个变量在函数内声明的时候没有指定成<code>static</code>或者<code>extern</code>，那么当这个变量的作用域启动的时候，系统将为他分配足够的内存，当作用域结束的时候，系统将释放刚刚分配的内存（有时候这个变量被称为“自动变量”）。因为在c语言中，作用域是良好嵌套的，一个典型的c语言实现将会用堆栈实现这一点：变量将从栈顶分配新的空间，并且在作用域结束的时候释放栈顶空间。（这里说的栈顶并离堆栈内存真正的顶部很远，因为栈是从高地址向低地址衍生的）</p>
-
-<p>这里是这么做主要优点（和一些小缺点）：</p>
+<p>整型的基本关键字</p>
 
 <ul>
-<li><p>它不需要额外的操作或者状态来实现这个操作。很多时候，内存分配计划本身就需要内存来工作，这反而导致了效率的倒退。栈分配内存经常就是用来提供这些内存。</p></li>
-<li></li>
+<li>char：有符号8位</li>
+<li>short：有符号16位</li>
+<li>int: 有符号32位</li>
+<li>long：在32位系统上是32位，64位系统上是64位</li>
+<li>long long：有符号64位</li>
 </ul>
 
+
+<p>在stdint.h文件中还定义了一些类型，看上去意思明确，使用方便</p>
+
+<pre><code class="c">typedef signed char    int5_t;
+typedef short int      int16_t;
+typedef int            int32_t;
+typedef unsigned char  uint8_t;
+typedef unsigned short int uint16_t
+typedef unsigned int   uint32_t;
+
+#if __WORDSIZE = 64
+    typedef long int    int64_t;
+    typedef unsigned long int uint64_t;
+#endif
+</code></pre>
+
+<p>其中，还定义了每种类型的大小范围限制，都根据以下命名方式，可以自己用printf函数查看</p>
+
+<pre><code class="c">#define INT32_MAX ……
+#define INT32_MIN ……
+</code></pre>
+
+<p>值得注意的是：<em>字符常量默认是一个int整数，在编译的过程中编译器决定将其bani成int还是char</em></p>
+
+<p>在代码编译的过程中，小于int的类型，都会自动转化成int类型来编译，在使用的时候才会变成相应的类型</p>
+
+<p>我们在代码中应该经常使用<code>sizeof(……)</code>来避免代码移植的时候因为32位和64位系统造成的区别</p>
+
+<h3>1.2浮点数</h3>
+
+<ul>
+<li>float：32位，精度6</li>
+<li>double：64位，精度15</li>
+<li>long double：80位，精度19</li>
+</ul>
+
+
+<p>浮点数的默认类型是<code>double</code></p>
+
+<p>C99还提供了复数类型，只要在float/double/long double 后面加上<code>complex</code>关键字就可以表示复数了，但是平时使用相对较少</p>
+
+<h3>1.3类型转换</h3>
+
+<p>编译器的默认类型的优先级如下<code>long double&gt;double&gt;float&gt;long long&gt;long&gt;int&gt;char</code>。表达式中，编译器会自动将char和short当作默认的int类型操作数，虽然浮点树默认的是double，但是float不会自动转换成double</p>
+
+<p>类型转换的时候特别要注意有符号数和无符号数的转换，避免符号位被覆盖。如下</p>
+
+<pre><code class="c">long a=-1L;
+unsigned int b=100;
+printf("%lu", (unsigned long)a);
+printf("%ld", a&gt;b ? a:b);
+</code></pre>
+
+<p>实际输出</p>
+
+<p><code>4294967295</code></p>
+
+<p><code>-1</code></p>
+
+<p>结果产生的原因很容易看懂，就是因为long（-1）的符号位是1,转换成无符号数之后就变成了2<sup>31</sup>,非常大……</p>
+
+<p>强制转换的基本语法就是<code>(long )a</code></p>
+
+<h3>1.4 运算符优先级</h3>
+
+<p><img src="/images/c-study/youxianji.png" alt="youxianji" /></p>
 
 
         <div id="disqus_container">

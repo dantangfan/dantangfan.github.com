@@ -4,13 +4,1017 @@
    <title>dantangfan.github.io</title>
    <link href="http://dantangfan.github.io/atom.xml" rel="self" type="application/atom+xml"/>
    <link href="http://dantangfan.github.io" rel="alternate" type="text/html" />
-   <updated>2014-03-28T16:05:10+08:00</updated>
+   <updated>2014-04-03T22:34:43+08:00</updated>
    <id>http://dantangfan.github.io</id>
    <author>
      <name></name>
      <email></email>
    </author>
 
+   
+   <entry>
+     <title>半天简单总结python</title>
+     <link href="http://dantangfan.github.io/learn-python"/>
+     <updated>2013-12-25T00:00:00+08:00</updated>
+     <id>http://dantangfan.github.io/learn-python</id>
+     <content type="html">&lt;p&gt;help(func)随便什么函数都可以查到&lt;/p&gt;
+
+&lt;h2&gt;数据类型&lt;/h2&gt;
+
+&lt;p&gt;整数定义跟c语言一样,type(ver)返回变量类型&lt;/p&gt;
+
+&lt;p&gt;&quot;&quot;&quot;三引号表示注释,三引号表示格式化输入&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;mail = &quot;&quot;&quot; Hi
+    I am 
+    Jim
+&quot;&quot;&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;序列切片--&gt;str[x:y],str[x,step,y]&lt;/p&gt;
+
+&lt;p&gt;序列都有的函数&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;len()
++
+*    str=str1*5
+in   's' in str
+max()
+min()
+cmp(tuple1,tuple2)
+id(str)查看内存空间
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;内存存储的是值，不是元素，每当变量值改变的时候，内存都会变化&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;str = &quot;ssg&quot;
+id(str)
+str = &quot;ss&quot;
+id(str)#两次结果是不一样的
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;元组：元组不可以单独元素变化，&lt;/h3&gt;
+
+&lt;p&gt;创建元祖：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;myempty = ()
+singleone = (2,)
+many = (1,3,4)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;列表：&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;list.append(msg)
+list.remove('msg')选第一次出现的msg删除
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;字典：&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;key不可变，value可变
+keys()返回键列表
+values()返回键值列表
+items()返回字典中的元组
+fdict = dict(['x',1],['y',2])生成字典
+dict.pop(key,val=msg)删除,不存在的时候返回msg（可选）
+del(dict[key])删除
+dict.clear()删除所有元素
+del dict删除字典
+dict.git(key,'msg')取值不存在返回msg，msg可选
+dict.fromkeys(seq,val=None)以seq中的元素为键创建一个字典，键值为空
+dict.has_key(key) 判断是否存在key，常用in或者not in 代替
+dict.update(temp_dict)把temp中的元素添加到dict，不存在则建立，存在则覆盖
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;分支语句：if,if-else,if-elif-else&lt;/p&gt;
+
+&lt;h2&gt;函数&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;def f(x,*args.**kwarg):
+    print x
+    if(args):
+        print args
+    if(kwarg):
+        print kwarg
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以传入任意数量参数，f('x',1,2,y=9)&lt;/p&gt;
+
+&lt;p&gt;lambda x,y:x&lt;em&gt;y 直接返回x&lt;/em&gt;y&lt;/p&gt;
+
+&lt;p&gt;比如阶乘 reduce (lambda x,y:x*y , range(1,100))&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;在目录下创建&lt;strong&gt;init&lt;/strong&gt;.py 就可以把文件变成一个包，使用import xxx.xxx导入包内文件&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;文件操作：&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;fileptr = file(filename)
+fileptr = open(filename,mode)默认模式是r.
+fileptr.read()读取整个文件
+fileptr.close()关闭
+fileptr.write('msg')只有当关闭文件或者缓冲区的时候才会写入
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;::r+读写，w+先删除再读写，没有则创建
+r+直接从指针开头写入，如果要追加就需要先read()到文件尾部然后再来write
+a在文件末尾追加新内容，a+读写
+b打开二进制文件&lt;/p&gt;
+
+&lt;h3&gt;文件方法：&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;string = f.readline(size)size可选，小于一行
+List = f.readlines(size)...
+string = f.read(size)...
+file.next()读取一行，指向下一行
+for i in open(filename):
+    print i#每次读取一行打印出来
+
+f.write(msg)写一行
+f.writelines(List)写多行
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;f.seek(偏移量,选项)&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;0：表示将文件指针指到从文件0开始到偏移量处&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;1：将指针从当前位置开始到偏移量处，&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;2：从文件末尾倒数偏移量处&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;偏移方向用正负控制&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;code&gt;eg&lt;/code&gt;f.seek(0,0)回到文件开始&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;f.flush()提交更新&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;OS模块：常见函数&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;import os
+os.mkdir('/home/hj/test')
+os.mkdir(path[,mode=0777])
+makedirs(name,mode=511)创建多级目录
+rmdir(path)
+removedirs(path)删除多级目录
+listdir(path)
+getcwd()==&amp;gt;pwd
+chdir(path)
+walk(top,topdown=true,onerror=None)
+os.isdir(name)判断是否为目录
+os.path.join(path)#会把当前路进跟path连接起来
+os.walk(path)返回一个元祖，有三个元素，分别为每次遍历的路径名，目录列表，文件列表
+g = os.walk('.')
+g.next()每次遍历一个目录下
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;于是就有了这样的办法来遍历目录打印全路径&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;for path,d,filelist in os.walk('.'):
+    for filename in filelist:
+        os.path.join(path,filename)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;面向对象：&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;class hj:
+    first = 1
+    second = 2
+    name = 'd'
+    __var = &quot;私有属性&quot;
+    def __init__(self,n='dd'):
+        self.name = n
+        pirnt &quot;初始化&quot;
+    def stati():
+        print = &quot;静态&quot;
+    def __se(self):
+        print &quot;私有方法&quot;
+    def f(self):
+        print 'hj'
+    def __str__(self):
+        return &quot;类被调用、运行的时候就自动出现&quot;
+    def __del__():
+        pass
+if __name__=='__main__':
+    me = hj('hj')
+
+
+class parent:
+    def f(self):
+        print &quot;father&quot;
+
+class son(father):
+    def func(self):
+        print 'I am son'
+
+test = son()
+test.f()
+test.func()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;正则表达式：&lt;/h2&gt;
+
+&lt;p&gt;import re&lt;/p&gt;
+
+&lt;h3&gt;常用元字符： &lt;code&gt;. ^ $ * + ? {} () \ | []&lt;/code&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;s = r'abx'&lt;/code&gt;字符串前面加r，内部元字符就需要转义后才能匹配&lt;/p&gt;
+
+&lt;p&gt;re.findall(s,'avxxaagadfgdfg')返回一个列表&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;\d 匹配任何十进制数字&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;\D 匹配任何非数字&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;\s 匹配任何空白字符&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;\S 匹配任何非空白&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;\w 匹配任何数字字母&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;\W 匹配任何非数字字母&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;{8}重复8次&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;常用函数&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;r = r'\d{3,4}-?\d{8}'
+p_tel = re.compile(r)
+p_tel.findall('010-12345678')效果和re.findall(r,'101-12345678')一样，但是速度更快
+match()决定re是否在字符串刚开始的位置匹配
+x = p_tel.match() x是一个迭代器，只判断是否有值
+x.group()返回x指向的对象
+
+search()扫描字符串，找到re匹配的位置
+findall()返回所有匹配的列表
+finditer()找到re匹配的所有字符串，并把他们作为一个迭代器返回
+x = p_tel.finditer(msg)
+x.group() 返回所有匹配
+x.start() 返回第一个匹配
+x.end() 返回最后一个匹配
+x.span() 返回一个元组，包含(开始，结束)的位置
+
+s.replace(str,str1)字符串替换
+使用正则形式如下
+rs = r'c..t'
+re.sub(rs,'python', 'fsfhglskuegjceet')用rs替换后者中的位置为中间的
+
+s.split(brk)字符串切割
+使用正则形式如下
+re.split(r'sfs*',str)
+dir(re)查看re的内置属性和方法，任何包都可以使用
+
+属性
+S匹配任何字符，包括换行等re.findall(r,str,re.S)
+M多行匹配 re.findall(r,file,re.M)
+I大小写不敏感re.I
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;爬虫下载图片&lt;/h2&gt;
+
+&lt;h3&gt;简单爬虫&lt;/h3&gt;
+
+&lt;p&gt;首先查看网页代码，图片代码的特征。正则提取图片地址，开始下载&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;#!/bin/env python
+
+import re
+import urllib#从地址获取源代码
+#获取指定地址源代码
+def getHtml(url):
+    page = urllib.urlopen(url)
+    html = page.read()
+    return html
+
+#获得图片
+def getImage(html):
+    reg = r'src=&quot;(.*\.jpg)&quot; width'
+    imgre = re.compile(reg)
+    imglist = re.findall(reg,html)
+    x = 1
+    for i in imglist:
+        urllib.urlretrieve(i,'%s.jpg' % x)
+        x = x+1
+
+if __name__=='__main__':
+    getImage(getHtml('www.baidu.com'))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;GUI--wxpython:&lt;/h2&gt;
+
+&lt;p&gt;步骤：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;导入wxpython包&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;子类化wxpython应用程序类&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;定义一个应用程序的初始化方法&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;创建一个应用程序类的实例&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;进入这个应用程序的主实践循环&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;创建应用程序对象：app = wx.app()&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;创建窗口：win = wx.Frame(None)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;显示窗口：win.Show()&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;进入应用程序管理循环:app.MainLoop()&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;一个简单的记事本，通过像素管理尺寸（特别是文本框）&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;import wx
+app = wx.App()
+win = wx.Frame(None,title='hj',size = (410,335))
+win.Show()#显示
+loadButton = wx.Button(win,lable='load',pos = (225,5), size = (80,25))#按钮
+saveButton = wx.Button(win,lable='save',pos = (315,5), size = (80,25))
+
+filename = wx.TextCtrl(win,pos = (5,5),size = (210,25))#文本框
+content = wx.TextCtrl(win, pos = (5,35), size = (390,260), style = wx.TE_MULTILINE | wx.HSCROLL)#style分别有竖着的下拉跳和横着的下拉条
+app.MainLoop()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;记事本，用尺寸器管理大小&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;import wx
+app = wx.App()
+win = wx.Frame(None,title='hj',size = (410,335))
+
+bkg = wx.Panel(win)#尺寸管理,背景画板
+
+loadButton = wx.Button(bkg,lable='load')#按钮
+saveButton = wx.Button(bkg,lable='save')
+filename = wx.TextCtrl(bkg)#文本框
+content = wx.TextCtrl(bkg, style = wx.TE_MULTILINE | wx.HSCROLL)#style分别有竖着的下拉跳和横着的下拉条
+
+#划分组建位置
+hbox = wx.BoxSizer()#不加参数，默认左右管理（上面一个文本框两个按钮，上部份）
+hbox.add(filename，proportion=1,flag = wx.EXPAND)#proportion表示占位置大小,1为最大空间，flag表示是否拉伸
+hbox.add(loadButton, proportion=0,flag = wx.LEFT,boder = 5)#表示在左边有边界，像素5
+hbox.add(saveButton, proportion=0,flag = wx.LEFT,boder = 5)
+
+bbox = wx.BoxSizer(wx.VERTICAL)#上下划分页面管理
+bbox.add(hbox,proportion = 0,flag = wx.EXPAND | wx.ALL,border=5)
+bbox.add(content,proportion = 1,flag = wx.EXPAND | wx.LEFT | wx.BOTTOM | wx.RIGHT,border = 5)
+
+bkg.SetSize(bbox)#让布局管理器生效
+
+win.Show()#显示
+app.MainLoop()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;按钮事件处理，事件绑定&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;import wx
+app = wx.App()
+win = wx.Frame(None,title='hj',size = (410,335))
+
+bkg = wx.Panel(win)#尺寸管理,背景画板
+
+#定义load按钮
+def openfile(evt):
+    filepath = filename.GetValue()#获取输入
+    fopen = open(filepath,'a+')#打开文件
+    content.SetValue(fopen.read())#把文件放在content
+    fopen.close()
+
+def savefile(evt):
+    filepath = filename.GetValue()
+    fopen = open(filepath,'a+')
+    fopen.write(content.GetValue())
+    fopen.close()
+
+loadButton = wx.Button(bkg,lable='load')#按钮
+saveButton = wx.Button(bkg,lable='save')
+filename = wx.TextCtrl(bkg)#文本框
+content = wx.TextCtrl(bkg, style = wx.TE_MULTILINE | wx.HSCROLL)#style分别有竖着的下拉跳和横着的下拉条
+
+loadButton.Bind(wx.EVT_BUTTON,openfile)#load键绑定了button类型的openfile事件
+saveBUtton.Bind(wx.EVT_BUTTON,savefile)
+#划分组建位置
+hbox = wx.BoxSizer()#不加参数，默认左右管理（上面一个文本框两个按钮，上部份）
+hbox.add(filename，proportion=1,flag = wx.EXPAND)#proportion表示占位置大小,1为最大空间，flag表示是否拉伸
+hbox.add(loadButton, proportion=0,flag = wx.LEFT,boder = 5)#表示在左边有边界，像素5
+hbox.add(saveButton, proportion=0,flag = wx.LEFT,boder = 5)
+
+bbox = wx.BoxSizer(wx.VERTICAL)#上下划分页面管理
+bbox.add(hbox,proportion = 0,flag = wx.EXPAND | wx.ALL,border=5)
+bbox.add(content,proportion = 1,flag = wx.EXPAND | wx.LEFT | wx.BOTTOM | wx.RIGHT,border = 5)
+
+bkg.SetSize(bbox)#让布局管理器生效
+
+win.Show()#显示
+app.MainLoop()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;多线程：&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;import thread
+import time
+def go(name,n):
+    for i in xrange(3)
+        print name,i
+        time.sleep(1)
+
+thread.start_new_thread(go,('baby',3))
+thread.start_new_thread(go,('gay', 3))
+time.sleep(6)#线程工作需要时间，如果不sleep，进程就会直接瞬间结束，这个时候线程也就自动结束了，不会相互等待
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;线程锁:&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;import thread
+import time
+def go(name,n,l):
+    for i in xrange(3)
+        print name,i
+        time.sleep(1)
+    l.release()
+locket = thread.allocate_lock()#申明锁对象
+locket.acquire()#把锁锁上
+print locket.locked()#查看状态
+
+thread.start_new_thread(go,('baby',3),locket)
+
+#locket.release()#解锁
+
+while locket.locked():
+    pass
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;Json格式储存文件：&lt;/h2&gt;
+
+&lt;p&gt;Json必须是unicode类型的（utf-32,utf-16,utf-8默认）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;import json
+d = {'n':,'tag':89,'id':('sdf',234),'pk':[12,'sfs']}#元组会自动转化成列表
+with open('test.txt','w') as f:
+    json.dump(d,f)#顺序储存
+    json.dump(d,f,indent = 0)#每个数据存一行
+    json.dump(d,f,indent = 2)#每个数据的内部数据缩进为2
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>树莓派制作wifi控制小车</title>
+     <link href="http://dantangfan.github.io/raspberry-car"/>
+     <updated>2013-12-12T00:00:00+08:00</updated>
+     <id>http://dantangfan.github.io/raspberry-car</id>
+     <content type="html">&lt;h2&gt;树莓派小车&lt;/h2&gt;
+
+&lt;h3&gt;材料&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://trade.taobao.com/trade/detail/tradeSnap.htm?spm=a1z09.2.9.8.M4n9cw&amp;amp;tradeID=567688753132954&quot;&gt;树莓派&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://item.taobao.com/item.htm?id=19142619516&quot;&gt;SD卡&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;拓展板(可选)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://item.taobao.com/item.htm?id=19995371946&quot;&gt;电源&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://item.taobao.com/item.htm?id=36909029780&quot;&gt;电机和电机驱动&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://item.taobao.com/item.htm?id=36850212461&amp;amp;ali_trackid=2:mm_10062864_0_0,0:1395925709_3k2_39373907&amp;amp;spm=a230z.1.5634029.7.0Be1hk&quot;&gt;摄像头&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://item.taobao.com/item.htm?spm=a230r.1.14.41.LfxL1r&amp;amp;id=22921464431&amp;amp;_u=rq4fe15dd67&quot;&gt;无线网卡&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://item.taobao.com/item.htm?id=36903458968&quot;&gt;底盘&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;raspberry基本系统搭建&lt;/h3&gt;
+
+&lt;h4&gt;系统刷写&lt;/h4&gt;
+
+&lt;p&gt;可以选择的系统非常多，有Raspbian，Archlinuxarm，Pidora等等，按需选择。&lt;/p&gt;
+
+&lt;p&gt;刷系统，主要是往SD卡中写入系统，Linux下可以使用dd命令，windows下可以使用Win32DiskImager。&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;可以先刷写一个SD卡，然后进行常规配置和自定义配置，提取镜像，再刷人其他SD卡。&lt;/em&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.raspberrypi.org/downloads&quot;&gt;官方系统下载&lt;/a&gt;,&lt;a href=&quot;http://mirrors.ustc.edu.cn/raspberrypi/images/&quot;&gt;中科大加速镜像&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.raspberrypi.org/quick-start-guide&quot;&gt;Quick start guid&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://mall.egoman.com.cn/index.php?option=com_content&amp;amp;view=article&amp;amp;id=99:-lab1raspberrywindows-&amp;amp;catid=47:shiyongfangan-&amp;amp;Itemid=222&quot;&gt;浙大课程： Lab1:初见树莓派(Raspberry)(windows平台)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://zhangshenjia.com/it/raspberry_pi/mac-raspbian/&quot;&gt;mac下给树莓派安装raspbian系统(DD命令)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;小车底板组装&lt;/h3&gt;
+
+&lt;p&gt;根据实际情况或者买家提供的教程组装&lt;/p&gt;
+
+&lt;h3&gt;配置静态ip&lt;/h3&gt;
+
+&lt;p&gt;无线控制希望每次登录都可以使用同一个ip，省去了查找ip的麻烦。&lt;/p&gt;
+
+&lt;p&gt;配置固定IP，不管是有线还是无线都配置静态ip&lt;/p&gt;
+
+&lt;p&gt;以Raspbian（debain系）为例：（本配置是在实验室环境下路由器提供的ip，请根据实际情况修改）&lt;/p&gt;
+
+&lt;p&gt;编辑 /etc/network/interfaces&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;auto lo
+
+iface lo inet loopback
+iface eth0 inet static
+address 192.168.1.10
+netmask 255.255.255.0
+gateway 192.168.1.1
+
+auto wlan0
+iface wlan0 inet static
+address 192.168.1.88
+netmask 255.255.255.0
+gateway 192.168.1.1
+wpa-ssid 要连接的wlan ssid
+wpa-passphrase wlan密码
+wireless-channel 11
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;重启网络服务：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#root用户，或者加sudo
+/etc/init.d/networking restart 
+OR
+service networking restart 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;wifi控制小车&lt;/h3&gt;
+
+&lt;h4&gt;摄像头&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;将USB摄像头插上，查看是否找到设备，输入：&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;pre&gt;&lt;code&gt;root@raspberrypi:/# lsusb
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中Logitech就是摄像头，说明找到usb设备了，然后再看看设备驱动是否正常：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@raspberrypi:/# ls /dev/vid*
+/dev/video0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;看到video0说明成功。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;安装必要的软件集：&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install subversion
+sudo apt-get install libv4l-dev
+sudo apt-get install libjpeg8-dev
+sudo apt-get install imagemagick
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;下载mipg-steamer软件，编译并安装：&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;pre&gt;&lt;code&gt;svn co https://mjpg-streamer.svn.sourceforge.net/svnroot/mjpg-streamer mjpg-streamer
+cd mjpg-streamer/mjpg-streamer
+make USE_LIBV4L2=true clean all
+make DESTDIR=/usr install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;注：如果这个svn的地址可能已经失效，请使用下面源&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;wget http://sourceforge.net/code-snapshots/svn/m/mj/mjpg-streamer/code/mjpg-streamer-code-182.zip
+unzip mjpg-streamer-code-182.zip
+cd mjpg-streamer-code-182/mjpg-streamer
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;创建一个文件video.sh并编辑如下代码&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;pre&gt;&lt;code&gt;#!/bin/sh
+
+STREAMER=mjpg_streamer
+DEVICE=/dev/video0
+RESOLUTION=320x240
+FRAMERATE=25
+HTTP_PORT=8001
+
+PLUGINPATH=/usr/lib
+
+$STREAMER -i &quot;$PLUGINPATH/input_uvc.so -n -d $DEVICE -r $RESOLUTION -f $FRAMERATE -y YUYV&quot; -o        &quot;$PLUGINPATH/output_http.so -n -p $HTTP_PORT &quot; &amp;amp;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;执行代码&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;pre&gt;&lt;code&gt;sudo chmod 777 video.sh 
+sudo ./video.sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;在pc上建立一个html文件，如下编辑&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;pre&gt;&lt;code class=&quot;html&quot;&gt;&amp;lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot; &quot;http://www.w3.org/TR/html4/loose.dtd&quot;&amp;gt;
+&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;
+        &amp;lt;title&amp;gt;RPi&amp;lt;/title&amp;gt;
+        &amp;lt;style type=&quot;text/css&quot;&amp;gt;
+                button {
+                        margin: 5px 5px 5px 5px;
+                        width: 50px;
+                        height: 50px;
+                        font-size: 24pt;
+                        font-weight: bold;
+                        color: black;
+                }
+        &amp;lt;/style&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+        &amp;lt;div id=&quot;content&quot; align=&quot;center&quot;&amp;gt;
+                &amp;lt;img width=&quot;500&quot; height=&quot;400&quot; src=&quot;http://&quot;你的raspberry pi ip地址”:8001/?action=stream&quot;&amp;gt;&amp;lt;br/&amp;gt;
+                &amp;lt;div id=&quot;up&quot;&amp;gt;&amp;lt;/div&amp;gt;
+                &amp;lt;div id=&quot;middle&quot;&amp;gt;&amp;lt;/div&amp;gt;
+                &amp;lt;div id=&quot;down&quot;&amp;gt;&amp;lt;/div&amp;gt;
+        &amp;lt;/div&amp;gt;
+&amp;lt;/body&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在pc上运行上面index.html”文件看到视频了，就说明摄像头工作正常了，到此摄像头的工作就结束了&lt;/p&gt;
+
+&lt;p&gt;效果图&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/raspberry-car/video.png&quot; alt=&quot; &quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;在执行的过程中，如果显示摄像头关闭不成功，则要杀死进程&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;pre&gt;&lt;code&gt;kill $(pgrep video.sh)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;控制代码&lt;/h4&gt;
+
+&lt;p&gt;小车的控制可以用任何raspberry上能运行的语言编写，这里为方便，直接使用python&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;#!/usr/bin/env python
+#wheel.py
+import RPi.GPIO as GPIO
+class wheel:
+    pins = {'left1':[13,15],'left2':[16,18],'right1':[19,21],'right2':[22,24]}
+
+    def __init__(self,name):
+        self.name = name
+        self.pin = wheel.pins[self.name]
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setup(self.pin[0],GPIO.OUT)
+        GPIO.setup(self.pin[1],GPIO.OUT)
+        self.stop()
+
+    def forward(self):
+        GPIO.output(self.pin[0],GPIO.HIGH)
+        GPIO.output(self.pin[1],GPIO.LOW)
+
+    def back(self):
+        GPIO.output(self.pin[0],GPIO.LOW)
+        GPIO.output(self.pin[1],GPIO.HIGH)
+
+    def stop(self):
+        GPIO.output(self.pin[0],GPIO.LOW)
+        GPIO.output(self.pin[1],GPIO.LOW)
+
+    def __del__(self):
+        pass
+        #GPIO.cleanup()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;#!/usr/bin/env python
+#car.py
+from wheel import *
+import RPi.GPIO as GPIO
+class car:
+    wheels=[wheel('left1'),wheel('left2'),wheel('right1'),wheel('right2')]
+
+    def __init__(self):
+        GPIO.setmode(GPIO.BOARD)
+
+    def forward(self):
+        for wheel in car.wheels:
+            wheel.forward()
+
+    def back(self):
+        for wheel in car.wheels:
+            wheel.back()
+
+    def left(self):
+        car.wheels[2].forward()
+        car.wheels[3].forward()
+        car.wheels[0].back()
+        car.wheels[1].back()
+
+    def right(self):
+        car.wheels[0].forward()
+        car.wheels[1].forward()
+        car.wheels[2].back()
+        car.wheels[3].back()
+
+    def stop(self):
+        for wheel in car.wheels:
+            wheel.stop()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;#!/usr/bin/env python
+#action.py
+
+from car import *
+import clean
+
+
+def action(com):
+
+    #when control the car
+    if com==&quot;forward&quot;:
+        a = car()
+        a.forward()
+    elif com==&quot;back&quot;:
+        a = car()
+        a.back()
+    elif com==&quot;left&quot;:
+        a = car()
+        a.left()
+    elif com==&quot;right&quot;:
+        a = car()
+        a.right()
+    elif com==&quot;stop&quot;:
+        a = car()
+        a.stop()
+    #clean all
+    elif com==&quot;clean&quot;:
+        clean.clean()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;#!/usr/bin/env python
+#server.py
+
+from actions import *
+from socket import *
+import sys
+import time
+import RPi.GPIO as GPIO
+
+host = &quot;192.168.1.10&quot;
+port = 8888
+s = socket()
+
+s.bind((host,port))
+s.listen(5)
+print &quot;listen on port 8888&quot;
+
+while 1:
+    conn, addr = s.accept()
+    print &quot;connected by:&quot;,addr
+
+    while 1:
+    #if 1:
+        command = conn.recv(1024).replace('\n','')
+        #print command
+        if not command: break
+        #this command to test the distance 
+        elif command==&quot;distance&quot;:
+            dis=action(command)
+            conn.send(dis)
+        else:
+            action(command)
+    conn.close()
+    #action(&quot;clean&quot;)
+    #GPIO.cleanup()
+    #conn.close()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://dreamcolor.net/archives/rpio-document-pwm-py.html&quot;&gt;raspberry GPIO编程指导&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;PC客户端代码：&lt;/p&gt;
+
+&lt;p&gt;注意：请先安装wxpython&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;#!/usr/bin/env python
+#coding:utf-8
+import time
+import wx
+import socket
+#import sys
+import threading
+import struct
+
+#Receive message
+class Receiver(threading.Thread):
+    def __init__(self,threadName,window):
+        threading.Thread.__init__(self)
+        self.threadName = threadName
+        self.window = window
+        self.timeToQuit = threading.Event()
+        self.timeToQuit.clear()
+        #连接服务器
+        # Create a socket (SOCK_STREAM means a TCP socket)
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            # Connect to server and send data
+            self.sock.connect((self.window.host, self.window.port))
+            self.window.LogMessage(&quot;连接服务器成功...\n&quot;)
+            self.runT = True
+        except Exception:
+            self.window.LogMessage(&quot;连接服务器失败...\n&quot;)
+            self.sock.close()
+
+    def stop(self):
+        self.window.LogMessage(&quot;关闭Socket连接...\n&quot;)
+        self.sock.close()
+        self.runT = False
+        self.timeToQuit.set()
+
+    def sendMsg(self,msg):
+        logMsg = (u&quot;发送：%s\n&quot; % (msg))
+        self.window.LogMessage(logMsg)
+        self.sock.sendall(msg)
+
+    def run(self):
+        try:
+            while self.runT:
+                data = self.sock.recv(4)
+                if data:
+                    dataLen, = struct.unpack_from(&quot;i&quot;,data)
+                    wx.CallAfter(self.window.LogMessage,(u&quot;返回数据长度:%s\n&quot; % (dataLen)))
+                    wx.CallAfter(self.window.LogMessage,(u&quot;返回数据:%s\n&quot; % (self.sock.recv(dataLen))))
+        except Exception:
+            pass
+class InsertFrame(wx.Frame):
+
+    def __init__(self, parent, id):
+
+        #创建父框
+        wx.Frame.__init__(self, parent, id, 'Socket Client', size=(1140, 450))
+        #创建画板
+        self.panel = wx.Panel(self,-1)
+        self.panel.SetBackgroundColour(&quot;White&quot;)
+        #创建按钮
+        self.createButtonBar(self.panel)
+        #创建静态文本
+        self.createTextFields(self.panel)
+        #创建文本框
+        self.creatTextInput(self.panel)
+
+        #Socket 地址
+        self.host, self.port = &quot;localhost&quot;, 12340
+        self.runT = True
+###############################
+    #创建文本
+    def createTextFields(self, panel):
+        for eachLabel, eachPos in self.textFieldData():
+            self.createCaptionedText(panel, eachLabel, eachPos)
+
+    def createCaptionedText(self, panel, label, pos):
+        static = wx.StaticText(panel, wx.NewId(), label, pos)
+        static.SetBackgroundColour(&quot;White&quot;)
+#########################
+    #创建按钮
+    def createButtonBar(self, panel):
+        for eachLabel,eachSize,eachPos, eachHandler in self.buttonData():
+            self.buildOneButton(panel, eachLabel,eachSize,eachHandler,eachPos)
+    def buildOneButton(self, parent, label,buttonsize,handler, pos=(0,0)):
+        button = wx.Button(parent, -1, label, pos,buttonsize)
+        #绑定按钮的单击事件
+        self.Bind(wx.EVT_BUTTON, handler, button)
+#########################
+    #按钮栏数据
+    def buttonData(self):#(按钮名称，按钮大小，按钮坐标，按钮事件）
+        return ((&quot;forward&quot;,(60,60 ),(875, 100),self.forward),
+                (&quot;back&quot;,(60, 60),(875, 300),self.back),
+                (&quot;left&quot;,(60, 60),(750, 200),self.left),
+                (&quot;right&quot;,(60, 60),(975, 200),self.right),
+                (&quot;stop&quot;,(60, 60),(875, 200),self.stop),
+                (&quot;连 接&quot;,(50, 25),(310, 30),self.OnConnection),
+                (&quot;断 开&quot;, (50, 25),(370, 30),self.OnCloseSocket),
+                (&quot;清 空&quot;, (50, 25),(430, 30),self.OnClearLog),
+                (&quot;发 送&quot;, (50, 25),(540, 400),self.OnSend))
+    #文本内容
+    def textFieldData(self):
+        return ((&quot;Please Input socket address AND port：&quot;, (10, 10)),
+                (&quot;输入消息：&quot;, (10, 380)))
+########################
+    #创建文本框
+    def creatTextInput(self,panel):
+        #服务器地址输入框
+        self.socketHostText = wx.TextCtrl(self.panel, wx.NewId(), &quot;&quot;, size=(230, 25),pos=(10, 30))
+        #服务器端口输入框
+        self.socketPortText = wx.TextCtrl(self.panel, wx.NewId(), &quot;&quot;, size=(50, 25),pos=(250, 30))
+        #信息显示
+        self.log = wx.TextCtrl(self.panel, -1, &quot;&quot;,size=(620, 310),pos=(10, 60),style=wx.TE_RICH|wx.TE_MULTILINE|wx.TE_READONLY)
+        #信息输入
+        self.inputMessage = wx.TextCtrl(self.panel, wx.NewId(), size=(520, 25),style=wx.TE_PROCESS_ENTER,pos=(10, 400))
+        self.Bind(wx.EVT_TEXT_ENTER, self.OnSend, self.inputMessage)
+########################
+
+    #事件处理器(关闭窗口）
+    def OnCloseWindow(self, event):
+        self.thread.stop()
+        self.Destroy()
+
+    #事件处理器(关闭Socket）
+    def OnCloseSocket(self, event):
+        self.thread.stop()
+
+    #事件处理器(连接到SOCKET）
+    def OnConnection(self,event):
+        if self.socketHostText.GetValue()!='' and self.socketPortText.GetValue()!='':
+            self.host, self.port = str(self.socketHostText.GetValue()),int(self.socketPortText.GetValue())
+        threadName = &quot;socketclient&quot;
+        self.thread = Receiver(threadName, self)#创建一个线程
+        self.thread.setDaemon(True)
+        self.thread.start()#启动线程
+
+    #事件处理器(显示LOG）
+    def LogMessage(self, msg):#注册一个消息
+        self.log.AppendText(msg)
+
+    #事件处理器(清空LOG）
+    def OnClearLog(self,event):#注册一个消息
+        self.log.Clear()
+
+    #事件处理器(给SOCKET发送消息,并清空输入框）
+    def OnSend(self, event):
+        self.thread.sendMsg(self.inputMessage.GetValue())
+        self.inputMessage.Clear()
+
+    ##############################################
+    ##movement button##
+
+    def forward(self,event):
+        self.thread.sendMsg(&quot;forward&quot;)
+
+    def back(self,event):
+        self.thread.sendMsg(&quot;back&quot;)
+
+    def left(self,event):
+        self.thread.sendMsg(&quot;left&quot;)
+
+    def right(self,event):
+        self.thread.sendMsg(&quot;right&quot;)
+
+    def stop(self,event):
+        self.thread.sendMsg(&quot;stop&quot;)
+
+
+if __name__ == '__main__':
+    app = wx.PySimpleApp()
+    frame = InsertFrame(parent=None, id=-1)
+    frame.Show()
+    app.MainLoop()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;效果图&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/raspberry-car/pc_client.png&quot; alt=&quot; &quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;为方便，可以直接使用git下载&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git clone https://github.com/dantangfan/tank.git tank
+git clone https://github.com/dantangfan/clientTank clientTank
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;管理和应用&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/NeonHorizon/berryio&quot;&gt;berryio&lt;/a&gt;,[项目介绍](http://www.geekfan.net/3251/）&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://code.google.com/p/webiopi/&quot;&gt;webiopi&lt;/a&gt;,[项目介绍](http://www.2fz1.com/?tag=webiopi）&lt;/p&gt;
+
+&lt;h4&gt;相关文档&lt;/h4&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;http://ishare.iask.sina.com.cn/f/61335036.html&quot;&gt;GY-26电子指南针资料（串口+IIC+温度）&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://share.eepw.com.cn/share/download/id/165040&quot;&gt;黑白 红外壁障模块 资料&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://wenku.baidu.com/view/8f46c2d1b9f3f90f76c61b4f.html&quot;&gt;DHT22_温湿度传感器&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://wenku.baidu.com/view/272b0c69a98271fe910ef926.html&quot;&gt;GY-26电子指南针使用手册&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://wenku.baidu.com/view/ce9e5e48767f5acfa1c7cd8a.html&quot;&gt;HC-SR04超声波测距模块说明书&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://forum.stmlabs.com/showthread.php?tid=5549&quot;&gt;人体红外感应器&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;其他&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://raspberrytank.ianrenton.com/&quot;&gt;raspberrytank&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.apinglai.com/category/arm/&quot;&gt;传感器的简单应用&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;联系人&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;联系：dantangfan@gmail.com，316977394@qq.com&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+   </entry>
    
    <entry>
      <title>颓废</title>
@@ -157,7 +1161,95 @@ Wu~&lt;/p&gt;
    </entry>
    
    <entry>
-     <title>c语言编程内存管理</title>
+     <title>《c专家编程》学习笔记</title>
+     <link href="http://dantangfan.github.io/c-study"/>
+     <updated>2013-05-12T00:00:00+08:00</updated>
+     <id>http://dantangfan.github.io/c-study</id>
+     <content type="html">&lt;h2&gt;1.基本数据类型&lt;/h2&gt;
+
+&lt;h3&gt;1.1 整型&lt;/h3&gt;
+
+&lt;p&gt;整型的基本关键字&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;char：有符号8位&lt;/li&gt;
+&lt;li&gt;short：有符号16位&lt;/li&gt;
+&lt;li&gt;int: 有符号32位&lt;/li&gt;
+&lt;li&gt;long：在32位系统上是32位，64位系统上是64位&lt;/li&gt;
+&lt;li&gt;long long：有符号64位&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;在stdint.h文件中还定义了一些类型，看上去意思明确，使用方便&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;c&quot;&gt;typedef signed char    int5_t;
+typedef short int      int16_t;
+typedef int            int32_t;
+typedef unsigned char  uint8_t;
+typedef unsigned short int uint16_t
+typedef unsigned int   uint32_t;
+
+#if __WORDSIZE = 64
+    typedef long int    int64_t;
+    typedef unsigned long int uint64_t;
+#endif
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中，还定义了每种类型的大小范围限制，都根据以下命名方式，可以自己用printf函数查看&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;c&quot;&gt;#define INT32_MAX ……
+#define INT32_MIN ……
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;值得注意的是：&lt;em&gt;字符常量默认是一个int整数，在编译的过程中编译器决定将其bani成int还是char&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;在代码编译的过程中，小于int的类型，都会自动转化成int类型来编译，在使用的时候才会变成相应的类型&lt;/p&gt;
+
+&lt;p&gt;我们在代码中应该经常使用&lt;code&gt;sizeof(……)&lt;/code&gt;来避免代码移植的时候因为32位和64位系统造成的区别&lt;/p&gt;
+
+&lt;h3&gt;1.2浮点数&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;float：32位，精度6&lt;/li&gt;
+&lt;li&gt;double：64位，精度15&lt;/li&gt;
+&lt;li&gt;long double：80位，精度19&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;浮点数的默认类型是&lt;code&gt;double&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;C99还提供了复数类型，只要在float/double/long double 后面加上&lt;code&gt;complex&lt;/code&gt;关键字就可以表示复数了，但是平时使用相对较少&lt;/p&gt;
+
+&lt;h3&gt;1.3类型转换&lt;/h3&gt;
+
+&lt;p&gt;编译器的默认类型的优先级如下&lt;code&gt;long double&amp;gt;double&amp;gt;float&amp;gt;long long&amp;gt;long&amp;gt;int&amp;gt;char&lt;/code&gt;。表达式中，编译器会自动将char和short当作默认的int类型操作数，虽然浮点树默认的是double，但是float不会自动转换成double&lt;/p&gt;
+
+&lt;p&gt;类型转换的时候特别要注意有符号数和无符号数的转换，避免符号位被覆盖。如下&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;c&quot;&gt;long a=-1L;
+unsigned int b=100;
+printf(&quot;%lu&quot;, (unsigned long)a);
+printf(&quot;%ld&quot;, a&amp;gt;b ? a:b);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;实际输出&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;4294967295&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;-1&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;结果产生的原因很容易看懂，就是因为long（-1）的符号位是1,转换成无符号数之后就变成了2&lt;sup&gt;31&lt;/sup&gt;,非常大……&lt;/p&gt;
+
+&lt;p&gt;强制转换的基本语法就是&lt;code&gt;(long )a&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3&gt;1.4 运算符优先级&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/c-study/youxianji.png&quot; alt=&quot;youxianji&quot; /&gt;&lt;/p&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>c语言编程内存管理(未完成)</title>
      <link href="http://dantangfan.github.io/c-memory-manage-in-programs"/>
      <updated>2013-03-15T00:00:00+08:00</updated>
      <id>http://dantangfan.github.io/c-memory-manage-in-programs</id>
