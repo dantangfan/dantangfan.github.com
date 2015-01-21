@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--
+    * Author:         dantangfan
+    -->
+    <meta charset="utf-8" />
+    <title>《c专家编程》学习笔记 |  dantangfan </title>
+    <meta name="author" content="dantangfan" />
+    <meta name="description" content="hj's Blog" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="/css/default.css" type="text/css" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="alternate" type="application/atom+xml" title="Recent Entries" href="/atom.xml" />
+    <script src="/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+    <div class="home-menu">
+        <div class="home-icon-con">
+            <a class="home-menu-icon" href="/">dantangfan</a>
+            <a class="home-follow" href="#" title="Contact Me">+</a>
+        </div>
+        <div class="home-contact">
+            <a href="http://weibo.com/u/2428228892/" target="_blank" style="margin-left:-5px;"><img src="http://www.weibo.com/favicon.ico" alt="" width="25"/></a>
+            <a href="https://github.com/dantangfan/" target="_blank" style="text-align:center;"><img src="https://github.com/favicon.ico" alt="" width="22"/></a>
+            <a href="http://renren.com/419506097" target="_blank" style="text-align:right"><img src="http://iconpng.com/png/website_icons/renren.png" alt="" width="22"/></a>
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="/js/prettify/prettify.css" />
+<style type="text/css">
+    body { background:#e8e8e8; }
+    @media screen and (max-width: 750px){
+        body { background:#fff; }
+    }
+    @media screen and (max-width: 1020px){
+        body { background:#fff; }
+    }
+</style>
+
+<div id="content">
+    <div class="entry">
+        <h1 class="entry-title"><a href="/c-study" title="《c专家编程》学习笔记">《c专家编程》学习笔记</a></h1>
+        <p class="entry-date">2013-05-12</p>
+        <h2>1.基本数据类型</h2>
+
+<h3>1.1 整型</h3>
+
+<p>整型的基本关键字</p>
+
+<ul>
+<li>char：有符号8位</li>
+<li>short：有符号16位</li>
+<li>int: 有符号32位</li>
+<li>long：在32位系统上是32位，64位系统上是64位</li>
+<li>long long：有符号64位</li>
+</ul>
+
+
+<p>在stdint.h文件中还定义了一些类型，看上去意思明确，使用方便</p>
+
+<pre><code class="c">typedef signed char    int5_t;
+typedef short int      int16_t;
+typedef int            int32_t;
+typedef unsigned char  uint8_t;
+typedef unsigned short int uint16_t
+typedef unsigned int   uint32_t;
+
+#if __WORDSIZE = 64
+    typedef long int    int64_t;
+    typedef unsigned long int uint64_t;
+#endif
+</code></pre>
+
+<p>其中，还定义了每种类型的大小范围限制，都根据以下命名方式，可以自己用printf函数查看</p>
+
+<pre><code class="c">#define INT32_MAX ……
+#define INT32_MIN ……
+</code></pre>
+
+<p>值得注意的是：<em>字符常量默认是一个int整数，在编译的过程中编译器决定将其bani成int还是char</em></p>
+
+<p>在代码编译的过程中，小于int的类型，都会自动转化成int类型来编译，在使用的时候才会变成相应的类型</p>
+
+<p>我们在代码中应该经常使用<code>sizeof(……)</code>来避免代码移植的时候因为32位和64位系统造成的区别</p>
+
+<h3>1.2浮点数</h3>
+
+<ul>
+<li>float：32位，精度6</li>
+<li>double：64位，精度15</li>
+<li>long double：80位，精度19</li>
+</ul>
+
+
+<p>浮点数的默认类型是<code>double</code></p>
+
+<p>C99还提供了复数类型，只要在float/double/long double 后面加上<code>complex</code>关键字就可以表示复数了，但是平时使用相对较少</p>
+
+<h3>1.3类型转换</h3>
+
+<p>编译器的默认类型的优先级如下<code>long double&gt;double&gt;float&gt;long long&gt;long&gt;int&gt;char</code>。表达式中，编译器会自动将char和short当作默认的int类型操作数，虽然浮点树默认的是double，但是float不会自动转换成double</p>
+
+<p>类型转换的时候特别要注意有符号数和无符号数的转换，避免符号位被覆盖。如下</p>
+
+<pre><code class="c">long a=-1L;
+unsigned int b=100;
+printf("%lu", (unsigned long)a);
+printf("%ld", a&gt;b ? a:b);
+</code></pre>
+
+<p>实际输出</p>
+
+<p><code>4294967295</code></p>
+
+<p><code>-1</code></p>
+
+<p>结果产生的原因很容易看懂，就是因为long（-1）的符号位是1,转换成无符号数之后就变成了2<sup>31</sup>,非常大……</p>
+
+<p>强制转换的基本语法就是<code>(long )a</code></p>
+
+<h3>1.4 运算符优先级</h3>
+
+<p><img src="/images/c-study/youxianji.png" alt="youxianji" /></p>
+
+
+        <div id="disqus_container">
+            <div style="margin-bottom:20px" class="right">
+                <script type="text/javascript" charset="utf-8">
+                (function(){
+                  var _w = 86 , _h = 16;
+                  var param = {
+                    url:location.href,
+                    type:'6',
+                    count:'', /**是否显示分享数，1显示(可选)*/
+                    appkey:'', /**您申请的应用appkey,显示分享来源(可选)*/
+                    title:'', /**分享的文字内容(可选，默认为所在页面的title)*/
+                    pic:'', /**分享图片的路径(可选)*/
+                    ralateUid:'2428228892', /**关联用户的UID，分享微博会@该用户(可选)*/
+                    language:'zh_cn', /**设置语言，zh_cn|zh_tw(可选)*/
+                    rnd:new Date().valueOf()
+                  }
+                  var temp = [];
+                  for( var p in param ){
+                    temp.push(p + '=' + encodeURIComponent( param[p] || '' ) )
+                  }
+                  document.write('<iframe allowTransparency="true" frameborder="0" scrolling="no" src="http://hits.sinajs.cn/A1/weiboshare.html?' + temp.join('&') + '" width="'+ _w+'" height="'+_h+'"></iframe>')
+                })()
+                </script>
+            </div>
+            <a href="#" class="comment" onclick="return false;">点击查看评论</a>
+            <div id="disqus_thread"></div>
+        </div>
+    </div>
+
+    <div class="sidenav">
+        <iframe width="250" height="100" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=250&height=100&fansRow=2&ptype=1&speed=0&skin=1&isTitle=0&noborder=1&isWeibo=0&isFans=0&uid=2428228892&verifier=76bf5e3a&dpc=1"></iframe>
+    </div>
+
+    <div class="sidenav">
+        <h2>Blog</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/raspberry-car">树莓派制作wifi控制小车</a></li>
+        
+            <li><a href="/c-study">《c专家编程》学习笔记</a></li>
+        
+            <li><a href="/c-memory-manage-in-programs">c语言编程内存管理(未完成)</a></li>
+        
+            <li><a href="/C-stander">C 语言编码风格和标准</a></li>
+        
+            <li><a href="/C-pointer">c语言学习——指针</a></li>
+        
+            <li><a href="/C-scanf">C语言学习——让人头疼的scanf</a></li>
+        
+            <li><a href="/learn-gitPage">使用Github Pages建独立博客</a></li>
+        
+        </ul>
+
+        <h2>Opinion</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/Mybirthday">颓废</a></li>
+        
+            <li><a href="/yearOf2011">从一个地方到另一个地方</a></li>
+        
+        </ul>
+
+        
+        <a href="/project"><h2>About me</h2></a>
+        <!--
+        <h2>Project</h2>
+        <ul class="artical-list">
+        
+        </ul>
+        -->
+    </div>
+</div>
+
+<script src="/js/post.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">
+        $(function(){
+            $('.home-follow').click(function(e){
+                e.preventDefault();
+
+                if($('.home-contact').is(':visible')){
+                    $('.home-contact').slideUp(100);
+                }else{
+                    $('.home-contact').slideDown(100);
+                }
+            });
+        })
+    </script>
+</body>
+</html>

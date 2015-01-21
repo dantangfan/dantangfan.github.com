@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 简单爬虫
-description: 自从又了爬虫，妈妈再也不担心我找不到地方玩儿了
+description: 说一千道一万，还是不如直接用框架来的快，不过对理解过程还是有点帮助
 category: blog
 ---
 

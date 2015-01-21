@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 半天简单总结python
-description: 好久没用就忘了，简单总结以下
+description: 我就是没事了写着玩儿的
 category: blog
 ---
 

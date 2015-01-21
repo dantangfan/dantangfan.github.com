@@ -1,0 +1,1915 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+ 
+   <title>dantangfan.github.io</title>
+   <link href="http://dantangfan.github.io/atom.xml" rel="self" type="application/atom+xml"/>
+   <link href="http://dantangfan.github.io" rel="alternate" type="text/html" />
+   <updated>2015-01-22T01:40:17+08:00</updated>
+   <id>http://dantangfan.github.io</id>
+   <author>
+     <name></name>
+     <email></email>
+   </author>
+
+   
+   <entry>
+     <title>博客搬家</title>
+     <link href="http://dantangfan.github.io/nothing"/>
+     <updated>2014-11-10T00:00:00+08:00</updated>
+     <id>http://dantangfan.github.io/nothing</id>
+     <content type="html">&lt;p&gt;不要来这里，这里的东西都是翔。&lt;/p&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>重用命令记录</title>
+     <link href="http://dantangfan.github.io/command"/>
+     <updated>2014-11-09T00:00:00+08:00</updated>
+     <id>http://dantangfan.github.io/command</id>
+     <content type="html">&lt;h2&gt;基础命令：&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;
+显示时间：date
+显示日历：cal [ [ month] year ]
+计算器：bc
+列出文件：ls
+复制：cp
+切换目录：cd
+切换用户：su
+内核版本查看：uname [ra]
+查看当前目录：pwd
+创建删除目录：mkdir 、 rmdir
+移动和重命名文件：mv
+删除文件：rm
+查看文件内容：cat [AbEnTv]
+反向查看文件内容：tac
+添加行号打印：nl
+翻页查看：more，less
+提取数据部分行：head，tail
+读取非纯文本文件：od [acdfox]
+修改文件创建时间或新建文件：touch
+文件默认权限：umask
+文件影藏属性：chattr（设置），lsattr（显示）
+查看文件类型：file
+查找执行文件：which
+寻找特定文件：whereis，locate，find（后面做详细介绍）
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2&gt;linux文件属性&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;
+权限：rwx权值分别是421
+chgrp：更改文件所属用户组 chgrp group1 test.txt
+chown：更改文件所有者： chown user1 test.txt
+chmod：更改权限 chmod 744 test.txt
+参数-R可以递归将文件夹下面的所有更改
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2&gt;硬件&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;
+查看主板的序列号: dmidecode | grep -i ’serial number’
+用硬件检测程序kuduz探测新硬件：service kudzu start ( or restart)
+查看CPU信息：cat /proc/cpuinfo [dmesg | grep -i 'cpu'][dmidecode -t processor]
+查看内存信息：cat /proc/meminfo [free -m][vmstat]
+查看板卡信息：cat /proc/pci
+查看显卡/声卡信息：lspci |grep -i ‘VGA’[dmesg | grep -i 'VGA']
+查看网卡信息：dmesg | grep -i ‘eth’[cat /etc/sysconfig/hwconf | grep -i eth][lspci | grep -i 'eth']
+查看PCI信息：lspci (相比cat /proc/pci更直观）
+查看USB设备：cat /proc/bus/usb/devices
+查看键盘和鼠标:cat /proc/bus/input/devices
+查看系统硬盘信息和使用情况：fdisk &amp;amp; disk – l &amp;amp; df
+查看各设备的中断请求(IRQ):cat /proc/interrupts
+查看系统体系结构：uname -a
+查看及启动系统的32位或64位内核模式：isalist –v [isainfo –v][isainfo –b]
+dmidecode查看硬件信息，包括bios、cpu、内存等信息
+测定当前的显示器刷新频率：/usr/sbin/ffbconfig –rev /?
+查看系统配置：/usr/platform/sun4u/sbin/prtdiag –v
+查看当前系统中已经应用的补丁：showrev –p
+显示当前的运行级别：who –rH
+查看当前的bind版本信息：nslookup –class=chaos –q=txt version.bind
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+dmesg | more 查看硬件信息
+lspci 显示外设信息, 如usb，网卡等信息
+lsnod 查看已加载的驱动
+lshw
+psrinfo -v 查看当前处理器的类型和速度（主频）
+prtconf -v 打印当前的OBP版本号
+iostat –E 查看硬盘物理信息(vendor, RPM, Capacity)
+prtvtoc /dev/rdsk/c0t0d0s 查看磁盘的几何参数和分区信息
+df –F ufs –o i 显示已经使用和未使用的i-node数目
+isalist –v
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;对于“/proc”中文件可使用文件查看命令浏览其内容，文件中包含系统特定信息：&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+Cpuinfo 主机CPU信息
+Dma 主机DMA通道信息
+Filesystems 文件系统信息
+Interrupts 主机中断信息
+Ioprots 主机I/O端口号信息
+Meninfo 主机内存信息
+Version Linux内存版本信息
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;备注： proc – process information pseudo-filesystem 进程信息伪装文件系统&lt;/p&gt;
+
+&lt;h2&gt;系统&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;# uname -a # 查看内核/操作系统/CPU信息
+# head -n 1 /etc/issue # 查看操作系统版本
+# cat /proc/cpuinfo # 查看CPU信息
+# hostname # 查看计算机名
+# lspci -tv # 列出所有PCI设备
+# lsusb -tv # 列出所有USB设备
+# lsmod # 列出加载的内核模块
+# env # 查看环境变量
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;资源&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# free -m # 查看内存使用量和交换区使用量
+# df -h # 查看各分区使用情况
+# du -sh # 查看指定目录的大小
+# grep MemTotal /proc/meminfo # 查看内存总量
+# grep MemFree /proc/meminfo # 查看空闲内存量
+# uptime # 查看系统运行时间、用户数、负载
+# cat /proc/loadavg # 查看系统负载
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;磁盘和分区&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# mount | column -t # 查看挂接的分区状态
+# fdisk -l # 查看所有分区
+# swapon -s # 查看所有交换分区
+# hdparm -i /dev/hda # 查看磁盘参数(仅适用于IDE设备)
+# dmesg | grep IDE # 查看启动时IDE设备检测状况
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;网络&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# ifconfig # 查看所有网络接口的属性
+# iptables -L # 查看防火墙设置
+# route -n # 查看路由表
+# netstat -lntp # 查看所有监听端口
+# netstat -antp # 查看所有已经建立的连接
+# netstat -s # 查看网络统计信息
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;进程&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# ps -ef # 查看所有进程
+# top # 实时显示进程状态
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;用户&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# w # 查看活动用户
+# id &amp;lt;用户名&amp;gt; # 查看指定用户信息
+# last # 查看用户登录日志
+# cut -d: -f1 /etc/passwd # 查看系统所有用户
+# cut -d: -f1 /etc/group # 查看系统所有组
+# crontab -l # 查看当前用户的计划任务
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;服务&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# chkconfig –list # 列出所有系统服务
+# chkconfig –list | grep on # 列出所有启动的系统服务
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;程序&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# rpm -qa # 查看所有安装的软件包
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;linux文件目录内容：&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;
+/ 与开机系统有关，/usr与软件安装执行有关，/var与系统运作有关
+/usr 软件放置处
+/opt第三方软件
+/etc配置文件
+/boot开机与内核文件
+/var/mail用户邮件
+/var/run程序相关
+/var/spool/news新闻
+/var/lock程序相关
+/bin可执行文件
+/dev设备与接口
+/home主文件夹
+/lib函数库
+/media可以删除的设备
+/mnt暂时挂载的额外设备
+/root管理员文件夹
+/sbin管理员才能执行的命令，多数是用来设置系统环境
+/srv是service缩写，网络服务启动后所需要取用的目录数据
+/tmp一般用户正在执行的程序暂时放置，建议开机启动时候清空
+/lost+found文件系统发生错误时，丢失的片段放置位置
+/proc虚拟文件系统，不占空间，内容都在内存中，如内核、进程、外设、网络状态等信息
+/sys虚拟文件系统，记录内核相关信息，包括已加载模块和硬件设备等
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2&gt;几个主要目录&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;
+根目录/：/etc,/bin,/dev,/lib,/slib必须放在根目录下。
+/usr目录（UNIX software resource）：操作系统软件资源，类似于c:\windows和c:\program files的合体
+/usr/D11R6：xwindow系统主要数据目录
+/usr/bin：巨大部分用户可以使用命令都在这里，与/bin不同的是是否与开机过程相关
+/usr/include：头文件和liclude文件放置处
+/usr/local：系统管理员在本机安装自己下载软件，建议到此目录
+/usr/sbin：非系统正常运行所需要的系统命令
+/usr/share：共享文件
+/usr/src：源码文件建议放置处
+/var目录：针对变动性文件
+/var/cache：进程缓存文件
+/var/lock
+/var/log：登录文件放置处
+/var/mail：个人电子邮件
+/var/run：程序或者进程pid放置处
+&lt;/code&gt;&lt;/p&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>learn Git</title>
+     <link href="http://dantangfan.github.io/learn-git"/>
+     <updated>2014-10-24T00:00:00+08:00</updated>
+     <id>http://dantangfan.github.io/learn-git</id>
+     <content type="html">&lt;p&gt;linux系统都可以直接软件包安装Git，如&lt;code&gt;apt-get install git&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2&gt;初始化配置&lt;/h2&gt;
+
+&lt;p&gt;首先配置帐号信息&lt;/p&gt;
+
+&lt;p&gt;```bash
+git config --global user.name dantangfan
+git config --global user.email dantangfan@gmail.com&lt;/p&gt;
+
+&lt;p&gt;git config --list #查看配置情况
+git help × #获取帮助
+```&lt;/p&gt;
+
+&lt;p&gt;配置密钥&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;bash
+ssh-keygen -t rsa -C dantangfan@gmail.com #生成密钥
+ssh -T git@github.com #测试是否成功
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2&gt;创建仓库&lt;/h2&gt;
+
+&lt;p&gt;```bash
+git init #初始化
+git status #查看状态
+git add &lt;file&gt;
+git commit -m 'msg'
+git remote add origin git@github.com:dantangfan/test.git #添加源
+git push -u origin master #push同时设置默认跟踪分支&lt;/p&gt;
+
+&lt;p&gt;git clone https://github.com/xxx/xxx.git dic
+```&lt;/p&gt;
+
+&lt;h2&gt;本地操作&lt;/h2&gt;
+
+&lt;p&gt;```bash
+git add * #跟踪更新
+rm * &amp;amp; git rm * #从本地和仓库中删除文件
+git rm -rf * #删除文件夹
+git rm --cached #取消跟踪
+git mv filename new name
+git log
+git commit -m 'msg'
+git commit -a #跳过使用暂存区，把所有已跟踪的文件暂存起来一并提交
+git commit --amend #修改最后一次提交&lt;/p&gt;
+
+&lt;p&gt;git reset HEAD * #撤销已经暂存的文件
+git checkout -- file #取消对文件的修改（从暂存区取回file）
+git checkout branch|tag|commit -- filename #从仓库中取出file覆盖当前分支
+git checkout -- . #从暂存区取出文件覆盖工作区
+```&lt;/p&gt;
+
+&lt;h2&gt;分支操作&lt;/h2&gt;
+
+&lt;p&gt;```bash
+git branch #列出当前分支
+git branch -r #列出远端分支
+git branch -a #列出所有分支
+git branch -v #查看每个分支最后一次提交的情况
+git branch --merge #查看已经合并到当前分支的分支
+git branch --no-merge #查看未合并到当前分支的分支&lt;/p&gt;
+
+&lt;p&gt;git branch test #新建test分支
+git checkout test #切换到test分支
+git checkout -b test #注册并切换到test
+git checkout -b test dev #基于dev创建test分支&lt;/p&gt;
+
+&lt;p&gt;git branch -d test #删除test分支
+git branch -D test #强制删除test分支&lt;/p&gt;
+
+&lt;p&gt;git merge test #将test分支合并到当前分支
+git rebase master #将master分支上超前的分支变基到当前分支
+```&lt;/p&gt;
+
+&lt;h2&gt;远端操作&lt;/h2&gt;
+
+&lt;p&gt;```bash
+git fetch originname branchname #拉去远端上指定分支
+git merge originname branchname #合并远端上指定分支
+git push originname branchname #推送到远端上指定分支
+git push originname branchname:serverbranch #推送到远端指定分支&lt;/p&gt;
+
+&lt;p&gt;git checkout -b test origin/dev #基于远端dev分支创建test分支&lt;/p&gt;
+
+&lt;p&gt;git push origin :server #删除远端分支
+```&lt;/p&gt;
+
+&lt;h2&gt;源管理&lt;/h2&gt;
+
+&lt;p&gt;服务器上的仓库在本地称之为&lt;code&gt;remote&lt;/code&gt;，个人开发的时候主要是使用单源。但是git的精华是多源，适合团体开发&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;bash
+git remote add origin git@github.com:dantangfan/test.git #将本地仓库推送到远程
+git remote #显示全部源
+git remote -v #显示源和信息
+git remote originname newname
+git remote rm originname
+git remote show originname
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2&gt;tag&lt;/h2&gt;
+
+&lt;p&gt;```bash
+git tag #显示当前标签
+git tag v0.1 #新建标签
+git tag -a v0.1 -m 'my version 1.4' #新建带注释的标签&lt;/p&gt;
+
+&lt;p&gt;git checkout tagname #切换到标签&lt;/p&gt;
+
+&lt;p&gt;git push origin v1.5 #推送到分支源上
+git push origin --tags #一次性推送所有分支&lt;/p&gt;
+
+&lt;p&gt;git tag -d v0.1 #删除标签
+git push origin :refs/tags/v0.1 #删除远程标签&lt;/p&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>Python Tornado学习</title>
+     <link href="http://dantangfan.github.io/study-tornado"/>
+     <updated>2014-10-08T00:00:00+08:00</updated>
+     <id>http://dantangfan.github.io/study-tornado</id>
+     <content type="html">&lt;p&gt;&lt;a href=&quot;https://app.yinxiang.com/shard/s33/sh/f656a335-8c81-4510-93bb-ee8807a3e60b/12a4de10a2ffbc7ee960b2235ae95928&quot;&gt;总体概览&lt;/a&gt;
+&lt;a href=&quot;https://www.zybuluo.com/dantangfan/note/65317&quot;&gt;备用地址&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://app.yinxiang.com/shard/s33/sh/04c251f8-dd6b-46f6-ac05-50161425e3d6/d494e10659b40cab427b99ccff6d6cca&quot;&gt;一些需要了解的问题&lt;/a&gt;
+&lt;a href=&quot;https://www.zybuluo.com/dantangfan/note/65318&quot;&gt;备用地址&lt;/a&gt;&lt;/p&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>学习记录</title>
+     <link href="http://dantangfan.github.io/findwork"/>
+     <updated>2014-10-03T00:00:00+08:00</updated>
+     <id>http://dantangfan.github.io/findwork</id>
+     <content type="html">&lt;p&gt;找工作的时候和平时复习的时候遇到的一些个问题，幸好都简单记录下来了。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://app.yinxiang.com/shard/s33/sh/4cefea0f-5c4c-4f54-8c32-c848bdf79fa2/f5d310e23af425a1ab2af19c07b26edf&quot;&gt;简单算法篇&lt;/a&gt;
+&lt;a href=&quot;https://www.zybuluo.com/dantangfan/note/65313&quot;&gt;备用地址&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://app.yinxiang.com/shard/s33/sh/4d78c743-340e-489e-9c7d-a799834bd08d/f9f548dd3410e6ec45896f0edeafa5ff&quot;&gt;C++语言基础篇&lt;/a&gt;
+&lt;a href=&quot;https://www.zybuluo.com/dantangfan/note/65314&quot;&gt;备用地址&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://app.yinxiang.com/shard/s33/sh/87d176ad-3fcb-4f82-a6d1-daf7072532d9/67be614287ee2321fcaefb00d4a2af65&quot;&gt;乱七八糟问题篇&lt;/a&gt;
+&lt;a href=&quot;https://www.zybuluo.com/dantangfan/note/65316&quot;&gt;备用地址&lt;/a&gt;&lt;/p&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>python2.7.x和python3.x的简单区别</title>
+     <link href="http://dantangfan.github.io/diff-py2-py3"/>
+     <updated>2014-09-11T00:00:00+08:00</updated>
+     <id>http://dantangfan.github.io/diff-py2-py3</id>
+     <content type="html">&lt;p&gt;许多python初学者都在为难到底是选择python2还是python3，我刚刚学python的时候也有这个疑问。大佬们各有个的说法，但学完基础之后，我觉得你选一个适合自己的就是最好的了，看哪个爽就学哪个。开源东西没有专门维护和标准，果然还是够但疼。&lt;/p&gt;
+
+&lt;p&gt;我觉得也没有什么好坏之分，简单了解了之后，你会发现他们支持的库已经基本差不太多了。这里就简单的说说两个版本的一些区别，以免后面东西学咋了就什么都忘了。&lt;/p&gt;
+
+&lt;h2&gt;&lt;strong&gt;future&lt;/strong&gt;模块&lt;/h2&gt;
+
+&lt;p&gt;这应该是python中最有用的模块之一了，虽然python3中有一些python2不支持的关键字和特性，但他们都可以在python2的&lt;code&gt;__future__&lt;/code&gt;中找到。所以如果你打算在你的python2中体验python3语言的特性，就可以简单通过导入&lt;strong&gt;future&lt;/strong&gt;模块。比如说我们想在python2中使用python3的整除算法，可以这样做&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;python
+from __future__ import division
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;当然，&lt;strong&gt;future&lt;/strong&gt;并不是专门为从python2跨越到python3准备的，它只是提供了向后兼容，也就是说python2.1中的&lt;strong&gt;future&lt;/strong&gt;可以导入python2.2的特性，以此类推。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://docs.python.org/2/library/__future__.html#module-__future__&quot;&gt;更多的&lt;strong&gt;future&lt;/strong&gt;特性可以从官方文档中看到&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2&gt;print函数&lt;/h2&gt;
+
+&lt;p&gt;print在python2中还只是一个表达式，但在python3中已经成了一个函数调用了，所以括号必不可少。&lt;/p&gt;
+
+&lt;p&gt;python2里面这样写&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;python
+print 'Python', python_version()
+print 'Hello, World!'
+print('Hello, World!')
+print('Hello','World!')
+print &quot;text&quot;, ; print 'print more text on the same line'
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;它会给出这样的答案&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+Python 2.7.6
+Hello, World!
+Hello, World!
+('Hello','World!')
+text print more text on the same line
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;python3中这样写&lt;/p&gt;
+
+&lt;p&gt;```python
+print('Python', python_version())
+print('Hello, World!')&lt;/p&gt;
+
+&lt;p&gt;print(&quot;some text,&quot;, end=&quot;&quot;)
+print(' print more text on the same line')
+```&lt;/p&gt;
+
+&lt;p&gt;会给出这样的答案&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+Python 3.4.1
+Hello, World!
+some text, print more text on the same line
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;当然，如果你不争气的在python3中写出了这样的代码&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;python
+print 'Hello, World!'
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;那你就只能得到这样的答案&lt;/p&gt;
+
+&lt;p&gt;```bash
+  File &quot;&lt;ipython-input-3-139a7c5835bd&gt;&quot;, line 1&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;print 'Hello, World!'
+                    ^
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;SyntaxError: invalid syntax
+```&lt;/p&gt;
+
+&lt;h2&gt;整除方法&lt;/h2&gt;
+
+&lt;p&gt;这个改变有点变态，因为如果当你把python2的代码移植到python3上的时候，虽然写法一样，但是操作结果却不一样。&lt;/p&gt;
+
+&lt;p&gt;比如在python2中&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;python
+print 'Python', python_version()
+print '3 / 2 =', 3 / 2
+print '3 // 2 =', 3 // 2
+print '3 / 2.0 =', 3 / 2.0
+print '3 // 2.0 =', 3 // 2.0
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;输出是这样的&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+Python 2.7.6
+3 / 2 = 1
+3 // 2 = 1
+3 / 2.0 = 1.5
+3 // 2.0 = 1.0
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;但是在python3中同样的代码&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;python
+print('Python', python_version())
+print('3 / 2 =', 3 / 2)
+print('3 // 2 =', 3 // 2)
+print('3 / 2.0 =', 3 / 2.0)
+print('3 // 2.0 =', 3 // 2.0)
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;输出却是这样的&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+Python 3.4.1
+3 / 2 = 1.5
+3 // 2 = 1
+3 / 2.0 = 1.5
+3 // 2.0 = 1.0
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;所以这个坑等着你跳，而且相信有很多人会跳&lt;/p&gt;
+
+&lt;h2&gt;字符串&lt;/h2&gt;
+
+&lt;p&gt;python2使用的是ASCII编码来表示字符串，与unicode()不同，而且没有byte类型。
+python3默认是使用Unicode(UTF-8)来表示字符串，并且有byte和bytearrays两种类型(类)。&lt;/p&gt;
+
+&lt;p&gt;python2的如下代码&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;python
+print type(unicode('this is like a python3 str type'))
+print type(b'byte type does not exist')
+print 'they are really' + b' the same'
+print type(bytearray(b'bytearray oddly does exist though'))
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;将得到如下输出&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+&amp;lt;type 'unicode'&amp;gt;
+&amp;lt;type 'str'&amp;gt;
+they are really the same
+&amp;lt;type 'bytearray'&amp;gt;
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;python
+print('strings are now utf-8 \u03BCnico\u0394é!')
+print(' has', type(b' bytes for storing data'))
+print('and Python', python_version(), end=&quot;&quot;)
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;将得到下面输出&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+strings are now utf-8 μnicoΔé!
+has &amp;lt;class 'bytes'&amp;gt;
+also has &amp;lt;class 'bytearray'&amp;gt;
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2&gt;异常处理&lt;/h2&gt;
+
+&lt;p&gt;这里只是写法不一样，python2允许使用两种错误抛出的写法，python3中值允许一种，如下：&lt;/p&gt;
+
+&lt;p&gt;在python2中&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;python
+raise IOError, &quot;file error&quot;
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;python
+raise IOError(&quot;file error&quot;)
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;都可以可以得到输出&lt;/p&gt;
+
+&lt;h2&gt;```&lt;/h2&gt;
+
+&lt;p&gt;IOError                                   Traceback (most recent call last)
+&lt;ipython-input-8-25f049caebb0&gt; in &lt;module&gt;()
+----&gt; 1 raise IOError, &quot;file error&quot;&lt;/p&gt;
+
+&lt;p&gt;IOError: file error
+```&lt;/p&gt;
+
+&lt;p&gt;在python3中只有&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;python
+raise IOError(&quot;file error&quot;)
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;才能得到正确的输出&lt;/p&gt;
+
+&lt;h2&gt;except&lt;/h2&gt;
+
+&lt;p&gt;python2中的except表达式如下&lt;/p&gt;
+
+&lt;p&gt;```python
+try:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;let_us_cause_a_NameError
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;except NameError, err:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;print err, '--&amp;gt; our error message'
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;p&gt;但在python3中必须使用as关键字，有些不习惯。&lt;/p&gt;
+
+&lt;p&gt;```python
+try:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;let_us_cause_a_NameError
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;except NameError as err:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;print(err, '--&amp;gt; our error message')
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;p&gt;他们都能输出&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+name 'let_us_cause_a_NameError' is not defined --&amp;gt; our error message
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2&gt;for循环&lt;/h2&gt;
+
+&lt;p&gt;这是一个很棒的改进，for-loop中的变量不再会泄漏到全局命名空间了！&lt;/p&gt;
+
+&lt;p&gt;比如在python2中&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;python
+i = 1
+print 'before: i =', i
+print 'comprehension: ', [i for i in range(5)]
+print 'after: i =', i
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;会得到这样的输出&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+before: i = 1
+comprehension:  [0, 1, 2, 3, 4]
+after: i = 4
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;在python3中，就正常了&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;python
+i = 1
+print('before: i =', i)
+print('comprehension:', [i for i in range(5)])
+print('after: i =', i)
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;输出是这样的&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+before: i = 1
+comprehension: [0, 1, 2, 3, 4]
+after: i = 1
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2&gt;比较大小&lt;/h2&gt;
+
+&lt;p&gt;还有一个重要的改变是比较功能，不同类型比较的时候python3会抛出错误了。&lt;/p&gt;
+
+&lt;p&gt;python2代码如下&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;python
+print &quot;[1, 2] &amp;gt; 'foo' = &quot;, [1, 2] &amp;gt; 'foo'
+print &quot;(1, 2) &amp;gt; 'foo' = &quot;, (1, 2) &amp;gt; 'foo'
+print &quot;[1, 2] &amp;gt; (1, 2) = &quot;, [1, 2] &amp;gt; (1, 2)
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;这样的比较能得到结果，是c/c艹程序员想都不敢想的。但python2就能得到结果&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+[1, 2] &amp;gt; 'foo' =  False
+(1, 2) &amp;gt; 'foo' =  True
+[1, 2] &amp;gt; (1, 2) =  False
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;在跑一趟好哦你3中&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;python
+print(&quot;[1, 2] &amp;gt; 'foo' = &quot;, [1, 2] &amp;gt; 'foo')
+print(&quot;(1, 2) &amp;gt; 'foo' = &quot;, (1, 2) &amp;gt; 'foo')
+print(&quot;[1, 2] &amp;gt; (1, 2) = &quot;, [1, 2] &amp;gt; (1, 2))
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;会抛出异常&lt;/p&gt;
+
+&lt;h2&gt;```&lt;/h2&gt;
+
+&lt;p&gt;TypeError                                 Traceback (most recent call last)
+&lt;ipython-input-16-a9031729f4a0&gt; in &lt;module&gt;()&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  1 print('Python', python_version())
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;----&gt; 2 print(&quot;[1, 2] &gt; 'foo' = &quot;, [1, 2] &gt; 'foo')&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  3 print(&quot;(1, 2) &amp;gt; 'foo' = &quot;, (1, 2) &amp;gt; 'foo')
+  4 print(&quot;[1, 2] &amp;gt; (1, 2) = &quot;, [1, 2] &amp;gt; (1, 2))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;TypeError: unorderable types: list() &gt; str()
+```&lt;/p&gt;
+
+&lt;h2&gt;input&lt;/h2&gt;
+
+&lt;p&gt;python3的input函数也有所改变，它把把接收的数据都当成&lt;code&gt;str&lt;/code&gt;处理。而在python中，我们还需要raw_input()来解决这个问题&lt;/p&gt;
+
+&lt;p&gt;python2代码&lt;/p&gt;
+
+&lt;p&gt;```shell&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;blockquote&gt;&lt;blockquote&gt;&lt;p&gt;my_input = input('enter a number: ')
+enter a number: 123
+type(my_input)
+&lt;type 'int'&gt;
+my_input = raw_input('enter a number: ')
+enter a number: 123
+type(my_input)
+&lt;type 'str'&gt;
+```&lt;/p&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;python3代码&lt;/p&gt;
+
+&lt;p&gt;```python&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;blockquote&gt;&lt;blockquote&gt;&lt;p&gt;my_input = input('enter a number: ')
+enter a number: 123
+type(my_input) &lt;class 'str'&gt;
+```&lt;/p&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;
+
+&lt;h2&gt;xrange()&lt;/h2&gt;
+
+&lt;p&gt;在python2总我们广泛的使用&lt;code&gt;xrange()&lt;/code&gt;来做迭代，通常情况下&lt;code&gt;xrange()&lt;/code&gt;会比&lt;code&gt;range()&lt;/code&gt;快一点，但是python3中取消了&lt;code&gt;xrange()&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;比如函数如下&lt;/p&gt;
+
+&lt;p&gt;```python
+import timeit&lt;/p&gt;
+
+&lt;p&gt;n = 10000
+def test_range(n):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;return for i in range(n):
+    pass
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;def test_xrange(n):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;for i in xrange(n):
+    pass    
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;p&gt;在python2中调用&lt;/p&gt;
+
+&lt;p&gt;```python
+print '\ntiming range()'
+%timeit test_range(n)&lt;/p&gt;
+
+&lt;p&gt;print '\n\ntiming xrange()'
+%timeit test_xrange(n)
+```&lt;/p&gt;
+
+&lt;p&gt;得到输出&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+timing range()
+1000 loops, best of 3: 433 µs per loop
+timing xrange()
+1000 loops, best of 3: 350 µs per loop
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;在python3中调用&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;python
+print('\ntiming range()')
+%timeit test_range(n)
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;输出&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+timing range()
+1000 loops, best of 3: 520 µs per loop
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4&gt;不断继续补充中。。。。。&lt;/h4&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>LinOTP使用报告</title>
+     <link href="http://dantangfan.github.io/linotp"/>
+     <updated>2014-08-07T00:00:00+08:00</updated>
+     <id>http://dantangfan.github.io/linotp</id>
+     <content type="html">&lt;h2&gt;一、从安装说起&lt;/h2&gt;
+
+&lt;p&gt;ubuntu和debian有标准的一键安装，加入软件源后直接可用，red hat和centos等其他发行版需要使用pypi安装，并且手动安装所有依赖。
+这里以centos6.5为例子，说明简要的安装过程：&lt;/p&gt;
+
+&lt;p&gt;首先安装virtualenv用于建立一个隔离的python环境，由于virtualenv的存在，我们可以在任何一个发行版中用pypi安装和使用linotp&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;shell
+yum install python-virtualenv
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;单独建立一个文件夹来构造linotp独立的python环境&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;shell
+mkdir -p /opt/LINOTP
+virtualenv –-no-site-packages /opt/LINOTP
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;进入LINOTP文件夹，开始并切换工作目录到当前虚拟环境，&lt;strong&gt;每次需要启动或者使用LINOTP文件夹内的app时都需要使用下面命令&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;shell
+cd /opt/LINOTP
+source bin/activate
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;使用下面命令退出虚拟环境&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;shell
+deactivate
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;我们需要在虚拟环境中安装所需的依赖&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+yum install python-devel swig gcc openssl-devel openldap-devel mysql-devel
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;现在可以直接使用pip安装linotp&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+pip install linotp
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;安装使用各种token所需要的依赖（可能并不是所有包到都能安装）&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+pip install pil
+pip install m2crypto
+pip install psycopg2
+pip install MySQL-python
+pip install SMSProvider
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;注意：为了方便，我们应该把配置文件都放在/etc文件夹下，而不是直接放在/opt/LINTOP/etc/linotp2下面，所以直接拷贝配置文件到/etc目录下&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;code&gt;
+cp -rf /opt/LINOTP/etc/linotp2 /etc/linotp2
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;警告：pip不会自动的更新所安装的软件，所以我们安装的依赖并不是最新的，也最好不要手动编译安装，LinOTP提供了更新命令&lt;code&gt;linotp-pip-update&lt;/code&gt;，但是一定不要使用（至少在centos6.5下不要使用），因为高版本的库并不支持linotp。&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h2&gt;二、建立你的数据库&lt;/h2&gt;
+
+&lt;p&gt;如果使用的是mysql，可以直接使用下面命令&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+mysql -u root -p mysql
+create database L2demo;
+grant all privileges on L2demo.* to 'linotp'@'localhost' identified by 'mySecret';
+flush privileges;
+quit;
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;注意：linotp里面有个默认配置叫&lt;code&gt;/etc/linotp2/linotp.ini.example&lt;/code&gt;，为使用此配置，我们需要重命名该文件为&lt;code&gt;/etc/linotp2/linotp.ini&lt;/code&gt;&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;在linotp.ini中找到&lt;code&gt;sqlalchemy.url&lt;/code&gt;，并修改为&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+sqlalchemy.url = mysql://linotp:mySecret@localhost/L2demo
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;还需要创建一个加密密钥&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+dd if=/dev/urandom of=/etc/linotp2/encKey bs=1 count=96
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;创建log文件夹&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+mkdir /var/log/linotp
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;现在就可以正式创建数据库表单了&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+paster setup-app /etc/linotp2/linotp.ini
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2&gt;三、在apache上把样例跑起来&lt;/h2&gt;
+
+&lt;p&gt;我们需要借用apache使用webUI的管理页面，首先使用下面命令创建一个文件&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+htdigest /etc/linotp2/admins “LinOTP2 admin area” admin
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;我们需要安装并激活以下模块&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+yum install mod_wsgi
+yum install mod_ssl
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;注意：在使用过程中端口会遭到iptables的拦截，这时候我们可以简单的关闭iptables&lt;code&gt;/etc/init.d/iptables stop&lt;/code&gt;或者开放指定端口,在/etc/sysconfig/iptables文件中添加如下命令(或许还需要更多端口)&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;code&gt;
+-A INPUT -p tcp -m tcp --sport 443 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 443 -j ACCEPT
+-A INPUT -p tcp -m tcp --sport 3389 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 3389 -j ACCEPT
+-A INPUT -p tcp -m tcp --sport 5001 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 5001 -j ACCEPT
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;还需要建立一个wsgi的文件夹，不然WSGI模块不能正常启动&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+mkdir /var/run/wsgi
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;现在我们可以进一步配置apache-server了。
+首先创建一个认证文件&lt;code&gt;touch /etc/[httpd|apache2]/linotp-auth.conf&lt;/code&gt;(centos是httpd文件夹下)
+在此文件中添加以下内容&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+AuthType Digest
+AuthName “LinOTP2 admin area”
+AuthDigestProvider file
+AuthUserFile /etc/linotp2/admins
+Require valid-user
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;无论LinOTP的配置文件放在哪里，都需要包含以下内容。这里我直接添加到&lt;code&gt;/etc/httpd/conf/httpd.conf&lt;/code&gt;文件的最后（针对不同的系统，可能要对文件中文件的路径进行修改）&lt;/p&gt;
+
+&lt;p&gt;```
+Listen 443
+WSGIPythonHome /opt/LINOTP
+WSGISocketPrefix /var/run/wsgi
+&lt;VirtualHost _default_:443&gt;
+   ServerAdmin webmaster@localhost
+   DocumentRoot /var/www
+   &lt;Directory /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  Options FollowSymLinks
+  AllowOverride None
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;   &lt;/Directory&gt;
+   &lt;Directory /var/www/&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  Options Indexes FollowSymLinks MultiViews
+  AllowOverride None
+  Order allow,deny
+  allow from all
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;   &lt;/Directory&gt;&lt;/p&gt;
+
+&lt;p&gt;   Alias /doc/html         /usr/share/doc/linotpdoc/html
+   WSGIScriptAlias /       /etc/linotp2/linotpapp.wsgi
+   #
+   # The daemon is running as user 'linotp'
+   # This user should have access to the encKey database encryption file
+   WSGIDaemonProcess linotp processes=1 threads=15 display-name=%{GROUP} user=linotp
+   WSGIProcessGroup linotp
+   WSGIPassAuthorization On&lt;/p&gt;
+
+&lt;p&gt;   &lt;Location /admin&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  Include /etc/httpd/linotp-auth.conf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;   &lt;/Location&gt;
+   &lt;Location /audit&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  Include /etc/httpd/linotp-auth.conf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;   &lt;/Location&gt;
+   &lt;Location /gettoken&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  AuthType Digest
+  AuthName &quot;LinOTP2 gettoken&quot;
+  AuthDigestProvider file
+  AuthUserFile /etc/linotp2/gettoken-api
+  Require valid-user
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;   &lt;/Location&gt;
+   &lt;Location /manage&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;         Include /etc/httpd/linotp-auth.conf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;   &lt;/Location&gt;
+   &lt;Location /selfservice&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  # The authentication for selfservice is done from within the application
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;   &lt;/Location&gt;
+   &lt;Location /system&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; Include /etc/httpd/linotp-auth.conf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;   &lt;/Location&gt;
+   &lt;Location /license&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; Include /etc/httpd/linotp-auth.conf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;   &lt;/Location&gt;
+   &lt;Location /validate&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  # No Authentication
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;   &lt;/Location&gt;&lt;/p&gt;
+
+&lt;p&gt;   ErrorLog /var/log/httpd/error.log
+   LogLevel warn&lt;/p&gt;
+
+&lt;p&gt;   # Do not use %q! This will reveal all parameters, including setting PINs and Keys!
+   # Using SSL_CLIENT_S_DN_CN will show you, which administrator did what task
+   LogFormat &quot;%h %l %u %t %&gt;s \&quot;%m %U %H\&quot;  %b \&quot;%{Referer}i\&quot; \&quot;%{User-agent}i\&quot; &quot; LinOTP2
+   CustomLog /var/log/httpd/ssl_access.log LinOTP2&lt;/p&gt;
+
+&lt;p&gt;   #   SSL Engine Switch:
+   #   Enable/Disable SSL for this virtual host.
+   SSLEngine on&lt;/p&gt;
+
+&lt;p&gt;   #   If both key and certificate are stored in the same file, only the
+   #   SSLCertificateFile directive is needed.
+   SSLCertificateFile    /etc/ssl/certs/linotpserver.pem
+   SSLCertificateKeyFile /etc/ssl/private/linotpserver.key
+   &lt;FilesMatch &quot;\.(cgi|shtml|phtml|php)$&quot;&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  SSLOptions +StdEnvVars
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;   &lt;/FilesMatch&gt;
+   &lt;Directory /usr/lib/cgi-bin&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  SSLOptions +StdEnvVars
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;   &lt;/Directory&gt;
+   BrowserMatch &quot;.&lt;em&gt;MSIE.&lt;/em&gt;&quot; \&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; nokeepalive ssl-unclean-shutdown \
+ downgrade-1.0 force-response-1.0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;   ErrorDocument 500 &quot;&lt;h1&gt;Internal Server Error&lt;/h1&gt; Possible reasons can be missing modules or bad access rights \&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;                 on LinOTP configuration files or log files. Please check the apache logfile \
+                 &amp;lt;pre&amp;gt;/var/log/httpd/error_log&amp;lt;/pre&amp;gt; for more details.&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/VirtualHost&gt;
+```&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;注意：centos的mod_ssl在&lt;code&gt;/etc/httpd/conf.d/&lt;/code&gt;中自带了一个&lt;code&gt;ssl.conf&lt;/code&gt;的配置文件，里面已经定义了&lt;code&gt;VirtualHost&lt;/code&gt;,所以这里需要相应的调整不然端口会发生冲突。（为方便可以直接重命名为&lt;code&gt;ssl.conf.old&lt;/code&gt;）&lt;/p&gt;
+
+&lt;p&gt;注意：如果发现&lt;code&gt;linotpserver.pem&lt;/code&gt;等密钥不存在，那我么需要手动生成一些&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;WSGI的进程默认使用名字叫&lt;code&gt;linotp&lt;/code&gt;的用户，所以我们需要新建一个用户来使用它&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+adduser -r linotp -d /opt/LINOTP
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;现在可以把&lt;code&gt;/opt/LINOTP/etc/linotp2/linotpapp.wsgi&lt;/code&gt;文件复制到&lt;code&gt;/etc/linotp2&lt;/code&gt;文件夹中&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+cp /opt/LINOTP/etc/linotp2/linotpapp.wsgi /etc/linotp2
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;最后查看我们建立的文件的权限，只有在适合的权限下才能正常使用linotp-server。我们希望看到的权限如下&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;/etc/linotp2/linotp.ini - linotp should have read access&lt;/li&gt;
+&lt;li&gt;/etc/linotp2/encKey - linotp should have read access&lt;/li&gt;
+&lt;li&gt;/etc/linotp2/data/ - This is a template directory, linotp should have write access&lt;/li&gt;
+&lt;li&gt;/var/log/linotp/ - linotp should have write access&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;blockquote&gt;&lt;p&gt;注意：如果权限不当，可以使用&lt;code&gt;linotp-fix-access-rights -f /etc/linotp2/linotp.ini -u linotp&lt;/code&gt;来修复权限&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;重启apache和mysql&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+apachectl restart#输入你设定的密码
+service mysqld restart
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;现在我们可以从命令行启动服务器了&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+paster serve /etc/linotp2/linotp.ini
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;linotp会监听你在linotp.ini中定义的端口，接下来在浏览器中访问&lt;code&gt;http://&amp;lt;yourserverIP&amp;gt;:5001/manage&lt;/code&gt;就可以进入manage的页面。&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;警告！！！：这里的管理页面是不需要用户名和密码就能登录的，只供测试使用。密码需要自行在apache中配置&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h2&gt;四、admin管理界面&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/linotp/manage1.png&quot; alt=&quot;manage1.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3&gt;1.创建用户&lt;/h3&gt;
+
+&lt;p&gt;使用&lt;code&gt;LinOTP config-&amp;gt;useridresover&lt;/code&gt;创建一个useridresover。这里有三种创建方式&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Configuring LDAP UserIdResolver&lt;/li&gt;
+&lt;li&gt;Configuring SQL UserIdResolver&lt;/li&gt;
+&lt;li&gt;Configuring Passwd (Flatfile) UserIdResolver&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;当然最间但的是flatfile方式创建，这中格式的用户文件和*nix中的/etc/passwd文件格式一样，因此我们可以直接导入文件&lt;code&gt;/etc/passwd&lt;/code&gt;，导入后刷新就可以看到成功导入的用户。但是这样做有一个问题，&lt;code&gt;/etc/passwd&lt;/code&gt;文件中的并没有保存用户密码/加密后的信息，就让我们的用户实际无法登录，因此更好更简洁的办法是把是使用&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+linotp-create-pwidresolver-user -u [username] -i [userid] -p [password] -d [description]&amp;gt;&amp;gt; passwd-file
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;创建测试用户,可以用此方法创建多个，然后导入的时候直接导入&lt;code&gt;passwd-file&lt;/code&gt;文件&lt;/p&gt;
+
+&lt;h3&gt;2.创建用户组&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;LinOTP config-&amp;gt;realms&lt;/code&gt;按提示创建就行，并且指定一个默认的用户组&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/linotp/manage2.png&quot; alt=&quot;manage2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3&gt;3.创建token&lt;/h3&gt;
+
+&lt;p&gt;token可以从文件中导入，可以从官方文档中查看支持的token和导入方法&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.linotp.org/doc/latest/part-management/supported-tokens.html&quot;&gt;http://www.linotp.org/doc/latest/part-management/supported-tokens.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.linotp.org/doc/latest/part-management/managingtokens/index.html&quot;&gt;http://www.linotp.org/doc/latest/part-management/managingtokens/index.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;更简单的方法是手动创建token，点击左边侧烂&lt;code&gt;enroll&lt;/code&gt;可以看到创建token选项，这里我选择&lt;code&gt;HMAC eventbased&lt;/code&gt;，并勾选&lt;code&gt;Generate HMAC key&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/linotp/manage3.png&quot; alt=&quot;manage3.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;点击&lt;code&gt;enroll&lt;/code&gt;看到了生成的二维码，点击&lt;code&gt;OK&lt;/code&gt;就可以在主页上&lt;code&gt;Token view&lt;/code&gt;看到生成的token&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/linotp/manage4.png&quot; alt=&quot;manage4.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3&gt;4.把user注册到token上面&lt;/h3&gt;
+
+&lt;p&gt;方法很简单，在&lt;code&gt;Token view&lt;/code&gt;单击想要的token，切换到&lt;code&gt;User view&lt;/code&gt;下面单击相应的user，就可以在页面的左上角看到相应的信息类似如下&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/linotp/manage5.png&quot; alt=&quot;manage5.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3&gt;5.policy&lt;/h3&gt;
+
+&lt;p&gt;这是最重要的一部分，关系到了用户的权限问题。policy有很多种类型，具体可以参见官方文档&lt;a href=&quot;http://www.linotp.org/doc/latest/part-management/policy/index.html&quot;&gt;http://www.linotp.org/doc/latest/part-management/policy/index.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;这里，我以selfpolicy为例。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/linotp/policy.png&quot; alt=&quot;policy.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;action是最重要的一部分，它直接指明了user的权限。不同的user类型有不同的权限，官方文档给出了一个推荐的最佳配置&lt;a href=&quot;http://www.linotp.org/doc/latest/part-management/policy/best-practice.html&quot;&gt;http://www.linotp.org/doc/latest/part-management/policy/best-practice.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;policy配置好之后，就可以从浏览器登录用户了。&lt;/p&gt;
+
+&lt;p&gt;浏览器输入&lt;code&gt;http://[yourIP]:5001/account/login&lt;/code&gt;根据用户名和密码就可以登录&lt;/p&gt;
+
+&lt;h3&gt;6.system config&lt;/h3&gt;
+
+&lt;p&gt;从manage页面我们还可以设置&lt;code&gt;LinOTP config-&amp;gt;system config&lt;/code&gt;，不过配置对简单的实验影响不大，官方文档有也把配置方式写得很清楚&lt;a href=&quot;http://www.linotp.org/doc/latest/part-management/system-config.html&quot;&gt;http://www.linotp.org/doc/latest/part-management/system-config.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2&gt;五、Selfservice Protal管理界面&lt;/h2&gt;
+
+&lt;p&gt;登录后我们可以看到如下界面，根据对&lt;code&gt;policy-&amp;gt;action&lt;/code&gt;的设置，界面可能有所不同。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/linotp/portal1.png&quot; alt=&quot;portal1.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;官方文档写得很简要&lt;a href=&quot;http://www.linotp.org/doc/latest/part-user/workflow.html&quot;&gt;http://www.linotp.org/doc/latest/part-user/workflow.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;这里，我通过一个小例子说明。&lt;/p&gt;
+
+&lt;p&gt;比如我们选择&lt;code&gt;Enroll Google Authenticator&lt;/code&gt;，然后点击&lt;code&gt;Enroll Google Authenticator&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/linotp/portal2.png&quot; alt=&quot;portal2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;可以看到页面左上生成了一个token（这个时候退回去看manage页面，发现也生成了一个token）。然后在你的iphone/Android上安装 google authenticator ，并扫描这个时候生成的二维码。再次使用该应用时候，就可以看到手机上出现了六位数字。这个数字就是你登录自己应用的时候所需要的密码。&lt;/p&gt;
+
+&lt;p&gt;我们可以登录&lt;code&gt;http://[yourIP]:5001/auth/index&lt;/code&gt;来测试应用是否成功。&lt;/p&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>进程同步的若干问题</title>
+     <link href="http://dantangfan.github.io/process-signal"/>
+     <updated>2014-05-20T00:00:00+08:00</updated>
+     <id>http://dantangfan.github.io/process-signal</id>
+     <content type="html">&lt;h2&gt;背景&lt;/h2&gt;
+
+&lt;p&gt;首先我们来看一个&lt;code&gt;生产者-消费者&lt;/code&gt;的问题，在实际应用中我们使用&lt;code&gt;有限缓冲&lt;/code&gt;方案。生产者消费者进程共享代码如下&lt;/p&gt;
+
+&lt;p&gt;```c&lt;/p&gt;
+
+&lt;h1&gt;define BUFFER_SIZE 10&lt;/h1&gt;
+
+&lt;p&gt;typedef struct{
+...
+} item;
+item buffer[BUFFER_SIZE];
+int in = 0;
+int out = 0;
+```&lt;/p&gt;
+
+&lt;p&gt;共享缓冲区是通过循环数组和两个逻辑指针来实现的：in和out。变量in指向缓冲区的下一个空位；out指向缓冲区的第一个非空位。当in==out的时候缓冲区空，当(in+1)%BUFFER_SIZE==out的时候，缓冲器满。&lt;/p&gt;
+
+&lt;p&gt;用counter记录缓冲区中的项，生产者进程有一个局部变量nextProducted存储锁新产生的项目，那么生产者的代码可以简单如下&lt;/p&gt;
+
+&lt;p&gt;```c
+while(1){&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;while(counter==BUFFER_SIZE)
+    ;
+buffer[in] = nextProducted;
+in = (in+1)%BUFFER_SIZE;
+counter++;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;}
+```&lt;/p&gt;
+
+&lt;p&gt;消费者有一个局部变量nextConsumed存储要使用的项,消费者的代码如下&lt;/p&gt;
+
+&lt;p&gt;```c
+while(1){&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;while(counter==0)
+    ;
+nextConsumed=buffer[out];
+out = (out+1)%BUFFER_SIZE;
+counter--;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;}
+```&lt;/p&gt;
+
+&lt;p&gt;生产者消费者各自的程序都正确，但是当并发执行的时候他们可能并不能正确的执行。原因是他们同时执行的过程中代码交叉是乱序的，两个程序可能对counter同时进行操作，导致判断结果不准确。这样的情况，即多个进程并发访问和操作同一数据并且执行结果与访问发生的特定顺序有关，称为竞争条件。为了防止竞争条件，需要确保一段之间里面只有一个进程能操作共享数据（counter），于是就需要进程同步。&lt;/p&gt;
+
+&lt;h3&gt;临界区&lt;/h3&gt;
+
+&lt;p&gt;每个进程有一个代码段称为&lt;code&gt;临界区&lt;/code&gt;，该区中的进程可能修改共享变量、更新一个表、写一个文件等。这种系统的重要特征是当一个进程在临界区内执行时，没有其他进程被允许在临界区内执行。因此，临界区在时间上是互斥的。临界区的问题是设计一个进程能用来协作的协议，每个进程必须请求其进入临界区。实现这一请求的代码称为&lt;code&gt;进入区&lt;/code&gt;，临界区之后有&lt;code&gt;退出区&lt;/code&gt;，其他代码叫&lt;code&gt;剩余区&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;关于临界区的问题的解答必须满足下面三项要求&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;互斥：一个进程在临界区内执行，其他进程都不能在其临界区内&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;有空让进：如果没有进程在临界区且有进程希望进入临界区，那么只有哪些在剩余区内执行的进程能参加决策，选取谁能进入临界区，并且这种选取不能无限延迟&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;有限等待：在一个进程作出进入其临界区的请求到被允许的其间，其他进程进入临界区的次数有一个上限&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;信号量&lt;/h2&gt;
+
+&lt;p&gt;为了解决临界区问题，通常做法是使用称为&lt;code&gt;信号量&lt;/code&gt;的同步工具。信号量S是一个整数变量，除了初始化之外，只能通过两个标准的&lt;code&gt;原子操作&lt;/code&gt;wait和signal来访问。wait的经典定义可以用位代码表示为&lt;/p&gt;
+
+&lt;p&gt;```c
+wait(S){&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;while(S&amp;lt;=0)
+    ;
+   S--;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;}
+```&lt;/p&gt;
+
+&lt;p&gt;signal的经典定义可以用伪代码表示&lt;/p&gt;
+
+&lt;p&gt;```c
+signal(S){&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;S++;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;}
+```&lt;/p&gt;
+
+&lt;p&gt;在wait和signal操作中，对信号量整数值的修改必须不可分的执行，当一个进程修改信号量时，不能有其他进程同时修改同一信号量。而且对于wait操作，对s数值的测试（S&amp;lt;=0）和对其可能的修改(S++)也必须没有中断的执行。&lt;/p&gt;
+
+&lt;h3&gt;用法&lt;/h3&gt;
+
+&lt;p&gt;可以用信号量来解决n个进程临界区问题。n个进程共享一个信号量mutex并初始化为1,每个进程的组织结构就如下&lt;/p&gt;
+
+&lt;p&gt;```c
+do{&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;wait(mutex);
+临界区;
+signal(mutex);
+剩余区；
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;}while(1);
+```&lt;/p&gt;
+
+&lt;p&gt;也可以用信号量来解决各种同步问题。比如两个正在并发执行的进程P1,P2，P1有语句S1,P2有语句S2,假设只有S1执行完之后才能有S2。那么我们可以让两个进程共享一个信号量synch,并且初始化为0,在P1中插入语句&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+S1;
+signal(synch);
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;在P2中插入语句&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+wait(synch);
+S2;
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3&gt;实现&lt;/h3&gt;
+
+&lt;p&gt;简单的信号量主要的缺点就是&lt;code&gt;忙等待&lt;/code&gt;：当一个进程位于其临界区时，任何其他试图进入其临界区的进程都必须在其进入代码中连续的循环。为了克服忙等待，可以修改wait和signal的定义，当一个进程执行wait时，发现信号量不为正则它必须等待。然而，该进程不是忙等待而是&lt;code&gt;阻塞&lt;/code&gt;自己。阻塞操作讲一个进程放入到放入到与信号量相关的等待队列中，且该进程状态被切换成等待状态。接着，控制被转到CPU&lt;code&gt;调度程序&lt;/code&gt;，以选择一个进程执行。&lt;/p&gt;
+
+&lt;p&gt;一个进程阻塞且等待信号量S，可以在其他进程执行signal后重新被执行。该进程的重新执行通过一个wakeup操作来进行，该操作讲进程从等待状态切换到就绪状态，接着放入就绪队列中。我们可以将信号量定义成一个结构&lt;/p&gt;
+
+&lt;p&gt;```c
+typedef struct{&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;int value;
+struct process *L;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;}semaphore;
+```&lt;/p&gt;
+
+&lt;p&gt;每个信号都有一个整数值和一个进程表，当一个进程必须等待信号量shah，就加入到进程链表上。操作signal会从等待进程链表中取出一个进程唤醒。&lt;/p&gt;
+
+&lt;p&gt;信号量wait操作可以如下定义&lt;/p&gt;
+
+&lt;p&gt;```c
+void wait(semaphore S){&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;S.value--;
+if(S.value&amp;lt;0){
+    add this process to S.L;
+    block();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;}
+```&lt;/p&gt;
+
+&lt;p&gt;信号量signal操作如下&lt;/p&gt;
+
+&lt;p&gt;```c
+void signal(semaphore S){&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;S.value++;
+if(S.value&amp;lt;=0){
+    remove a process P from S.L;
+    wakeup(P);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;}
+```&lt;/p&gt;
+
+&lt;p&gt;操作block挂起调用它的进程。操作wakeup重新启动阻塞的进程，他们都是操作系统提供的系统调用。&lt;/p&gt;
+
+&lt;p&gt;信号量的关键之处是他们原子执行。必须确保没有两个进程能同时对一个信号量进程wait和signal操作。其实现在定义的信号量也没有取消忙等待，只是取消了应用程序进入临界区的忙等待。而且把忙等待限制在了wait和signal操作的临界区内。&lt;/p&gt;
+
+&lt;h3&gt;死锁&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;死锁&lt;/code&gt;：两个或多个进程无限的等待一个事件，而该事件只能又这些等待进程之一来产生。&lt;/p&gt;
+
+&lt;h2&gt;经典同步问题&lt;/h2&gt;
+
+&lt;h3&gt;哲学家就餐&lt;/h3&gt;
+
+&lt;p&gt;哲学家就餐问题可以这样表述，假设有五位哲学家围坐在一张圆形餐桌旁，做以下两件事情之一：吃饭，或者思考。吃东西的时候，他们就停止思考，思考的时候也停止吃东西。餐桌中间有一大碗意大利面，每两个哲学家之间有一只餐叉。因为用一只餐叉很难吃到意大利面，所以假设哲学家必须用两只餐叉吃东西。他们只能使用自己左右手边的那两只餐叉。哲学家就餐问题有时也用米饭和筷子而不是意大利面和餐叉来描述，因为很明显，吃米饭必须用两根筷子。&lt;/p&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>备忘录</title>
+     <link href="http://dantangfan.github.io/memo"/>
+     <updated>2014-04-12T00:00:00+08:00</updated>
+     <id>http://dantangfan.github.io/memo</id>
+     <content type="html">&lt;h2&gt;把/home目录搬家&lt;/h2&gt;
+
+&lt;p&gt;还是小菜鸟的时候，到处都建议把所有分区直接挂载在/目录，但是变成老菜鸟之后发现这样是步行的，最好还是单独分区出来，要不然/目录迟早会不够用的。有个逗逼的办法是扩展/目录，但是这样风险太大，于是就想到了不要那么逗逼的办法，把/home目录转义到新的分区。&lt;/p&gt;
+
+&lt;p&gt;首先建立一个新的分区并格式化之，比如是sda4。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;shell
+mkfs.ext4 /dev/sda4
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;挂载分区用于拷贝当前home下的文件&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+mkdir /mnt/newhome
+mount -t ext4 /dev/sda4 /mnt/newhome
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;把home目录下的文件全部拷贝过来&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+cd /home
+find . -depth -print0 | cpio --null --sparse -pvd /mnt/newhome
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;修改新分区名字&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+umount /mnt/newhome
+mv /home /old_home
+mkdir /home
+mount /dev/sda4 /home
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;这个时候其实已经把/home目录移动好了。但是我们必须告诉计算机开机的时候该在哪里找home，所以需要修改一下配置文件,在/etc/fstab文件中添加下面一行&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+/dev/sda4 /home ext4 nodev,nosuid 0 2
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;重新启动就成功了。如果不成功也没事，直接用root用户原来的工作都撤销就行了，也不影响大局。&lt;/p&gt;
+
+&lt;h2&gt;linux/windows双系统问题&lt;/h2&gt;
+
+&lt;p&gt;安装linux后第一次开机直接进入grub：
+有的童鞋运气不好，第一次开机就出现错误，这很有可能是你安装不当或者系统自身有bug造成的（我们要有怀疑精神，不要老是觉得就是自己的错），没问题。这个时候我们就需要好好的利用tab键了。依次键入
+root （hd0,0）--》如果你不确定你的win系统安装盘符可以 root （hd0，【tab】之后就会有提示，选中你需要的盘符就可以了，这里不    .                              细说每  个文件系统的意思了，要是真的什么都不知道就一个一个试就是了，总有一个可以的。
+rootnoverify (hd0,0)--》后面那个0就是你自己选择的东东
+chainloader +1
+boot
+好了，现在你又可以见到你亲爱的win了、、、、&lt;/p&gt;
+
+&lt;h2&gt;ubuntu&lt;/h2&gt;
+
+&lt;p&gt;电脑升级到麒麟14.04后从，在实验室办公室中上网插上网线一切正常，但是在宿舍中却不行，一直提示有线网络已断开，google了一下 修改ip 修改/etc/network/interfaces的方法都试过了还是不能解决，
+后来看到网上有人说过网卡与交换机的不兼容性问题，于是百度了一下，果然有类似的问题。电脑网卡的工作模式设置不正确有可能导致与交换机不能通讯。
+于是乎问题解决了
+解决过程如下
+1.安装ethtool软件设置网卡的工作模式sudo apt-get install ethtool
+. ethtool的命令概要：
+ethtool ethX       //查询ethX网口基本设置
+ethtool –h         //显示ethtool的命令帮助(help)
+ethtool –i ethX    //查询ethX网口的相关信息
+ethtool –d ethX    //查询ethX网口注册性信息
+ethtool –r ethX    //重置ethX网口到自适应模式
+ethtool –S ethX    //查询ethX网口收发包统计&lt;/p&gt;
+
+&lt;p&gt;ethX 是网卡的代表，具体可以用ifconfig命令查看 第一块有线网卡是eth0
+这是我电脑设置过的网卡信息Settings for eth0:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  Supported ports: [ TP MII ]
+  Supported link modes:   10baseT/Half 10baseT/Full 
+                          100baseT/Half 100baseT/Full 
+                          1000baseT/Half 1000baseT/Full 
+  Supported pause frame use: No
+  Supports auto-negotiation: Yes
+  Advertised link modes:Not reported
+  Advertised pause frame use: No
+  Advertised auto-negotiation: No
+  Speed: 100Mb/s
+  Duplex: Full
+  Port: MII
+  PHYAD: 1
+  Transceiver: internal
+  Auto-negotiation: off
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Cannot get wake-on-lan settings: Operation not permitted&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  Current message level: 0x000020c6 (8390)
+                           probe link rx_err tx_err hw
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Cannot get link status: Operation not permitted
+关闭了网卡的自动协商功能，设置网卡在100M下工作，设置全双工的工作模式
+命令如下sudo ethtool -s eth0 autoneg off speed 100 duplex full设置以后 电脑奇迹般的能连上有线网络了&lt;/p&gt;
+
+&lt;p&gt;3.设置 开机自启动
+打开/etc/init.d/rc.localsudo vim /etc/init.c/rc.local在文件的最后添加/sbin/ethtool -s eth0 autoneg off speed 100 duplex full到此结束&lt;/p&gt;
+
+&lt;h2&gt;解决python2.x中爬虫爬到的网页数据包含中英文报错&lt;/h2&gt;
+
+&lt;p&gt;import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')&lt;/p&gt;
+</content>
+   </entry>
+   
+   <entry>
+     <title>简单爬虫</title>
+     <link href="http://dantangfan.github.io/python-spider"/>
+     <updated>2013-12-30T00:00:00+08:00</updated>
+     <id>http://dantangfan.github.io/python-spider</id>
+     <content type="html">&lt;h3&gt;基础知识要求：uri，url，html，http，正则表达式&lt;/h3&gt;
+
+&lt;h3&gt;1.获取网页源代码：&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;python
+import urllib# import urllib2
+response = urllib.urlopen('www.baidu.com')#获取网页
+html = response.read()#获取网页内容
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;在urllib2里面有Request对象来映射你提供的http请求，制造一个请求，而不是直接连接网页&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;python
+import urllib2
+request = urllib2.Request('www.baidu.com')
+response = urllib2.urlopen(request)
+html = response.read()
+效果跟上面是一样的
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3&gt;2.一些网站不愿意被非自动化程序访问（非浏览器），那么我们就需要在获取网页的时候添加一点header内容，把自己伪装成浏览器&lt;/h3&gt;
+
+&lt;p&gt;```python
+import urllib
+import urllib2
+url = 'www.baidu.com'
+user_agent = 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'  &lt;br/&gt;
+values = {'name' : 'WHY',&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;      'location' : 'SDU',    
+      'language' : 'Python' }    
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;headers = { 'User-Agent' : user_agent }  &lt;br/&gt;
+data = urllib.urlencode(values)#需要对头进行编码
+req = urllib2.Request(url, data, headers)  &lt;br/&gt;
+response = urllib2.urlopen(req)  &lt;br/&gt;
+the_page = response.read()
+```&lt;/p&gt;
+
+&lt;h3&gt;3.简单的异常处理&lt;/h3&gt;
+
+&lt;p&gt;当由于各种原因连接不成功的时候，会发生异常。我们可以简单的处理这个异常&lt;/p&gt;
+
+&lt;p&gt;```python
+import urllib2&lt;/p&gt;
+
+&lt;p&gt;req = urllib2.Request('http://www.baidu.com')
+try:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;http = urllib2.urlopen(req)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;except urllib2.URLError, e:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;print e.reason#它会返回出错的原因
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;p&gt;*知识：http状态码&lt;/p&gt;
+
+&lt;p&gt;urllib2中还有很多错误反馈信息，可以参见urllib2的教程或者文档。对于常规情况来说，我们只要知道不能联通就够了。&lt;/p&gt;
+
+&lt;p&gt;```python
+from urllib2 import Request, urlopen, URLError, HTTPError&lt;/p&gt;
+
+&lt;p&gt;req = Request('http://www.baidu.com')
+try:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;http = urlopen(req)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;except URLError, e:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if hasattr(e,'reason'):
+    print e.reason
+elif hasattr(e,'code'):
+    print e.code
+else:
+    print 'unknow error'
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;else:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;print 'successful'
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;h3&gt;4.Openers和Handles:&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;Openers:&lt;/code&gt;当我们打开一个url的时候我们使用默认的的opener是urlopen（他是urllib2.OpenerDirector的实例），除此之外，我们可以自己构造opener&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Handers:&lt;/code&gt;Openers使用handlers处理各种事物，每个handler知道如何通过特殊的协议打开特定的url，或者处理特定url打开时的各个方面，例如http重定向。因此，我们就需要自己创建handers来处理我们的需要，比如创建能处理cookie的handler&lt;/p&gt;
+
+&lt;p&gt;下面转自http://blog.csdn.net/pleasecallmewhy/article/details/8924889&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;要创建一个 opener，可以实例化一个OpenerDirector，然后调用.add_handler(some_handler_instance)。&lt;/p&gt;
+
+&lt;p&gt;同样，可以使用build_opener，这是一个更加方便的函数，用来创建opener对象，他只需要一次函数调用。&lt;/p&gt;
+
+&lt;p&gt;build_opener默认添加几个处理器，但提供快捷的方法来添加或更新默认处理器。&lt;/p&gt;
+
+&lt;p&gt;其他的处理器handlers你或许会希望处理代理，验证，和其他常用但有点特殊的情况。&lt;/p&gt;
+
+&lt;p&gt;install_opener 用来创建（全局）默认opener。这个表示调用urlopen将使用你安装的opener。&lt;/p&gt;
+
+&lt;p&gt;Opener对象有一个open方法。&lt;/p&gt;
+
+&lt;p&gt;该方法可以像urlopen函数那样直接用来获取urls：通常不必调用install_opener，除了为了方便。&lt;/p&gt;
+
+&lt;p&gt;说完了上面两个内容，下面我们来看一下基本认证的内容，这里会用到上面提及的Opener和Handler。&lt;/p&gt;
+
+&lt;p&gt;Basic Authentication 基本验证&lt;/p&gt;
+
+&lt;p&gt;为了展示创建和安装一个handler，我们将使用HTTPBasicAuthHandler。&lt;/p&gt;
+
+&lt;p&gt;当需要基础验证时，服务器发送一个header(401错误码) 请求验证。这个指定了scheme 和一个‘realm’，看起来像这样：Www-authenticate: SCHEME realm=&quot;REALM&quot;.&lt;/p&gt;
+
+&lt;p&gt;例如:Www-authenticate: Basic realm=&quot;cPanel Users&quot;&lt;/p&gt;
+
+&lt;p&gt;客户端必须使用新的请求，并在请求头里包含正确的姓名和密码。&lt;/p&gt;
+
+&lt;p&gt;这是“基础验证”，为了简化这个过程，我们可以创建一个HTTPBasicAuthHandler的实例，并让opener使用这个handler就可以啦。&lt;/p&gt;
+
+&lt;p&gt;HTTPBasicAuthHandler使用一个密码管理的对象来处理URLs和realms来映射用户名和密码。&lt;/p&gt;
+
+&lt;p&gt;如果你知道realm(从服务器发送来的头里)是什么，你就能使用HTTPPasswordMgr。&lt;/p&gt;
+
+&lt;p&gt;通常人们不关心realm是什么。那样的话，就能用方便的HTTPPasswordMgrWithDefaultRealm。&lt;/p&gt;
+
+&lt;p&gt;这个将在你为URL指定一个默认的用户名和密码。&lt;/p&gt;
+
+&lt;p&gt;这将在你为特定realm提供一个其他组合时得到提供。&lt;/p&gt;
+
+&lt;p&gt;我们通过给realm参数指定None提供给add_password来指示这种情况。&lt;/p&gt;
+
+&lt;p&gt;最高层次的URL是第一个要求验证的URL。你传给.add_password()更深层次的URLs将同样合适。&lt;/p&gt;
+
+&lt;p&gt;```python&lt;/p&gt;
+
+&lt;h1&gt;-&lt;em&gt;- coding: utf-8 -&lt;/em&gt;-&lt;/h1&gt;
+
+&lt;p&gt;import urllib2&lt;/p&gt;
+
+&lt;h1&gt;创建一个密码管理者&lt;/h1&gt;
+
+&lt;p&gt;password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()&lt;/p&gt;
+
+&lt;h1&gt;添加用户名和密码&lt;/h1&gt;
+
+&lt;p&gt;top_level_url = &quot;http://example.com/foo/&quot;&lt;/p&gt;
+
+&lt;h1&gt;如果知道 realm, 我们可以使用他代替 &lt;code&gt;None&lt;/code&gt;.&lt;/h1&gt;
+
+&lt;h1&gt;password_mgr.add_password(None, top_level_url, username, password)&lt;/h1&gt;
+
+&lt;p&gt;password_mgr.add_password(None, top_level_url,'why', '1223')&lt;/p&gt;
+
+&lt;h1&gt;创建了一个新的handler&lt;/h1&gt;
+
+&lt;p&gt;handler = urllib2.HTTPBasicAuthHandler(password_mgr)&lt;/p&gt;
+
+&lt;h1&gt;创建 &quot;opener&quot; (OpenerDirector 实例)&lt;/h1&gt;
+
+&lt;p&gt;opener = urllib2.build_opener(handler)&lt;/p&gt;
+
+&lt;p&gt;a_url = 'http://www.baidu.com/'&lt;/p&gt;
+
+&lt;h1&gt;使用 opener 获取一个URL&lt;/h1&gt;
+
+&lt;p&gt;opener.open(a_url)&lt;/p&gt;
+
+&lt;h1&gt;安装 opener.&lt;/h1&gt;
+
+&lt;h1&gt;现在所有调用 urllib2.urlopen 将用我们的 opener.&lt;/h1&gt;
+
+&lt;p&gt;urllib2.install_opener(opener)
+```&lt;/p&gt;
+
+&lt;p&gt;注意：以上的例子我们仅仅提供我们的HHTPBasicAuthHandler给build_opener。
+默认的openers有正常状况的handlers：ProxyHandler，UnknownHandler，HTTPHandler，HTTPDefaultErrorHandler， HTTPRedirectHandler，FTPHandler， FileHandler， HTTPErrorProcessor。
+代码中的top_level_url 实际上可以是完整URL(包含&quot;http:&quot;，以及主机名及可选的端口号)。
+例如：http://example.com/。
+也可以是一个“authority”(即主机名和可选的包含端口号)。
+例如：“example.com” or “example.com:8080”。
+后者包含了端口号。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3&gt;5.简单方法和函数&lt;/h3&gt;
+
+&lt;p&gt;urllib2中的urlopen返回的对象有两个方法很常用，info(),geturl()&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;geturl()&lt;/code&gt;非常有用，因为urlopen可能会有重定向，比如说常见的新浪微博中，页面分享的视屏链接在新窗口中打开之后，链接会完全变化，这个时候的链接才是真正的url&lt;/p&gt;
+
+&lt;p&gt;```python
+import urllib2&lt;/p&gt;
+
+&lt;p&gt;lod = 'http://t.cn/8si16mR'
+req = urllib2.Request(old)
+http = urllib2.urlopen(req)
+new = http.geturl&lt;/p&gt;
+
+&lt;h1&gt;这个时候的old和new是完全不一样的&lt;/h1&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;info()&lt;/code&gt;返回一个字典，描述了获取的页面的状态，通常是服务器发送过来特定的header&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;python
+import urllib2
+http = urllib2.urlopen('http://www.baidu.com')
+print http.info()
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;proxy&lt;/code&gt;的设置：urllib2会使用环境变量http_proxy来设置HTTP Proxy，如果想在程序中控制proxy，可以设置代理&lt;/p&gt;
+
+&lt;p&gt;```python
+import urllib2
+enable_proxy = True
+proxy_handler = urllib2.ProxyHandler({'http':'http://some-proxy.com:8080'})
+null_proxy_handler = urllib2.ProxyHandler({})
+if enable_proxy:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;opener = urllib.build_opener(porxy_handler)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;else:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;opener = urllib.build_opener(null_proxy_handler)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;urllib.install_opener(opener)
+```&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;timeout&lt;/code&gt;的设置：urllib2.urlopen(url,timeout = 10)&lt;/p&gt;
+
+&lt;p&gt;在request中加入特定的头：&lt;/p&gt;
+
+&lt;p&gt;```python
+import urllib2
+request = urllib2.Request('http://www.baidu.com')
+request.add_header('User-Agent','fake-client')
+response = urllib2.urlopen(request)&lt;/p&gt;
+
+&lt;p&gt;cookie:
+import urllib2
+import cookielib
+cookie = cookielib.CookieJar()
+opener = urllib.build_opener(urllib2.HTTPCoolieProcessor(cookie))
+response = opener.open('http://www.baidu.com')
+for i in cookie:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;print 'name'+i.name
+print 'value'+i.value
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;运行之后就可以得到访问百度的cookie值&lt;/h1&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;表单处理&lt;/code&gt;：从浏览器和抓包工具可以看到我们需要填写哪些表单,通常用字典的形式&lt;/p&gt;
+
+&lt;p&gt;```python
+import urllib
+import urllib2
+postdata = urllib.urlencode({&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;'username':'xxx'
+'passwd':'xxx'
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;})
+request = urllib2.Request(url,postdata)
+http = urllib2.urlopen(request)
+```&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;文件下载：&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;python
+import urllib
+download = urllib.urlretrieve(url)
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3&gt;6.&lt;a href=&quot;http://www.jb51.net/article/15707.htm&quot;&gt;正则表达式&lt;/a&gt;&lt;/h3&gt;
+
+&lt;h3&gt;7.实战，用爬虫访问insysu.com&lt;/h3&gt;
+
+&lt;p&gt;首先浏览器进入我们美到一逼的第三方教务系统&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/python-spider/1.png&quot; alt=&quot;1.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;肯定是需要登录信息的，所以我们先&lt;F12&gt;查看以下登录目标在哪里&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/python-spider/2.png&quot; alt=&quot;2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;太明显了，本页就是登录点&lt;/p&gt;
+
+&lt;p&gt;然后我们再看看登录需要提交的东西在哪里，点击登录，成功登录后查看network有一个post，点进去再点header一看就知道了&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/python-spider/3.png&quot; alt=&quot;3.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;恩，然后我们肯定是有cookie的，顺便也记录以下就行了&lt;/p&gt;
+
+&lt;p&gt;于是开始编码&lt;/p&gt;
+
+&lt;p&gt;```python&lt;/p&gt;
+
+&lt;h1&gt;=============================================================================&lt;/h1&gt;
+
+&lt;h1&gt;FileName: insysu.py&lt;/h1&gt;
+
+&lt;h1&gt;Desc: a spider to walk through the isysu.com using your name and passwd&lt;/h1&gt;
+
+&lt;h1&gt;Author: huangjin&lt;/h1&gt;
+
+&lt;h1&gt;Email: dantangfan@gmail.com&lt;/h1&gt;
+
+&lt;h1&gt;HomePage: https://www.github.com/dantangfan&lt;/h1&gt;
+
+&lt;h1&gt;Version: 0.0.1&lt;/h1&gt;
+
+&lt;h1&gt;LastChange: 2014-04-04 14:48:11&lt;/h1&gt;
+
+&lt;h1&gt;History:&lt;/h1&gt;
+
+&lt;h1&gt;=============================================================================&lt;/h1&gt;
+
+&lt;h1&gt;!/bin/env python&lt;/h1&gt;
+
+&lt;h1&gt;-&lt;em&gt;-coding: utf-8 -&lt;/em&gt;-&lt;/h1&gt;
+
+&lt;p&gt;import urllib
+import urllib2
+import cookielib&lt;/p&gt;
+
+&lt;p&gt;cookie = cookielib.CookieJar()
+opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie))&lt;/p&gt;
+
+&lt;h1&gt;your post data&lt;/h1&gt;
+
+&lt;p&gt;postdata = urllib.urlencode({&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;'username':'11331130',
+'password':'09192970'
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;make a request&lt;/h1&gt;
+
+&lt;p&gt;require = urllib2.Request(url = 'http://insysu.com/sign_in',data = postdata)&lt;/p&gt;
+
+&lt;h1&gt;visit&lt;/h1&gt;
+
+&lt;p&gt;result = opener.open(require)&lt;/p&gt;
+
+&lt;h1&gt;print&lt;/h1&gt;
+
+&lt;p&gt;print result.read()&lt;/p&gt;
+
+&lt;h1&gt;print cookie&lt;/h1&gt;
+
+&lt;p&gt;for item in cookie:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;print 'cookie: Name = '+item.name
+print 'cookie: Value = '+ item.value
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1&gt;visit the target web site after login&lt;/h1&gt;
+
+&lt;p&gt;result = opener.open('http://www.insysu.com')
+print result.read()
+```&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;注意的是要先登录，然后才能进入主页面。看看结果如何&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;/images/python-spider/4.png&quot; alt=&quot;4.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;貌似达到了预期效果。&lt;/p&gt;
+
+&lt;p&gt;接下来就可以进入相应的页面提取要的数据了&lt;/p&gt;
+</content>
+   </entry>
+   
+ 
+</feed>

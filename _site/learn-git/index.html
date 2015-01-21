@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--
+    * Author:         dantangfan
+    -->
+    <meta charset="utf-8" />
+    <title>learn Git |  dantangfan </title>
+    <meta name="author" content="dantangfan" />
+    <meta name="description" content="hj's Blog" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="/css/default.css" type="text/css" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="alternate" type="application/atom+xml" title="Recent Entries" href="/atom.xml" />
+    <script src="/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+    <div class="home-menu">
+        <div class="home-icon-con">
+            <a class="home-menu-icon" href="/">dantangfan</a>
+            <a class="home-follow" href="#" title="Contact Me">+</a>
+        </div>
+        <div class="home-contact">
+            <a href="http://weibo.com/u/2428228892/" target="_blank" style="margin-left:-5px;"><img src="http://www.weibo.com/favicon.ico" alt="" width="25"/></a>
+            <a href="https://github.com/dantangfan/" target="_blank" style="text-align:center;"><img src="https://github.com/favicon.ico" alt="" width="22"/></a>
+            <a href="http://renren.com/419506097" target="_blank" style="text-align:right"><img src="http://iconpng.com/png/website_icons/renren.png" alt="" width="22"/></a>
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="/js/prettify/prettify.css" />
+<style type="text/css">
+    body { background:#e8e8e8; }
+    @media screen and (max-width: 750px){
+        body { background:#fff; }
+    }
+    @media screen and (max-width: 1020px){
+        body { background:#fff; }
+    }
+</style>
+
+<div id="content">
+    <div class="entry">
+        <h1 class="entry-title"><a href="/learn-git" title="learn Git">learn Git</a></h1>
+        <p class="entry-date">2014-10-24</p>
+        <p>linux系统都可以直接软件包安装Git，如<code>apt-get install git</code></p>
+
+<h2>初始化配置</h2>
+
+<p>首先配置帐号信息</p>
+
+<p>```bash
+git config --global user.name dantangfan
+git config --global user.email dantangfan@gmail.com</p>
+
+<p>git config --list #查看配置情况
+git help × #获取帮助
+```</p>
+
+<p>配置密钥</p>
+
+<p><code>bash
+ssh-keygen -t rsa -C dantangfan@gmail.com #生成密钥
+ssh -T git@github.com #测试是否成功
+</code></p>
+
+<h2>创建仓库</h2>
+
+<p>```bash
+git init #初始化
+git status #查看状态
+git add <file>
+git commit -m 'msg'
+git remote add origin git@github.com:dantangfan/test.git #添加源
+git push -u origin master #push同时设置默认跟踪分支</p>
+
+<p>git clone https://github.com/xxx/xxx.git dic
+```</p>
+
+<h2>本地操作</h2>
+
+<p>```bash
+git add * #跟踪更新
+rm * &amp; git rm * #从本地和仓库中删除文件
+git rm -rf * #删除文件夹
+git rm --cached #取消跟踪
+git mv filename new name
+git log
+git commit -m 'msg'
+git commit -a #跳过使用暂存区，把所有已跟踪的文件暂存起来一并提交
+git commit --amend #修改最后一次提交</p>
+
+<p>git reset HEAD * #撤销已经暂存的文件
+git checkout -- file #取消对文件的修改（从暂存区取回file）
+git checkout branch|tag|commit -- filename #从仓库中取出file覆盖当前分支
+git checkout -- . #从暂存区取出文件覆盖工作区
+```</p>
+
+<h2>分支操作</h2>
+
+<p>```bash
+git branch #列出当前分支
+git branch -r #列出远端分支
+git branch -a #列出所有分支
+git branch -v #查看每个分支最后一次提交的情况
+git branch --merge #查看已经合并到当前分支的分支
+git branch --no-merge #查看未合并到当前分支的分支</p>
+
+<p>git branch test #新建test分支
+git checkout test #切换到test分支
+git checkout -b test #注册并切换到test
+git checkout -b test dev #基于dev创建test分支</p>
+
+<p>git branch -d test #删除test分支
+git branch -D test #强制删除test分支</p>
+
+<p>git merge test #将test分支合并到当前分支
+git rebase master #将master分支上超前的分支变基到当前分支
+```</p>
+
+<h2>远端操作</h2>
+
+<p>```bash
+git fetch originname branchname #拉去远端上指定分支
+git merge originname branchname #合并远端上指定分支
+git push originname branchname #推送到远端上指定分支
+git push originname branchname:serverbranch #推送到远端指定分支</p>
+
+<p>git checkout -b test origin/dev #基于远端dev分支创建test分支</p>
+
+<p>git push origin :server #删除远端分支
+```</p>
+
+<h2>源管理</h2>
+
+<p>服务器上的仓库在本地称之为<code>remote</code>，个人开发的时候主要是使用单源。但是git的精华是多源，适合团体开发</p>
+
+<p><code>bash
+git remote add origin git@github.com:dantangfan/test.git #将本地仓库推送到远程
+git remote #显示全部源
+git remote -v #显示源和信息
+git remote originname newname
+git remote rm originname
+git remote show originname
+</code></p>
+
+<h2>tag</h2>
+
+<p>```bash
+git tag #显示当前标签
+git tag v0.1 #新建标签
+git tag -a v0.1 -m 'my version 1.4' #新建带注释的标签</p>
+
+<p>git checkout tagname #切换到标签</p>
+
+<p>git push origin v1.5 #推送到分支源上
+git push origin --tags #一次性推送所有分支</p>
+
+<p>git tag -d v0.1 #删除标签
+git push origin :refs/tags/v0.1 #删除远程标签</p>
+
+
+        <div id="disqus_container">
+            <div style="margin-bottom:20px" class="right">
+                <script type="text/javascript" charset="utf-8">
+                (function(){
+                  var _w = 86 , _h = 16;
+                  var param = {
+                    url:location.href,
+                    type:'6',
+                    count:'', /**是否显示分享数，1显示(可选)*/
+                    appkey:'', /**您申请的应用appkey,显示分享来源(可选)*/
+                    title:'', /**分享的文字内容(可选，默认为所在页面的title)*/
+                    pic:'', /**分享图片的路径(可选)*/
+                    ralateUid:'2428228892', /**关联用户的UID，分享微博会@该用户(可选)*/
+                    language:'zh_cn', /**设置语言，zh_cn|zh_tw(可选)*/
+                    rnd:new Date().valueOf()
+                  }
+                  var temp = [];
+                  for( var p in param ){
+                    temp.push(p + '=' + encodeURIComponent( param[p] || '' ) )
+                  }
+                  document.write('<iframe allowTransparency="true" frameborder="0" scrolling="no" src="http://hits.sinajs.cn/A1/weiboshare.html?' + temp.join('&') + '" width="'+ _w+'" height="'+_h+'"></iframe>')
+                })()
+                </script>
+            </div>
+            <a href="#" class="comment" onclick="return false;">点击查看评论</a>
+            <div id="disqus_thread"></div>
+        </div>
+    </div>
+
+    <div class="sidenav">
+        <iframe width="250" height="100" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=250&height=100&fansRow=2&ptype=1&speed=0&skin=1&isTitle=0&noborder=1&isWeibo=0&isFans=0&uid=2428228892&verifier=76bf5e3a&dpc=1"></iframe>
+    </div>
+
+    <div class="sidenav">
+        <h2>Blog</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/nothing">博客搬家</a></li>
+        
+            <li><a href="/command">重用命令记录</a></li>
+        
+            <li><a href="/learn-git">learn Git</a></li>
+        
+            <li><a href="/study-tornado">Python Tornado学习</a></li>
+        
+            <li><a href="/findwork">学习记录</a></li>
+        
+            <li><a href="/diff-py2-py3">python2.7.x和python3.x的简单区别</a></li>
+        
+            <li><a href="/linotp">LinOTP使用报告</a></li>
+        
+            <li><a href="/process-signal">进程同步的若干问题</a></li>
+        
+            <li><a href="/memo">备忘录</a></li>
+        
+            <li><a href="/python-spider">简单爬虫</a></li>
+        
+            <li><a href="/learn-python">半天简单总结python</a></li>
+        
+            <li><a href="/raspberry-car">树莓派制作wifi控制小车</a></li>
+        
+            <li><a href="/c-memory">c语言学习-内存</a></li>
+        
+            <li><a href="/C-stander">C 语言编码风格和标准</a></li>
+        
+            <li><a href="/C-pointer">c语言学习-指针</a></li>
+        
+            <li><a href="/C-scanf">C语言学习-让人头疼的scanf</a></li>
+        
+            <li><a href="/learn-gitPage">使用Github Pages建独立博客</a></li>
+        
+        </ul>
+
+        <h2>Opinion</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/Mybirthday">颓废</a></li>
+        
+            <li><a href="/yearOf2011">从一个地方到另一个地方</a></li>
+        
+        </ul>
+
+        
+        <a href="/project"><h2>About me</h2></a>
+        <!--
+        <h2>Project</h2>
+        <ul class="artical-list">
+        
+        </ul>
+        -->
+    </div>
+</div>
+
+<script src="/js/post.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">
+        $(function(){
+            $('.home-follow').click(function(e){
+                e.preventDefault();
+
+                if($('.home-contact').is(':visible')){
+                    $('.home-contact').slideUp(100);
+                }else{
+                    $('.home-contact').slideDown(100);
+                }
+            });
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--
+    * Author:         dantangfan
+    -->
+    <meta charset="utf-8" />
+    <title>c语言学习-指针 |  dantangfan </title>
+    <meta name="author" content="dantangfan" />
+    <meta name="description" content="hj's Blog" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="/css/default.css" type="text/css" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="alternate" type="application/atom+xml" title="Recent Entries" href="/atom.xml" />
+    <script src="/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+    <div class="home-menu">
+        <div class="home-icon-con">
+            <a class="home-menu-icon" href="/">dantangfan</a>
+            <a class="home-follow" href="#" title="Contact Me">+</a>
+        </div>
+        <div class="home-contact">
+            <a href="http://weibo.com/u/2428228892/" target="_blank" style="margin-left:-5px;"><img src="http://www.weibo.com/favicon.ico" alt="" width="25"/></a>
+            <a href="https://github.com/dantangfan/" target="_blank" style="text-align:center;"><img src="https://github.com/favicon.ico" alt="" width="22"/></a>
+            <a href="http://renren.com/419506097" target="_blank" style="text-align:right"><img src="http://iconpng.com/png/website_icons/renren.png" alt="" width="22"/></a>
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="/js/prettify/prettify.css" />
+<style type="text/css">
+    body { background:#e8e8e8; }
+    @media screen and (max-width: 750px){
+        body { background:#fff; }
+    }
+    @media screen and (max-width: 1020px){
+        body { background:#fff; }
+    }
+</style>
+
+<div id="content">
+    <div class="entry">
+        <h1 class="entry-title"><a href="/C-pointer" title="c语言学习-指针">c语言学习-指针</a></h1>
+        <p class="entry-date">2012-12-20</p>
+        <h2>指针——保存变量地址的变量</h2>
+
+<p>第一步，我们来看应该怎么定义指针。指针包含两重意思：指针类型和指针指向的类型。指针类型就是我们平时说的int类型指针、double类型指针；对应的，指针指向的类型就是int、double。关于指针的声明个人只有一个建议，那就是把星号放在变量的旁边。</p>
+
+<p><code>c
+char *a,**b;
+</code></p>
+
+<h3>定义中常见错误</h3>
+
+<p>当指针定义后不赋值，那么他会指向一个不确定的变量。</p>
+
+<p><code>c
+char *a;
+printf("%p\n",a);
+printf("%c\n",*a);
+</code></p>
+
+<p>编译的时候可以通过，但是往往会造成运行时错误，这就是我们俗称的野指针。解决的方案很简单，就是为她赋值</p>
+
+<p><code>c
+char *a = NULL
+</code></p>
+
+<p>简单的说，一个xx类型的指针会指向一个xx类型的地址（赵岩老师的《c语言点滴》里面称这句话为“指针真理”）。理解这句话，基本就能正确的为指针赋值。得到xx类型地址方法有很多，这里给出几种赵岩老师的几个例子。</p>
+
+<ul>
+<li><p>&amp;符号直接获得</p></li>
+<li><p>地址符号</p></li>
+<li><p>其他xx类型指针</p></li>
+<li><p>xx类型数组</p></li>
+<li><p>malloc动态申请的地址</p></li>
+<li><p>任何void类型指针</p></li>
+<li><p>NULL</p></li>
+</ul>
+
+
+<h2>void和NULL</h2>
+
+<h3>void</h3>
+
+<p>我们习惯了用void声明函数或者函数返回值，但是很少用void声明指针变量。实际上，用void声明的指针变量之保存了一个地址，但是不会设计任何类型，也就是说任何类型的指针都可以直接赋值给void类型的指针。需要注意的是要将void类型指针赋值给其他类型就要用强制类型转换</p>
+
+<p><code>c
+void *p;
+int i;
+int *ip = &amp;i;
+p = ip;//right
+ip = (int *)p;//be careful
+</code></p>
+
+<p>我们经常使用的内存分配函数的返回值也是void类型的指针。</p>
+
+<p><code>c
+void *malloc(size_t size);
+void *memcop(void *dest,const void *src,size_t len);
+void *memset(void *buffer,int c,size_t num);
+</code></p>
+
+<p>因此我们平时在使用的时候加上的强制类型转换是必要的</p>
+
+<p><code>c
+int *i = (int *)malloc(sizeof(int)*len);
+</code></p>
+
+<h3>NULL</h3>
+
+<p>NULL是一个值，而不是类型。通常情况下他被定义成0。这就造成了NULL、EOF、/0三个表示终止字符的混淆。我的理解如下，只要区分开按照常规使用，一般就不会犯错</p>
+
+<ul>
+<li><p>NULL是指针，用于表示空地址</p></li>
+<li><p>EOF--End Of File 的缩写，常用于表示文件结束或者读取文件不成功</p></li>
+<li><p>/0表是空字符，是判断一个字符串结束的标准</p></li>
+</ul>
+
+
+<h2>指针和数组</h2>
+
+<p>首先：指针和数组是不同的事物！他们仅仅能表达某些相似的意思。我们在使用指针的时候，尽量之使用地址解析<code>\*p</code>的形式，使用数组的时候多使用下标<code>p[1]</code>。一般情况下，指针和数组作为函数调用参数的时候是相同的。也就是说下面两种声明是一个意思</p>
+
+<p><code>c
+int func(int *a);
+int func(int a[]);
+</code></p>
+
+<p>实际上他们都会被转换成指针的模式，这个时候的a在函数中用任何形式操作都是对的。</p>
+
+<h3>二维数组</h3>
+
+<p>单维度的数组是简单的，但是把数组和指针混合在一起的时候就不那么简单了。用一个表格表示二维情况就可以把人弄晕</p>
+
+<p><img src="/images/C-pointer/aptable.jpg" alt="aptable" /></p>
+
+<p>很多书上把这个解释的很复杂。其实，单单对这个问题来说，我们可以认为变量变量声明是右结合的就可以很轻松的把它们区分开来。比如说<code>int *pa[5]</code>，可以认为首先他是一个a[5]的数组，然后才是一个指针，也就是<code>int *(a[5])</code>。</p>
+
+<p>难点在于如何理解指针类型的数组跟数组类型的指针，我实在说不清楚他们两个怎么区分，只能截取网上的一幅图片</p>
+
+<p><img src="/images/C-pointer/diffap.jpg" alt="diffap" /></p>
+
+<p>一旦理解了二维情况，多维情况也就以此类推了。</p>
+
+<h2>动态分配内存</h2>
+
+<p>内存也是老生常谈的内容了。这里截取一副图来解释程序在运行过程中的内存使用情况</p>
+
+<p><img src="/images/C-pointer/mem.jpg" alt="mem" /></p>
+
+<p>嗯，有了这幅图其他也就没有什么好说的了。</p>
+
+<h3>为神马</h3>
+
+<p>动态分配内存的原因很简单，我们在初始化一个变量的时候并不知道他会有多大，比如说字符串长度。所以我们就需要根据实际需要来分配，以确保最大效率的利用好内存。</p>
+
+<p>接下来介绍一些内存操作函数</p>
+
+<h3>malloc 和 calloc</h3>
+
+<p>两个函数很相似，完成的任务也大体相似，简单的说calloc = malloc + memset</p>
+
+<p>```c
+void <em>malloc(size_t size);
+void </em>calloc(size_t size_of_one_element, size_t len_of_elements)；</p>
+
+<p>int *p = calloc(sizeof(int),10);//等价于下两句</p>
+
+<p>int <em>q = malloc(sizeof(int)</em>10);
+memset(q,0,10)；
+```</p>
+
+<h3>realloc</h3>
+
+<p>realloc对于初学者并不长用，我们在学习数据结构用数组的方式书写栈的时候，如果遇到数组元素个数不够用了，往往都是从新遭一个更大的数组，然后把刚刚的元素放进去然后继续进行其他操作。calloc也又着相似的功能。</p>
+
+<p>realloc通常用在动态递增的分配内存上面，re的意思是重复，那么realloc之前，一定已经有过内存分配的操作,或者初始值为NULL。</p>
+
+<p>```c
+int <em>oldbuf = malloc(sizeof(int)</em>len);
+int <em>newbuf = NULL;
+newbuf = realloc(oldbuf,len</em>2);
+if(newbuf!=NULL)</p>
+
+<pre><code>oldbuf = newbuf;
+</code></pre>
+
+<p>else{</p>
+
+<pre><code>free(oldbuf);
+return NULL;
+</code></pre>
+
+<p>}
+/<em>
+不推荐使用oldbuf = realloc(oldbuf,len</em>2);
+因为一旦内存分配失败的时候，
+会直接返回NULL给oldbuf，
+但是他刚刚指向的空间此时还没有被清空，
+就造成了内存浪费
+*/
+```
+上面的函数就可以把内存长度加倍了</p>
+
+<h3>memset、memcpy、memmove</h3>
+
+<p>内存操作函数使得动态内存的使用更加简洁。从他们的名字就可以知道他们的功能，给出他们的定义自然就知道他们怎么用了</p>
+
+<p><code>c
+void *memcpy(void *dest, void *src,size_t count);
+void *memmove(void *dest, void *src ,size_t count);
+void *memset(void *buffer,int c,size_t count);
+</code></p>
+
+<h3>free</h3>
+
+<p>我们需要养成内存操作配对的好习惯，每次分配了内存，一定要记住使用结束后将它们free掉。free函数的定义如下</p>
+
+<p>```c
+void free(void *ptr)
+{</p>
+
+<pre><code>struct mem_control_block *free;
+free = ptr-sizeof(struct mem_control_block);
+free-&gt;is_available = 1;
+return ;
+</code></pre>
+
+<p>}
+```</p>
+
+<p>我们可以看出，free释放内存的时候，并没有将原来的数据擦出，只是简单的把内存可访问置1，而没有还给操作系统。当下一次遇到本部分内存被分配的时候，才重新对内存中的内容进行操作</p>
+
+<p>实际上，释放指针p之后，p依然是指向释放前的地址的，也就是说*p同样有值。所以释放内存的好习惯是每次释放内存之后，就将原来的指针指空</p>
+
+<p>```c
+if(p!=NULL){</p>
+
+<pre><code>free(p);
+p = NULL;
+</code></pre>
+
+<p>}
+```</p>
+
+<h2>动态数组</h2>
+
+<p>动态数组很简单，只要掌握了他的分配和释放方式就可以了</p>
+
+<p>```c
+int (<em>p)[3] = (int </em>[3])calloc(10,sizeof(int));
+int <strong>q = (int </strong>)malloc(sizeof(int <em>)</em>10);
+for(i=0;i&lt;10;i++>)</p>
+
+<pre><code>q[i] = (int *)malloc(sizeof(int)*10);
+</code></pre>
+
+<p>```</p>
+
+<h2>数组指针可交换</h2>
+
+<p>最后简单总结几个数组和指针可以交换的原则</p>
+
+<ul>
+<li><p>用a[i]这样的形式对数组进行访问总是被编译器改写成*(a+i)这样的指针，这就是为什么数组写成a[i]和i[a]意思其实是一样的</p></li>
+<li><p>指针始终就是指针，它绝对不可以写成数组。你可以用下标的形式访问指针，一般都是指针作为参数传递的时候，而你实际知道传递给函数的是指针</p></li>
+<li><p>在参数传递的时候，数组可以被看成指针，此时的指针数组没区别。</p></li>
+<li><p>在其他情况中，定义很声明都必须匹配。如果定义了一个数组，在其他文件中对它进行的声明也只能是数组，指针亦然。</p></li>
+</ul>
+
+
+<p>简单解释下位什么在参数传递的时候要把数组当成指针。之所以这样做，也是出于效率考虑的。c语言所有非数组形式的参数都以传值的形式（对参数作一份拷贝并传递给调用函数，函数只能修改这个拷贝后的值）。但是，如果要拷贝整个数组的话，无论是在时间还是空间上的开销都是非常大的，因此指针往往要方便很多。</p>
+
+
+        <div id="disqus_container">
+            <div style="margin-bottom:20px" class="right">
+                <script type="text/javascript" charset="utf-8">
+                (function(){
+                  var _w = 86 , _h = 16;
+                  var param = {
+                    url:location.href,
+                    type:'6',
+                    count:'', /**是否显示分享数，1显示(可选)*/
+                    appkey:'', /**您申请的应用appkey,显示分享来源(可选)*/
+                    title:'', /**分享的文字内容(可选，默认为所在页面的title)*/
+                    pic:'', /**分享图片的路径(可选)*/
+                    ralateUid:'2428228892', /**关联用户的UID，分享微博会@该用户(可选)*/
+                    language:'zh_cn', /**设置语言，zh_cn|zh_tw(可选)*/
+                    rnd:new Date().valueOf()
+                  }
+                  var temp = [];
+                  for( var p in param ){
+                    temp.push(p + '=' + encodeURIComponent( param[p] || '' ) )
+                  }
+                  document.write('<iframe allowTransparency="true" frameborder="0" scrolling="no" src="http://hits.sinajs.cn/A1/weiboshare.html?' + temp.join('&') + '" width="'+ _w+'" height="'+_h+'"></iframe>')
+                })()
+                </script>
+            </div>
+            <a href="#" class="comment" onclick="return false;">点击查看评论</a>
+            <div id="disqus_thread"></div>
+        </div>
+    </div>
+
+    <div class="sidenav">
+        <iframe width="250" height="100" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=250&height=100&fansRow=2&ptype=1&speed=0&skin=1&isTitle=0&noborder=1&isWeibo=0&isFans=0&uid=2428228892&verifier=76bf5e3a&dpc=1"></iframe>
+    </div>
+
+    <div class="sidenav">
+        <h2>Blog</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/nothing">博客搬家</a></li>
+        
+            <li><a href="/command">重用命令记录</a></li>
+        
+            <li><a href="/learn-git">learn Git</a></li>
+        
+            <li><a href="/study-tornado">Python Tornado学习</a></li>
+        
+            <li><a href="/findwork">学习记录</a></li>
+        
+            <li><a href="/diff-py2-py3">python2.7.x和python3.x的简单区别</a></li>
+        
+            <li><a href="/linotp">LinOTP使用报告</a></li>
+        
+            <li><a href="/process-signal">进程同步的若干问题</a></li>
+        
+            <li><a href="/memo">备忘录</a></li>
+        
+            <li><a href="/python-spider">简单爬虫</a></li>
+        
+            <li><a href="/learn-python">半天简单总结python</a></li>
+        
+            <li><a href="/raspberry-car">树莓派制作wifi控制小车</a></li>
+        
+            <li><a href="/c-memory">c语言学习-内存</a></li>
+        
+            <li><a href="/C-stander">C 语言编码风格和标准</a></li>
+        
+            <li><a href="/C-pointer">c语言学习-指针</a></li>
+        
+            <li><a href="/C-scanf">C语言学习-让人头疼的scanf</a></li>
+        
+            <li><a href="/learn-gitPage">使用Github Pages建独立博客</a></li>
+        
+        </ul>
+
+        <h2>Opinion</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/Mybirthday">颓废</a></li>
+        
+            <li><a href="/yearOf2011">从一个地方到另一个地方</a></li>
+        
+        </ul>
+
+        
+        <a href="/project"><h2>About me</h2></a>
+        <!--
+        <h2>Project</h2>
+        <ul class="artical-list">
+        
+        </ul>
+        -->
+    </div>
+</div>
+
+<script src="/js/post.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">
+        $(function(){
+            $('.home-follow').click(function(e){
+                e.preventDefault();
+
+                if($('.home-contact').is(':visible')){
+                    $('.home-contact').slideUp(100);
+                }else{
+                    $('.home-contact').slideDown(100);
+                }
+            });
+        })
+    </script>
+</body>
+</html>

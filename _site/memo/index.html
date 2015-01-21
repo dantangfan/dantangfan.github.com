@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--
+    * Author:         dantangfan
+    -->
+    <meta charset="utf-8" />
+    <title>备忘录 |  dantangfan </title>
+    <meta name="author" content="dantangfan" />
+    <meta name="description" content="hj's Blog" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="/css/default.css" type="text/css" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="alternate" type="application/atom+xml" title="Recent Entries" href="/atom.xml" />
+    <script src="/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+    <div class="home-menu">
+        <div class="home-icon-con">
+            <a class="home-menu-icon" href="/">dantangfan</a>
+            <a class="home-follow" href="#" title="Contact Me">+</a>
+        </div>
+        <div class="home-contact">
+            <a href="http://weibo.com/u/2428228892/" target="_blank" style="margin-left:-5px;"><img src="http://www.weibo.com/favicon.ico" alt="" width="25"/></a>
+            <a href="https://github.com/dantangfan/" target="_blank" style="text-align:center;"><img src="https://github.com/favicon.ico" alt="" width="22"/></a>
+            <a href="http://renren.com/419506097" target="_blank" style="text-align:right"><img src="http://iconpng.com/png/website_icons/renren.png" alt="" width="22"/></a>
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="/js/prettify/prettify.css" />
+<style type="text/css">
+    body { background:#e8e8e8; }
+    @media screen and (max-width: 750px){
+        body { background:#fff; }
+    }
+    @media screen and (max-width: 1020px){
+        body { background:#fff; }
+    }
+</style>
+
+<div id="content">
+    <div class="entry">
+        <h1 class="entry-title"><a href="/memo" title="备忘录">备忘录</a></h1>
+        <p class="entry-date">2014-04-12</p>
+        <h2>把/home目录搬家</h2>
+
+<p>还是小菜鸟的时候，到处都建议把所有分区直接挂载在/目录，但是变成老菜鸟之后发现这样是步行的，最好还是单独分区出来，要不然/目录迟早会不够用的。有个逗逼的办法是扩展/目录，但是这样风险太大，于是就想到了不要那么逗逼的办法，把/home目录转义到新的分区。</p>
+
+<p>首先建立一个新的分区并格式化之，比如是sda4。</p>
+
+<p><code>shell
+mkfs.ext4 /dev/sda4
+</code></p>
+
+<p>挂载分区用于拷贝当前home下的文件</p>
+
+<p><code>
+mkdir /mnt/newhome
+mount -t ext4 /dev/sda4 /mnt/newhome
+</code></p>
+
+<p>把home目录下的文件全部拷贝过来</p>
+
+<p><code>
+cd /home
+find . -depth -print0 | cpio --null --sparse -pvd /mnt/newhome
+</code></p>
+
+<p>修改新分区名字</p>
+
+<p><code>
+umount /mnt/newhome
+mv /home /old_home
+mkdir /home
+mount /dev/sda4 /home
+</code></p>
+
+<p>这个时候其实已经把/home目录移动好了。但是我们必须告诉计算机开机的时候该在哪里找home，所以需要修改一下配置文件,在/etc/fstab文件中添加下面一行</p>
+
+<p><code>
+/dev/sda4 /home ext4 nodev,nosuid 0 2
+</code></p>
+
+<p>重新启动就成功了。如果不成功也没事，直接用root用户原来的工作都撤销就行了，也不影响大局。</p>
+
+<h2>linux/windows双系统问题</h2>
+
+<p>安装linux后第一次开机直接进入grub：
+有的童鞋运气不好，第一次开机就出现错误，这很有可能是你安装不当或者系统自身有bug造成的（我们要有怀疑精神，不要老是觉得就是自己的错），没问题。这个时候我们就需要好好的利用tab键了。依次键入
+root （hd0,0）--》如果你不确定你的win系统安装盘符可以 root （hd0，【tab】之后就会有提示，选中你需要的盘符就可以了，这里不    .                              细说每  个文件系统的意思了，要是真的什么都不知道就一个一个试就是了，总有一个可以的。
+rootnoverify (hd0,0)--》后面那个0就是你自己选择的东东
+chainloader +1
+boot
+好了，现在你又可以见到你亲爱的win了、、、、</p>
+
+<h2>ubuntu</h2>
+
+<p>电脑升级到麒麟14.04后从，在实验室办公室中上网插上网线一切正常，但是在宿舍中却不行，一直提示有线网络已断开，google了一下 修改ip 修改/etc/network/interfaces的方法都试过了还是不能解决，
+后来看到网上有人说过网卡与交换机的不兼容性问题，于是百度了一下，果然有类似的问题。电脑网卡的工作模式设置不正确有可能导致与交换机不能通讯。
+于是乎问题解决了
+解决过程如下
+1.安装ethtool软件设置网卡的工作模式sudo apt-get install ethtool
+. ethtool的命令概要：
+ethtool ethX       //查询ethX网口基本设置
+ethtool –h         //显示ethtool的命令帮助(help)
+ethtool –i ethX    //查询ethX网口的相关信息
+ethtool –d ethX    //查询ethX网口注册性信息
+ethtool –r ethX    //重置ethX网口到自适应模式
+ethtool –S ethX    //查询ethX网口收发包统计</p>
+
+<p>ethX 是网卡的代表，具体可以用ifconfig命令查看 第一块有线网卡是eth0
+这是我电脑设置过的网卡信息Settings for eth0:</p>
+
+<pre><code>  Supported ports: [ TP MII ]
+  Supported link modes:   10baseT/Half 10baseT/Full 
+                          100baseT/Half 100baseT/Full 
+                          1000baseT/Half 1000baseT/Full 
+  Supported pause frame use: No
+  Supports auto-negotiation: Yes
+  Advertised link modes:Not reported
+  Advertised pause frame use: No
+  Advertised auto-negotiation: No
+  Speed: 100Mb/s
+  Duplex: Full
+  Port: MII
+  PHYAD: 1
+  Transceiver: internal
+  Auto-negotiation: off
+</code></pre>
+
+<p>Cannot get wake-on-lan settings: Operation not permitted</p>
+
+<pre><code>  Current message level: 0x000020c6 (8390)
+                           probe link rx_err tx_err hw
+</code></pre>
+
+<p>Cannot get link status: Operation not permitted
+关闭了网卡的自动协商功能，设置网卡在100M下工作，设置全双工的工作模式
+命令如下sudo ethtool -s eth0 autoneg off speed 100 duplex full设置以后 电脑奇迹般的能连上有线网络了</p>
+
+<p>3.设置 开机自启动
+打开/etc/init.d/rc.localsudo vim /etc/init.c/rc.local在文件的最后添加/sbin/ethtool -s eth0 autoneg off speed 100 duplex full到此结束</p>
+
+<h2>解决python2.x中爬虫爬到的网页数据包含中英文报错</h2>
+
+<p>import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')</p>
+
+
+        <div id="disqus_container">
+            <div style="margin-bottom:20px" class="right">
+                <script type="text/javascript" charset="utf-8">
+                (function(){
+                  var _w = 86 , _h = 16;
+                  var param = {
+                    url:location.href,
+                    type:'6',
+                    count:'', /**是否显示分享数，1显示(可选)*/
+                    appkey:'', /**您申请的应用appkey,显示分享来源(可选)*/
+                    title:'', /**分享的文字内容(可选，默认为所在页面的title)*/
+                    pic:'', /**分享图片的路径(可选)*/
+                    ralateUid:'2428228892', /**关联用户的UID，分享微博会@该用户(可选)*/
+                    language:'zh_cn', /**设置语言，zh_cn|zh_tw(可选)*/
+                    rnd:new Date().valueOf()
+                  }
+                  var temp = [];
+                  for( var p in param ){
+                    temp.push(p + '=' + encodeURIComponent( param[p] || '' ) )
+                  }
+                  document.write('<iframe allowTransparency="true" frameborder="0" scrolling="no" src="http://hits.sinajs.cn/A1/weiboshare.html?' + temp.join('&') + '" width="'+ _w+'" height="'+_h+'"></iframe>')
+                })()
+                </script>
+            </div>
+            <a href="#" class="comment" onclick="return false;">点击查看评论</a>
+            <div id="disqus_thread"></div>
+        </div>
+    </div>
+
+    <div class="sidenav">
+        <iframe width="250" height="100" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=250&height=100&fansRow=2&ptype=1&speed=0&skin=1&isTitle=0&noborder=1&isWeibo=0&isFans=0&uid=2428228892&verifier=76bf5e3a&dpc=1"></iframe>
+    </div>
+
+    <div class="sidenav">
+        <h2>Blog</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/nothing">博客搬家</a></li>
+        
+            <li><a href="/command">重用命令记录</a></li>
+        
+            <li><a href="/learn-git">learn Git</a></li>
+        
+            <li><a href="/study-tornado">Python Tornado学习</a></li>
+        
+            <li><a href="/findwork">学习记录</a></li>
+        
+            <li><a href="/diff-py2-py3">python2.7.x和python3.x的简单区别</a></li>
+        
+            <li><a href="/linotp">LinOTP使用报告</a></li>
+        
+            <li><a href="/process-signal">进程同步的若干问题</a></li>
+        
+            <li><a href="/memo">备忘录</a></li>
+        
+            <li><a href="/python-spider">简单爬虫</a></li>
+        
+            <li><a href="/learn-python">半天简单总结python</a></li>
+        
+            <li><a href="/raspberry-car">树莓派制作wifi控制小车</a></li>
+        
+            <li><a href="/c-memory">c语言学习-内存</a></li>
+        
+            <li><a href="/C-stander">C 语言编码风格和标准</a></li>
+        
+            <li><a href="/C-pointer">c语言学习-指针</a></li>
+        
+            <li><a href="/C-scanf">C语言学习-让人头疼的scanf</a></li>
+        
+            <li><a href="/learn-gitPage">使用Github Pages建独立博客</a></li>
+        
+        </ul>
+
+        <h2>Opinion</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/Mybirthday">颓废</a></li>
+        
+            <li><a href="/yearOf2011">从一个地方到另一个地方</a></li>
+        
+        </ul>
+
+        
+        <a href="/project"><h2>About me</h2></a>
+        <!--
+        <h2>Project</h2>
+        <ul class="artical-list">
+        
+        </ul>
+        -->
+    </div>
+</div>
+
+<script src="/js/post.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">
+        $(function(){
+            $('.home-follow').click(function(e){
+                e.preventDefault();
+
+                if($('.home-contact').is(':visible')){
+                    $('.home-contact').slideUp(100);
+                }else{
+                    $('.home-contact').slideDown(100);
+                }
+            });
+        })
+    </script>
+</body>
+</html>
