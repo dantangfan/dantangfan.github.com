@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 树莓派制作wifi控制小车
-description: raspberry pi火到大江南北，我也做了一个简单的小车。
+description: 求你不要看，我给嵌软丢脸了
 category: blog
 ---
 

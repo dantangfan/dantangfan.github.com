@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 进程同步的若干问题
-description: 协作进程是可以在系统内执行的其他进程相互影响的进程，他们可以直接共享逻辑地址空间（包括代码和数据），或者只是通过文件共享数据。
+description: 不要看，我神码都不会，会误导你的
 category: blog
 ---
 

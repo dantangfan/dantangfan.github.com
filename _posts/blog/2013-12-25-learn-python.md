@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 半天简单总结python
-description: 我就是没事了写着玩儿的
+description: 我就是没事了写着玩儿的，草莽人不要看
 category: blog
 ---
 
