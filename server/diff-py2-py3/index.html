@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--
+    * Author:         dantangfan
+    -->
+    <meta charset="utf-8" />
+    <title>python2.7.x和python3.x的简单区别 |  dantangfan </title>
+    <meta name="author" content="dantangfan" />
+    <meta name="description" content="hj's Blog" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="/css/default.css" type="text/css" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="alternate" type="application/atom+xml" title="Recent Entries" href="/atom.xml" />
+    <script src="/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+    <div class="home-menu">
+        <div class="home-icon-con">
+            <a class="home-menu-icon" href="/">dantangfan</a>
+            <a class="home-follow" href="#" title="Contact Me">+</a>
+        </div>
+        <div class="home-contact">
+            <a href="http://weibo.com/u/2428228892/" target="_blank" style="margin-left:-5px;"><img src="http://www.weibo.com/favicon.ico" alt="" width="25"/></a>
+            <a href="https://github.com/dantangfan/" target="_blank" style="text-align:center;"><img src="https://github.com/favicon.ico" alt="" width="22"/></a>
+            <a href="http://renren.com/419506097" target="_blank" style="text-align:right"><img src="http://iconpng.com/png/website_icons/renren.png" alt="" width="22"/></a>
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="/js/prettify/prettify.css" />
+<style type="text/css">
+    body { background:#e8e8e8; }
+    @media screen and (max-width: 750px){
+        body { background:#fff; }
+    }
+    @media screen and (max-width: 1020px){
+        body { background:#fff; }
+    }
+</style>
+
+<div id="content">
+    <div class="entry">
+        <h1 class="entry-title"><a href="/diff-py2-py3" title="python2.7.x和python3.x的简单区别">python2.7.x和python3.x的简单区别</a></h1>
+        <p class="entry-date">2014-09-11</p>
+        <p>许多python初学者都在为难到底是选择python2还是python3，我刚刚学python的时候也有这个疑问。大佬们各有个的说法，但学完基础之后，我觉得你选一个适合自己的就是最好的了，看哪个爽就学哪个。开源东西没有专门维护和标准，果然还是够但疼。</p>
+
+<p>我觉得也没有什么好坏之分，简单了解了之后，你会发现他们支持的库已经基本差不太多了。这里就简单的说说两个版本的一些区别，以免后面东西学咋了就什么都忘了。</p>
+
+<h2><strong>future</strong>模块</h2>
+
+<p>这应该是python中最有用的模块之一了，虽然python3中有一些python2不支持的关键字和特性，但他们都可以在python2的<code>__future__</code>中找到。所以如果你打算在你的python2中体验python3语言的特性，就可以简单通过导入<strong>future</strong>模块。比如说我们想在python2中使用python3的整除算法，可以这样做</p>
+
+<p><code>python
+from __future__ import division
+</code></p>
+
+<p>当然，<strong>future</strong>并不是专门为从python2跨越到python3准备的，它只是提供了向后兼容，也就是说python2.1中的<strong>future</strong>可以导入python2.2的特性，以此类推。</p>
+
+<p><a href="https://docs.python.org/2/library/__future__.html#module-__future__">更多的<strong>future</strong>特性可以从官方文档中看到</a></p>
+
+<h2>print函数</h2>
+
+<p>print在python2中还只是一个表达式，但在python3中已经成了一个函数调用了，所以括号必不可少。</p>
+
+<p>python2里面这样写</p>
+
+<p><code>python
+print 'Python', python_version()
+print 'Hello, World!'
+print('Hello, World!')
+print('Hello','World!')
+print "text", ; print 'print more text on the same line'
+</code></p>
+
+<p>它会给出这样的答案</p>
+
+<p><code>
+Python 2.7.6
+Hello, World!
+Hello, World!
+('Hello','World!')
+text print more text on the same line
+</code></p>
+
+<p>python3中这样写</p>
+
+<p>```python
+print('Python', python_version())
+print('Hello, World!')</p>
+
+<p>print("some text,", end="")
+print(' print more text on the same line')
+```</p>
+
+<p>会给出这样的答案</p>
+
+<p><code>
+Python 3.4.1
+Hello, World!
+some text, print more text on the same line
+</code></p>
+
+<p>当然，如果你不争气的在python3中写出了这样的代码</p>
+
+<p><code>python
+print 'Hello, World!'
+</code></p>
+
+<p>那你就只能得到这样的答案</p>
+
+<p>```bash
+  File "<ipython-input-3-139a7c5835bd>", line 1</p>
+
+<pre><code>print 'Hello, World!'
+                    ^
+</code></pre>
+
+<p>SyntaxError: invalid syntax
+```</p>
+
+<h2>整除方法</h2>
+
+<p>这个改变有点变态，因为如果当你把python2的代码移植到python3上的时候，虽然写法一样，但是操作结果却不一样。</p>
+
+<p>比如在python2中</p>
+
+<p><code>python
+print 'Python', python_version()
+print '3 / 2 =', 3 / 2
+print '3 // 2 =', 3 // 2
+print '3 / 2.0 =', 3 / 2.0
+print '3 // 2.0 =', 3 // 2.0
+</code></p>
+
+<p>输出是这样的</p>
+
+<p><code>
+Python 2.7.6
+3 / 2 = 1
+3 // 2 = 1
+3 / 2.0 = 1.5
+3 // 2.0 = 1.0
+</code></p>
+
+<p>但是在python3中同样的代码</p>
+
+<p><code>python
+print('Python', python_version())
+print('3 / 2 =', 3 / 2)
+print('3 // 2 =', 3 // 2)
+print('3 / 2.0 =', 3 / 2.0)
+print('3 // 2.0 =', 3 // 2.0)
+</code></p>
+
+<p>输出却是这样的</p>
+
+<p><code>
+Python 3.4.1
+3 / 2 = 1.5
+3 // 2 = 1
+3 / 2.0 = 1.5
+3 // 2.0 = 1.0
+</code></p>
+
+<p>所以这个坑等着你跳，而且相信有很多人会跳</p>
+
+<h2>字符串</h2>
+
+<p>python2使用的是ASCII编码来表示字符串，与unicode()不同，而且没有byte类型。
+python3默认是使用Unicode(UTF-8)来表示字符串，并且有byte和bytearrays两种类型(类)。</p>
+
+<p>python2的如下代码</p>
+
+<p><code>python
+print type(unicode('this is like a python3 str type'))
+print type(b'byte type does not exist')
+print 'they are really' + b' the same'
+print type(bytearray(b'bytearray oddly does exist though'))
+</code></p>
+
+<p>将得到如下输出</p>
+
+<p><code>
+&lt;type 'unicode'&gt;
+&lt;type 'str'&gt;
+they are really the same
+&lt;type 'bytearray'&gt;
+</code></p>
+
+<p><code>python
+print('strings are now utf-8 \u03BCnico\u0394é!')
+print(' has', type(b' bytes for storing data'))
+print('and Python', python_version(), end="")
+</code></p>
+
+<p>将得到下面输出</p>
+
+<p><code>
+strings are now utf-8 μnicoΔé!
+has &lt;class 'bytes'&gt;
+also has &lt;class 'bytearray'&gt;
+</code></p>
+
+<h2>异常处理</h2>
+
+<p>这里只是写法不一样，python2允许使用两种错误抛出的写法，python3中值允许一种，如下：</p>
+
+<p>在python2中</p>
+
+<p><code>python
+raise IOError, "file error"
+</code></p>
+
+<p><code>python
+raise IOError("file error")
+</code></p>
+
+<p>都可以可以得到输出</p>
+
+<h2>```</h2>
+
+<p>IOError                                   Traceback (most recent call last)
+<ipython-input-8-25f049caebb0> in <module>()
+----> 1 raise IOError, "file error"</p>
+
+<p>IOError: file error
+```</p>
+
+<p>在python3中只有</p>
+
+<p><code>python
+raise IOError("file error")
+</code></p>
+
+<p>才能得到正确的输出</p>
+
+<h2>except</h2>
+
+<p>python2中的except表达式如下</p>
+
+<p>```python
+try:</p>
+
+<pre><code>let_us_cause_a_NameError
+</code></pre>
+
+<p>except NameError, err:</p>
+
+<pre><code>print err, '--&gt; our error message'
+</code></pre>
+
+<p>```</p>
+
+<p>但在python3中必须使用as关键字，有些不习惯。</p>
+
+<p>```python
+try:</p>
+
+<pre><code>let_us_cause_a_NameError
+</code></pre>
+
+<p>except NameError as err:</p>
+
+<pre><code>print(err, '--&gt; our error message')
+</code></pre>
+
+<p>```</p>
+
+<p>他们都能输出</p>
+
+<p><code>
+name 'let_us_cause_a_NameError' is not defined --&gt; our error message
+</code></p>
+
+<h2>for循环</h2>
+
+<p>这是一个很棒的改进，for-loop中的变量不再会泄漏到全局命名空间了！</p>
+
+<p>比如在python2中</p>
+
+<p><code>python
+i = 1
+print 'before: i =', i
+print 'comprehension: ', [i for i in range(5)]
+print 'after: i =', i
+</code></p>
+
+<p>会得到这样的输出</p>
+
+<p><code>
+before: i = 1
+comprehension:  [0, 1, 2, 3, 4]
+after: i = 4
+</code></p>
+
+<p>在python3中，就正常了</p>
+
+<p><code>python
+i = 1
+print('before: i =', i)
+print('comprehension:', [i for i in range(5)])
+print('after: i =', i)
+</code></p>
+
+<p>输出是这样的</p>
+
+<p><code>
+before: i = 1
+comprehension: [0, 1, 2, 3, 4]
+after: i = 1
+</code></p>
+
+<h2>比较大小</h2>
+
+<p>还有一个重要的改变是比较功能，不同类型比较的时候python3会抛出错误了。</p>
+
+<p>python2代码如下</p>
+
+<p><code>python
+print "[1, 2] &gt; 'foo' = ", [1, 2] &gt; 'foo'
+print "(1, 2) &gt; 'foo' = ", (1, 2) &gt; 'foo'
+print "[1, 2] &gt; (1, 2) = ", [1, 2] &gt; (1, 2)
+</code></p>
+
+<p>这样的比较能得到结果，是c/c艹程序员想都不敢想的。但python2就能得到结果</p>
+
+<p><code>
+[1, 2] &gt; 'foo' =  False
+(1, 2) &gt; 'foo' =  True
+[1, 2] &gt; (1, 2) =  False
+</code></p>
+
+<p>在跑一趟好哦你3中</p>
+
+<p><code>python
+print("[1, 2] &gt; 'foo' = ", [1, 2] &gt; 'foo')
+print("(1, 2) &gt; 'foo' = ", (1, 2) &gt; 'foo')
+print("[1, 2] &gt; (1, 2) = ", [1, 2] &gt; (1, 2))
+</code></p>
+
+<p>会抛出异常</p>
+
+<h2>```</h2>
+
+<p>TypeError                                 Traceback (most recent call last)
+<ipython-input-16-a9031729f4a0> in <module>()</p>
+
+<pre><code>  1 print('Python', python_version())
+</code></pre>
+
+<p>----> 2 print("[1, 2] > 'foo' = ", [1, 2] > 'foo')</p>
+
+<pre><code>  3 print("(1, 2) &gt; 'foo' = ", (1, 2) &gt; 'foo')
+  4 print("[1, 2] &gt; (1, 2) = ", [1, 2] &gt; (1, 2))
+</code></pre>
+
+<p>TypeError: unorderable types: list() > str()
+```</p>
+
+<h2>input</h2>
+
+<p>python3的input函数也有所改变，它把把接收的数据都当成<code>str</code>处理。而在python中，我们还需要raw_input()来解决这个问题</p>
+
+<p>python2代码</p>
+
+<p>```shell</p>
+
+<blockquote><blockquote><blockquote><p>my_input = input('enter a number: ')
+enter a number: 123
+type(my_input)
+<type 'int'>
+my_input = raw_input('enter a number: ')
+enter a number: 123
+type(my_input)
+<type 'str'>
+```</p></blockquote></blockquote></blockquote>
+
+<p>python3代码</p>
+
+<p>```python</p>
+
+<blockquote><blockquote><blockquote><p>my_input = input('enter a number: ')
+enter a number: 123
+type(my_input) <class 'str'>
+```</p></blockquote></blockquote></blockquote>
+
+<h2>xrange()</h2>
+
+<p>在python2总我们广泛的使用<code>xrange()</code>来做迭代，通常情况下<code>xrange()</code>会比<code>range()</code>快一点，但是python3中取消了<code>xrange()</code>。</p>
+
+<p>比如函数如下</p>
+
+<p>```python
+import timeit</p>
+
+<p>n = 10000
+def test_range(n):</p>
+
+<pre><code>return for i in range(n):
+    pass
+</code></pre>
+
+<p>def test_xrange(n):</p>
+
+<pre><code>for i in xrange(n):
+    pass    
+</code></pre>
+
+<p>```</p>
+
+<p>在python2中调用</p>
+
+<p>```python
+print '\ntiming range()'
+%timeit test_range(n)</p>
+
+<p>print '\n\ntiming xrange()'
+%timeit test_xrange(n)
+```</p>
+
+<p>得到输出</p>
+
+<p><code>
+timing range()
+1000 loops, best of 3: 433 µs per loop
+timing xrange()
+1000 loops, best of 3: 350 µs per loop
+</code></p>
+
+<p>在python3中调用</p>
+
+<p><code>python
+print('\ntiming range()')
+%timeit test_range(n)
+</code></p>
+
+<p>输出</p>
+
+<p><code>
+timing range()
+1000 loops, best of 3: 520 µs per loop
+</code></p>
+
+<h4>不断继续补充中。。。。。</h4>
+
+
+        <div id="disqus_container">
+            <div style="margin-bottom:20px" class="right">
+                <script type="text/javascript" charset="utf-8">
+                (function(){
+                  var _w = 86 , _h = 16;
+                  var param = {
+                    url:location.href,
+                    type:'6',
+                    count:'', /**是否显示分享数，1显示(可选)*/
+                    appkey:'', /**您申请的应用appkey,显示分享来源(可选)*/
+                    title:'', /**分享的文字内容(可选，默认为所在页面的title)*/
+                    pic:'', /**分享图片的路径(可选)*/
+                    ralateUid:'2428228892', /**关联用户的UID，分享微博会@该用户(可选)*/
+                    language:'zh_cn', /**设置语言，zh_cn|zh_tw(可选)*/
+                    rnd:new Date().valueOf()
+                  }
+                  var temp = [];
+                  for( var p in param ){
+                    temp.push(p + '=' + encodeURIComponent( param[p] || '' ) )
+                  }
+                  document.write('<iframe allowTransparency="true" frameborder="0" scrolling="no" src="http://hits.sinajs.cn/A1/weiboshare.html?' + temp.join('&') + '" width="'+ _w+'" height="'+_h+'"></iframe>')
+                })()
+                </script>
+            </div>
+            <a href="#" class="comment" onclick="return false;">点击查看评论</a>
+            <div id="disqus_thread"></div>
+        </div>
+    </div>
+
+    <div class="sidenav">
+        <iframe width="250" height="100" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=250&height=100&fansRow=2&ptype=1&speed=0&skin=1&isTitle=0&noborder=1&isWeibo=0&isFans=0&uid=2428228892&verifier=76bf5e3a&dpc=1"></iframe>
+    </div>
+
+    <div class="sidenav">
+        <h2>Blog</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/zh-cn-PEP333">PEP333中文概要</a></li>
+        
+            <li><a href="/python-skills">python小技巧</a></li>
+        
+            <li><a href="/nothing">博客搬家</a></li>
+        
+            <li><a href="/command">重用命令记录</a></li>
+        
+            <li><a href="/server-program-model">服务器编程的几种常见模型</a></li>
+        
+            <li><a href="/study-tornado">Python Tornado学习</a></li>
+        
+            <li><a href="/findwork">学习记录</a></li>
+        
+            <li><a href="/diff-py2-py3">python2.7.x和python3.x的简单区别</a></li>
+        
+            <li><a href="/linotp">LinOTP简单使用教程</a></li>
+        
+            <li><a href="/process-signal">进程同步的若干问题</a></li>
+        
+            <li><a href="/memo">备忘录</a></li>
+        
+            <li><a href="/python-spider">简单爬虫</a></li>
+        
+            <li><a href="/learn-python">半天简单总结python</a></li>
+        
+            <li><a href="/raspberry-car">树莓派制作wifi控制小车</a></li>
+        
+            <li><a href="/c-memory">c语言学习-内存</a></li>
+        
+            <li><a href="/C-stander">C 语言编码风格和标准</a></li>
+        
+            <li><a href="/C-pointer">c语言学习-指针</a></li>
+        
+            <li><a href="/C-scanf">C语言学习-让人头疼的scanf</a></li>
+        
+            <li><a href="/learn-gitPage">使用Github Pages建独立博客</a></li>
+        
+        </ul>
+
+        <h2>Opinion</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/Mybirthday">颓废</a></li>
+        
+            <li><a href="/yearOf2011">从一个地方到另一个地方</a></li>
+        
+        </ul>
+
+        
+        <a href="/project"><h2>About me</h2></a>
+        <!--
+        <h2>Project</h2>
+        <ul class="artical-list">
+        
+        </ul>
+        -->
+    </div>
+</div>
+
+<script src="/js/post.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">
+        $(function(){
+            $('.home-follow').click(function(e){
+                e.preventDefault();
+
+                if($('.home-contact').is(':visible')){
+                    $('.home-contact').slideUp(100);
+                }else{
+                    $('.home-contact').slideDown(100);
+                }
+            });
+        })
+    </script>
+</body>
+</html>

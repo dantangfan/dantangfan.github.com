@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--
+    * Author:         dantangfan
+    -->
+    <meta charset="utf-8" />
+    <title>LinOTP简单使用教程 |  dantangfan </title>
+    <meta name="author" content="dantangfan" />
+    <meta name="description" content="hj's Blog" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="/css/default.css" type="text/css" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="alternate" type="application/atom+xml" title="Recent Entries" href="/atom.xml" />
+    <script src="/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+    <div class="home-menu">
+        <div class="home-icon-con">
+            <a class="home-menu-icon" href="/">dantangfan</a>
+            <a class="home-follow" href="#" title="Contact Me">+</a>
+        </div>
+        <div class="home-contact">
+            <a href="http://weibo.com/u/2428228892/" target="_blank" style="margin-left:-5px;"><img src="http://www.weibo.com/favicon.ico" alt="" width="25"/></a>
+            <a href="https://github.com/dantangfan/" target="_blank" style="text-align:center;"><img src="https://github.com/favicon.ico" alt="" width="22"/></a>
+            <a href="http://renren.com/419506097" target="_blank" style="text-align:right"><img src="http://iconpng.com/png/website_icons/renren.png" alt="" width="22"/></a>
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="/js/prettify/prettify.css" />
+<style type="text/css">
+    body { background:#e8e8e8; }
+    @media screen and (max-width: 750px){
+        body { background:#fff; }
+    }
+    @media screen and (max-width: 1020px){
+        body { background:#fff; }
+    }
+</style>
+
+<div id="content">
+    <div class="entry">
+        <h1 class="entry-title"><a href="/linotp" title="LinOTP简单使用教程">LinOTP简单使用教程</a></h1>
+        <p class="entry-date">2014-08-07</p>
+        <p>LinOTP是Google官方开源的one time password企业管理应用，但在国内使用的企业貌似不多。实习的时候老师要求配置一个系统，但国内很少有人给出了实际使用方法，而且官方的document写得真的是不忍吐槽。于是就自己写一个简单教程，也算是对官方教程的一个简单翻译和整合。</p>
+
+<p>看完这个教程，你将能搭建最基础的应用。但是如果你想把它作为你的企业应用，最好还是自己摸索一番，或者直接联系开发者和邮件列表。</p>
+
+<h2>一、从安装说起</h2>
+
+<p>ubuntu和debian有标准的一键安装，加入软件源后直接可用，red hat和centos等其他发行版需要使用pypi安装，并且手动安装所有依赖。
+这里以centos6.5为例子，说明简要的安装过程：</p>
+
+<p>首先安装virtualenv用于建立一个隔离的python环境，由于virtualenv的存在，我们可以在任何一个发行版中用pypi安装和使用linotp</p>
+
+<p><code>shell
+yum install python-virtualenv
+</code></p>
+
+<p>单独建立一个文件夹来构造linotp独立的python环境</p>
+
+<p><code>shell
+mkdir -p /opt/LINOTP
+virtualenv –-no-site-packages /opt/LINOTP
+</code></p>
+
+<p>进入LINOTP文件夹，开始并切换工作目录到当前虚拟环境，<strong>每次需要启动或者使用LINOTP文件夹内的app时都需要使用下面命令</strong></p>
+
+<p><code>shell
+cd /opt/LINOTP
+source bin/activate
+</code></p>
+
+<p>使用下面命令退出虚拟环境</p>
+
+<p><code>shell
+deactivate
+</code></p>
+
+<p>我们需要在虚拟环境中安装所需的依赖</p>
+
+<p><code>
+yum install python-devel swig gcc openssl-devel openldap-devel mysql-devel
+</code></p>
+
+<p>现在可以直接使用pip安装linotp</p>
+
+<p><code>
+pip install linotp
+</code></p>
+
+<p>安装使用各种token所需要的依赖（可能并不是所有包到都能安装）</p>
+
+<p><code>
+pip install pil
+pip install m2crypto
+pip install psycopg2
+pip install MySQL-python
+pip install SMSProvider
+</code></p>
+
+<blockquote><p>注意：为了方便，我们应该把配置文件都放在/etc文件夹下，而不是直接放在/opt/LINTOP/etc/linotp2下面，所以直接拷贝配置文件到/etc目录下</p></blockquote>
+
+<p><code>
+cp -rf /opt/LINOTP/etc/linotp2 /etc/linotp2
+</code></p>
+
+<blockquote><p>警告：pip不会自动的更新所安装的软件，所以我们安装的依赖并不是最新的，也最好不要手动编译安装，LinOTP提供了更新命令<code>linotp-pip-update</code>，但是一定不要使用（至少在centos6.5下不要使用），因为高版本的库并不支持linotp。</p></blockquote>
+
+<h2>二、建立你的数据库</h2>
+
+<p>如果使用的是mysql，可以直接使用下面命令</p>
+
+<p><code>
+mysql -u root -p mysql
+create database L2demo;
+grant all privileges on L2demo.* to 'linotp'@'localhost' identified by 'mySecret';
+flush privileges;
+quit;
+</code></p>
+
+<blockquote><p>注意：linotp里面有个默认配置叫<code>/etc/linotp2/linotp.ini.example</code>，为使用此配置，我们需要重命名该文件为<code>/etc/linotp2/linotp.ini</code></p></blockquote>
+
+<p>在linotp.ini中找到<code>sqlalchemy.url</code>，并修改为</p>
+
+<p><code>
+sqlalchemy.url = mysql://linotp:mySecret@localhost/L2demo
+</code></p>
+
+<p>还需要创建一个加密密钥</p>
+
+<p><code>
+dd if=/dev/urandom of=/etc/linotp2/encKey bs=1 count=96
+</code></p>
+
+<p>创建log文件夹</p>
+
+<p><code>
+mkdir /var/log/linotp
+</code></p>
+
+<p>现在就可以正式创建数据库表单了</p>
+
+<p><code>
+paster setup-app /etc/linotp2/linotp.ini
+</code></p>
+
+<h2>三、在apache上把样例跑起来</h2>
+
+<p>我们需要借用apache使用webUI的管理页面，首先使用下面命令创建一个文件</p>
+
+<p><code>
+htdigest /etc/linotp2/admins “LinOTP2 admin area” admin
+</code></p>
+
+<p>我们需要安装并激活以下模块</p>
+
+<p><code>
+yum install mod_wsgi
+yum install mod_ssl
+</code></p>
+
+<blockquote><p>注意：在使用过程中端口会遭到iptables的拦截，这时候我们可以简单的关闭iptables<code>/etc/init.d/iptables stop</code>或者开放指定端口,在/etc/sysconfig/iptables文件中添加如下命令(或许还需要更多端口)</p></blockquote>
+
+<p><code>
+-A INPUT -p tcp -m tcp --sport 443 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 443 -j ACCEPT
+-A INPUT -p tcp -m tcp --sport 3389 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 3389 -j ACCEPT
+-A INPUT -p tcp -m tcp --sport 5001 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 5001 -j ACCEPT
+</code></p>
+
+<p>还需要建立一个wsgi的文件夹，不然WSGI模块不能正常启动</p>
+
+<p><code>
+mkdir /var/run/wsgi
+</code></p>
+
+<p>现在我们可以进一步配置apache-server了。
+首先创建一个认证文件<code>touch /etc/[httpd|apache2]/linotp-auth.conf</code>(centos是httpd文件夹下)
+在此文件中添加以下内容</p>
+
+<p><code>
+AuthType Digest
+AuthName “LinOTP2 admin area”
+AuthDigestProvider file
+AuthUserFile /etc/linotp2/admins
+Require valid-user
+</code></p>
+
+<p>无论LinOTP的配置文件放在哪里，都需要包含以下内容。这里我直接添加到<code>/etc/httpd/conf/httpd.conf</code>文件的最后（针对不同的系统，可能要对文件中文件的路径进行修改）</p>
+
+<p>```
+Listen 443
+WSGIPythonHome /opt/LINOTP
+WSGISocketPrefix /var/run/wsgi
+<VirtualHost _default_:443>
+   ServerAdmin webmaster@localhost
+   DocumentRoot /var/www
+   <Directory /></p>
+
+<pre><code>  Options FollowSymLinks
+  AllowOverride None
+</code></pre>
+
+<p>   </Directory>
+   <Directory /var/www/></p>
+
+<pre><code>  Options Indexes FollowSymLinks MultiViews
+  AllowOverride None
+  Order allow,deny
+  allow from all
+</code></pre>
+
+<p>   </Directory></p>
+
+<p>   Alias /doc/html         /usr/share/doc/linotpdoc/html
+   WSGIScriptAlias /       /etc/linotp2/linotpapp.wsgi
+   #
+   # The daemon is running as user 'linotp'
+   # This user should have access to the encKey database encryption file
+   WSGIDaemonProcess linotp processes=1 threads=15 display-name=%{GROUP} user=linotp
+   WSGIProcessGroup linotp
+   WSGIPassAuthorization On</p>
+
+<p>   <Location /admin></p>
+
+<pre><code>  Include /etc/httpd/linotp-auth.conf
+</code></pre>
+
+<p>   </Location>
+   <Location /audit></p>
+
+<pre><code>  Include /etc/httpd/linotp-auth.conf
+</code></pre>
+
+<p>   </Location>
+   <Location /gettoken></p>
+
+<pre><code>  AuthType Digest
+  AuthName "LinOTP2 gettoken"
+  AuthDigestProvider file
+  AuthUserFile /etc/linotp2/gettoken-api
+  Require valid-user
+</code></pre>
+
+<p>   </Location>
+   <Location /manage></p>
+
+<pre><code>         Include /etc/httpd/linotp-auth.conf
+</code></pre>
+
+<p>   </Location>
+   <Location /selfservice></p>
+
+<pre><code>  # The authentication for selfservice is done from within the application
+</code></pre>
+
+<p>   </Location>
+   <Location /system></p>
+
+<pre><code> Include /etc/httpd/linotp-auth.conf
+</code></pre>
+
+<p>   </Location>
+   <Location /license></p>
+
+<pre><code> Include /etc/httpd/linotp-auth.conf
+</code></pre>
+
+<p>   </Location>
+   <Location /validate></p>
+
+<pre><code>  # No Authentication
+</code></pre>
+
+<p>   </Location></p>
+
+<p>   ErrorLog /var/log/httpd/error.log
+   LogLevel warn</p>
+
+<p>   # Do not use %q! This will reveal all parameters, including setting PINs and Keys!
+   # Using SSL_CLIENT_S_DN_CN will show you, which administrator did what task
+   LogFormat "%h %l %u %t %>s \"%m %U %H\"  %b \"%{Referer}i\" \"%{User-agent}i\" " LinOTP2
+   CustomLog /var/log/httpd/ssl_access.log LinOTP2</p>
+
+<p>   #   SSL Engine Switch:
+   #   Enable/Disable SSL for this virtual host.
+   SSLEngine on</p>
+
+<p>   #   If both key and certificate are stored in the same file, only the
+   #   SSLCertificateFile directive is needed.
+   SSLCertificateFile    /etc/ssl/certs/linotpserver.pem
+   SSLCertificateKeyFile /etc/ssl/private/linotpserver.key
+   <FilesMatch "\.(cgi|shtml|phtml|php)$"></p>
+
+<pre><code>  SSLOptions +StdEnvVars
+</code></pre>
+
+<p>   </FilesMatch>
+   <Directory /usr/lib/cgi-bin></p>
+
+<pre><code>  SSLOptions +StdEnvVars
+</code></pre>
+
+<p>   </Directory>
+   BrowserMatch ".<em>MSIE.</em>" \</p>
+
+<pre><code> nokeepalive ssl-unclean-shutdown \
+ downgrade-1.0 force-response-1.0
+</code></pre>
+
+<p>   ErrorDocument 500 "<h1>Internal Server Error</h1> Possible reasons can be missing modules or bad access rights \</p>
+
+<pre><code>                 on LinOTP configuration files or log files. Please check the apache logfile \
+                 &lt;pre&gt;/var/log/httpd/error_log&lt;/pre&gt; for more details."
+</code></pre>
+
+<p></VirtualHost>
+```</p>
+
+<blockquote><p>注意：centos的mod_ssl在<code>/etc/httpd/conf.d/</code>中自带了一个<code>ssl.conf</code>的配置文件，里面已经定义了<code>VirtualHost</code>,所以这里需要相应的调整不然端口会发生冲突。（为方便可以直接重命名为<code>ssl.conf.old</code>）</p>
+
+<p>注意：如果发现<code>linotpserver.pem</code>等密钥不存在，那我么需要手动生成一些</p></blockquote>
+
+<p>WSGI的进程默认使用名字叫<code>linotp</code>的用户，所以我们需要新建一个用户来使用它</p>
+
+<p><code>
+adduser -r linotp -d /opt/LINOTP
+</code></p>
+
+<p>现在可以把<code>/opt/LINOTP/etc/linotp2/linotpapp.wsgi</code>文件复制到<code>/etc/linotp2</code>文件夹中</p>
+
+<p><code>
+cp /opt/LINOTP/etc/linotp2/linotpapp.wsgi /etc/linotp2
+</code></p>
+
+<p>最后查看我们建立的文件的权限，只有在适合的权限下才能正常使用linotp-server。我们希望看到的权限如下</p>
+
+<ul>
+<li>/etc/linotp2/linotp.ini - linotp should have read access</li>
+<li>/etc/linotp2/encKey - linotp should have read access</li>
+<li>/etc/linotp2/data/ - This is a template directory, linotp should have write access</li>
+<li>/var/log/linotp/ - linotp should have write access</li>
+</ul>
+
+
+<blockquote><p>注意：如果权限不当，可以使用<code>linotp-fix-access-rights -f /etc/linotp2/linotp.ini -u linotp</code>来修复权限</p></blockquote>
+
+<p>重启apache和mysql</p>
+
+<p><code>
+apachectl restart#输入你设定的密码
+service mysqld restart
+</code></p>
+
+<p>现在我们可以从命令行启动服务器了</p>
+
+<p><code>
+paster serve /etc/linotp2/linotp.ini
+</code></p>
+
+<p>linotp会监听你在linotp.ini中定义的端口，接下来在浏览器中访问<code>http://&lt;yourserverIP&gt;:5001/manage</code>就可以进入manage的页面。</p>
+
+<blockquote><p>警告！！！：这里的管理页面是不需要用户名和密码就能登录的，只供测试使用。密码需要自行在apache中配置</p></blockquote>
+
+<h2>四、admin管理界面</h2>
+
+<p><img src="/images/linotp/manage1.png" alt="manage1.png" /></p>
+
+<h3>1.创建用户</h3>
+
+<p>使用<code>LinOTP config-&gt;useridresover</code>创建一个useridresover。这里有三种创建方式</p>
+
+<ul>
+<li>Configuring LDAP UserIdResolver</li>
+<li>Configuring SQL UserIdResolver</li>
+<li>Configuring Passwd (Flatfile) UserIdResolver</li>
+</ul>
+
+
+<p>当然最间但的是flatfile方式创建，这中格式的用户文件和*nix中的/etc/passwd文件格式一样，因此我们可以直接导入文件<code>/etc/passwd</code>，导入后刷新就可以看到成功导入的用户。但是这样做有一个问题，<code>/etc/passwd</code>文件中的并没有保存用户密码/加密后的信息，就让我们的用户实际无法登录，因此更好更简洁的办法是把是使用</p>
+
+<p><code>
+linotp-create-pwidresolver-user -u [username] -i [userid] -p [password] -d [description]&gt;&gt; passwd-file
+</code></p>
+
+<p>创建测试用户,可以用此方法创建多个，然后导入的时候直接导入<code>passwd-file</code>文件</p>
+
+<h3>2.创建用户组</h3>
+
+<p><code>LinOTP config-&gt;realms</code>按提示创建就行，并且指定一个默认的用户组</p>
+
+<p><img src="/images/linotp/manage2.png" alt="manage2.png" /></p>
+
+<h3>3.创建token</h3>
+
+<p>token可以从文件中导入，可以从官方文档中查看支持的token和导入方法</p>
+
+<ul>
+<li><a href="http://www.linotp.org/doc/latest/part-management/supported-tokens.html">http://www.linotp.org/doc/latest/part-management/supported-tokens.html</a></li>
+<li><a href="http://www.linotp.org/doc/latest/part-management/managingtokens/index.html">http://www.linotp.org/doc/latest/part-management/managingtokens/index.html</a></li>
+</ul>
+
+
+<p>更简单的方法是手动创建token，点击左边侧烂<code>enroll</code>可以看到创建token选项，这里我选择<code>HMAC eventbased</code>，并勾选<code>Generate HMAC key</code></p>
+
+<p><img src="/images/linotp/manage3.png" alt="manage3.png" /></p>
+
+<p>点击<code>enroll</code>看到了生成的二维码，点击<code>OK</code>就可以在主页上<code>Token view</code>看到生成的token</p>
+
+<p><img src="/images/linotp/manage4.png" alt="manage4.png" /></p>
+
+<h3>4.把user注册到token上面</h3>
+
+<p>方法很简单，在<code>Token view</code>单击想要的token，切换到<code>User view</code>下面单击相应的user，就可以在页面的左上角看到相应的信息类似如下</p>
+
+<p><img src="/images/linotp/manage5.png" alt="manage5.png" /></p>
+
+<h3>5.policy</h3>
+
+<p>这是最重要的一部分，关系到了用户的权限问题。policy有很多种类型，具体可以参见官方文档<a href="http://www.linotp.org/doc/latest/part-management/policy/index.html">http://www.linotp.org/doc/latest/part-management/policy/index.html</a></p>
+
+<p>这里，我以selfpolicy为例。</p>
+
+<p><img src="/images/linotp/policy.png" alt="policy.png" /></p>
+
+<p>action是最重要的一部分，它直接指明了user的权限。不同的user类型有不同的权限，官方文档给出了一个推荐的最佳配置<a href="http://www.linotp.org/doc/latest/part-management/policy/best-practice.html">http://www.linotp.org/doc/latest/part-management/policy/best-practice.html</a></p>
+
+<p>policy配置好之后，就可以从浏览器登录用户了。</p>
+
+<p>浏览器输入<code>http://[yourIP]:5001/account/login</code>根据用户名和密码就可以登录</p>
+
+<h3>6.system config</h3>
+
+<p>从manage页面我们还可以设置<code>LinOTP config-&gt;system config</code>，不过配置对简单的实验影响不大，官方文档有也把配置方式写得很清楚<a href="http://www.linotp.org/doc/latest/part-management/system-config.html">http://www.linotp.org/doc/latest/part-management/system-config.html</a></p>
+
+<h2>五、Selfservice Protal管理界面</h2>
+
+<p>登录后我们可以看到如下界面，根据对<code>policy-&gt;action</code>的设置，界面可能有所不同。</p>
+
+<p><img src="/images/linotp/portal1.png" alt="portal1.png" /></p>
+
+<p>官方文档写得很简要<a href="http://www.linotp.org/doc/latest/part-user/workflow.html">http://www.linotp.org/doc/latest/part-user/workflow.html</a></p>
+
+<p>这里，我通过一个小例子说明。</p>
+
+<p>比如我们选择<code>Enroll Google Authenticator</code>，然后点击<code>Enroll Google Authenticator</code></p>
+
+<p><img src="/images/linotp/portal2.png" alt="portal2.png" /></p>
+
+<p>可以看到页面左上生成了一个token（这个时候退回去看manage页面，发现也生成了一个token）。然后在你的iphone/Android上安装 google authenticator ，并扫描这个时候生成的二维码。再次使用该应用时候，就可以看到手机上出现了六位数字。这个数字就是你登录自己应用的时候所需要的密码。</p>
+
+<p>我们可以登录<code>http://[yourIP]:5001/auth/index</code>来测试应用是否成功。</p>
+
+
+        <div id="disqus_container">
+            <div style="margin-bottom:20px" class="right">
+                <script type="text/javascript" charset="utf-8">
+                (function(){
+                  var _w = 86 , _h = 16;
+                  var param = {
+                    url:location.href,
+                    type:'6',
+                    count:'', /**是否显示分享数，1显示(可选)*/
+                    appkey:'', /**您申请的应用appkey,显示分享来源(可选)*/
+                    title:'', /**分享的文字内容(可选，默认为所在页面的title)*/
+                    pic:'', /**分享图片的路径(可选)*/
+                    ralateUid:'2428228892', /**关联用户的UID，分享微博会@该用户(可选)*/
+                    language:'zh_cn', /**设置语言，zh_cn|zh_tw(可选)*/
+                    rnd:new Date().valueOf()
+                  }
+                  var temp = [];
+                  for( var p in param ){
+                    temp.push(p + '=' + encodeURIComponent( param[p] || '' ) )
+                  }
+                  document.write('<iframe allowTransparency="true" frameborder="0" scrolling="no" src="http://hits.sinajs.cn/A1/weiboshare.html?' + temp.join('&') + '" width="'+ _w+'" height="'+_h+'"></iframe>')
+                })()
+                </script>
+            </div>
+            <a href="#" class="comment" onclick="return false;">点击查看评论</a>
+            <div id="disqus_thread"></div>
+        </div>
+    </div>
+
+    <div class="sidenav">
+        <iframe width="250" height="100" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=250&height=100&fansRow=2&ptype=1&speed=0&skin=1&isTitle=0&noborder=1&isWeibo=0&isFans=0&uid=2428228892&verifier=76bf5e3a&dpc=1"></iframe>
+    </div>
+
+    <div class="sidenav">
+        <h2>Blog</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/zh-cn-PEP333">PEP333中文概要</a></li>
+        
+            <li><a href="/python-skills">python小技巧</a></li>
+        
+            <li><a href="/nothing">博客搬家</a></li>
+        
+            <li><a href="/command">重用命令记录</a></li>
+        
+            <li><a href="/server-program-model">服务器编程的几种常见模型</a></li>
+        
+            <li><a href="/study-tornado">Python Tornado学习</a></li>
+        
+            <li><a href="/findwork">学习记录</a></li>
+        
+            <li><a href="/diff-py2-py3">python2.7.x和python3.x的简单区别</a></li>
+        
+            <li><a href="/linotp">LinOTP简单使用教程</a></li>
+        
+            <li><a href="/process-signal">进程同步的若干问题</a></li>
+        
+            <li><a href="/memo">备忘录</a></li>
+        
+            <li><a href="/python-spider">简单爬虫</a></li>
+        
+            <li><a href="/learn-python">半天简单总结python</a></li>
+        
+            <li><a href="/raspberry-car">树莓派制作wifi控制小车</a></li>
+        
+            <li><a href="/c-memory">c语言学习-内存</a></li>
+        
+            <li><a href="/C-stander">C 语言编码风格和标准</a></li>
+        
+            <li><a href="/C-pointer">c语言学习-指针</a></li>
+        
+            <li><a href="/C-scanf">C语言学习-让人头疼的scanf</a></li>
+        
+            <li><a href="/learn-gitPage">使用Github Pages建独立博客</a></li>
+        
+        </ul>
+
+        <h2>Opinion</h2>
+        <ul class="artical-list">
+        
+            <li><a href="/Mybirthday">颓废</a></li>
+        
+            <li><a href="/yearOf2011">从一个地方到另一个地方</a></li>
+        
+        </ul>
+
+        
+        <a href="/project"><h2>About me</h2></a>
+        <!--
+        <h2>Project</h2>
+        <ul class="artical-list">
+        
+        </ul>
+        -->
+    </div>
+</div>
+
+<script src="/js/post.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">
+        $(function(){
+            $('.home-follow').click(function(e){
+                e.preventDefault();
+
+                if($('.home-contact').is(':visible')){
+                    $('.home-contact').slideUp(100);
+                }else{
+                    $('.home-contact').slideDown(100);
+                }
+            });
+        })
+    </script>
+</body>
+</html>

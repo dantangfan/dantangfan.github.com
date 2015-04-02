@@ -45,7 +45,7 @@
         <p class="entry-date">2013-02-20</p>
         <h2>0.摘要</h2>
 
-<p>本文根据<a href="http://code.google.com/p/recommended-c-style-and-coding-standards-cn/">google code</a>翻译自<a href="https://www.doc.ic.ac.uk/lab/cplus/cstyle.html">《Recommended C Style and Coding Standards》</a>整理改编</p>
+<p>本文根据<a href="http://code.google.com/p/recommended-c-style-and-coding-standards-cn/">google code</a>翻译自<a href="https://www.doc.ic.ac.uk/lab/cplus/cstyle.html">《Recommended C Style and Coding Standards》</a>整理</p>
 
 <h3>作者信息:</h3>
 
@@ -148,12 +148,18 @@ Mark Brader (SoftQuad? Incorporated, Toronto)</p>
 
 <p>一个通用的做法是将下面这段代码加入到每个头文件中以防止头文件被意外多次包含。</p>
 
-<pre><code class="c">#ifndef EXAMPLE_H
-#define EXAMPLE_H
-...
-/* body of example.h file */
-#endif /* EXAMPLE_H */
-</code></pre>
+<p>```c</p>
+
+<h1>ifndef EXAMPLE_H</h1>
+
+<h1>define EXAMPLE_H</h1>
+
+<p>...
+/<em> body of example.h file </em>/</p>
+
+<h1>endif /<em> EXAMPLE_H </em>/</h1>
+
+<p>```c</p>
 
 <p>我们不应该对这种避免多次包含的机制产生依赖,特别是不应该因此而嵌套包含头文件。</p>
 
@@ -177,23 +183,31 @@ Mark Brader (SoftQuad? Incorporated, Toronto)</p>
 
 <p>后者是错误的,因为实际上 t 和 u 并未如预期那样被声明为指针。不相关的声明,即使是相同类型的,也应该独立占据一行。我们应该对声明对象的角色进行注释,不过当常量名本身足以说明角色时,使用#define 定义的常量列表则不需要注释。通常多行变量名、值与注释使用相同缩进,使得他们在一列直线上。尽量使用 Tab 字符而不是空格。结构体和联合体的声明时,每个元素应该单独占据一行,并附带一条注释。{应该与结构体的 tag 名放在同一行,}应该放在声明结尾的第一列。</p>
 
-<pre><code class="c">struct boat {
+<p>```c
+struct boat {
 int
- wllength; /* water line length in meters */
-int type; /* see below */
-long sailarea; /* sail area in square mm */
+ wllength; /<em> water line length in meters </em>/
+int type; /<em> see below </em>/
+long sailarea; /<em> sail area in square mm </em>/
 };
-/* defines for boat.type */
-#define KETCH (1)
-#define YAWL (2)
-#define SLOOP (3)
-#define SQRIG (4)
-#define MOTOR (5)
-</code></pre>
+/<em> defines for boat.type </em>/</p>
+
+<h1>define KETCH (1)</h1>
+
+<h1>define YAWL (2)</h1>
+
+<h1>define SLOOP (3)</h1>
+
+<h1>define SQRIG (4)</h1>
+
+<h1>define MOTOR (5)</h1>
+
+<p>```</p>
 
 <p>这些 defines 有时放在结构体内 type 声明的后面,并使用足够的 tab 缩进到结构体成员成员的下一级。如果这些实际值不那么重要的话,使用 enum 会更好。</p>
 
-<pre><code class="c">enum bt { KETCH=1, YAWL, SLOOP, SQRIG, MOTOR };
+<p><code>c
+enum bt { KETCH=1, YAWL, SLOOP, SQRIG, MOTOR };
 struct boat {
 int wllength; /* water line length in meters */
 enum bt type;
@@ -201,28 +215,33 @@ long sailarea;
 };
 /* what kind of boat */
 /* sail area in square mm */
-</code></pre>
+</code></p>
 
 <p>任何初值重要的变量都应该被显式地初始化,或者至少应该添加注释,说明依赖 C 的默认初始值0。空初始化"{}"应该永远不被使用。结构体初始化应 该用大括号完全括起来。用于初始化长整型(long)的常量应该使用显式长度。使用大写字母,例如2l 看起来更像21,数字二十一。</p>
 
-<pre><code class="c">int x = 1;
+<p>```c
+int x = 1;
 char *msg = "message";
-struct boat winner[] = {
-    { 40, YAWL, 6000000L },
-    { 28, MOTOR, 0L },
-    { 0 },
-};
+struct boat winner[] = {</p>
+
+<pre><code>{ 40, YAWL, 6000000L },
+{ 28, MOTOR, 0L },
+{ 0 },
 </code></pre>
+
+<p>};
+```</p>
 
 <p>如果一个文件不是独立程序,而是某个工程整体的一部分,那么我们应该最大化的利用 static 关键字,使得函数和变量对于单个文件来说是局部范畴 的。只有在有清晰需求且无法通过其他方式实现的特殊情况时,我们才允许变量被其他文件访问。这种情况下应该使用注释明确告知使用了其他文件中的变 量;注释应该说明其他文件的名字。如果你的调试器遮蔽了你需要在调试阶段查看的静态对象,那么可以将这些变量声明为 STATIC,并根据需要决定 是否#define STATIC。</p>
 
 <p>最重要的类型应该被 typedef,即使他们只是整型,因为独立的名字使得程序更加易读(如果只有很少的几个 integer 的 typedef)。 结构体在声明时应该被 typedef。保持结构体标志的名字与 typedef 后的名字相同。</p>
 
-<pre><code class="c">typedef struct splodge_t {
+<p><code>c
+typedef struct splodge_t {
 int sp_count;
 char *sp_name, *sp_alias;
 } splodge_t;
-</code></pre>
+</code></p>
 
 <p>总是声明函数的返回类型。如果函数原型可用,那就使用它。一个常见的错误就是忽略那些返回 double的外部数学函数声明。那样的话,编译器就会 假定这些函数的返回值为一个整型数,并且将 bit 位逐一尽职尽责的注意转换为一个浮点数(无意义)。</p>
 
@@ -244,9 +263,10 @@ char *sp_name, *sp_alias;
 
 <h2>5. 空白</h2>
 
-<pre><code class="c">int i;main(){for(;i["]
+<p><code>c
+int i;main(){for(;i["]
 o, world!\n",'/'/'/'));}read(j,i,p){write(j/p+p,i—j,i/i);}
-</code></pre>
+</code></p>
 
 <p>- 不光彩的事情,模糊 C 代码大赛,1984 年。作者要求匿名。</p>
 
@@ -254,40 +274,45 @@ o, world!\n",'/'/'/'));}read(j,i,p){write(j/p+p,i—j,i/i);}
 
 <p>如果一个条件分支语句过长,那就应该将它拆分成若干单独的行。</p>
 
-<pre><code class="c">if (foo-&gt;next==NULL &amp;&amp; totalcount&lt;needed &amp;&amp; needed&lt;=MAX_ALLOT
+<p><code>c
+if (foo-&gt;next==NULL &amp;&amp; totalcount&lt;needed &amp;&amp; needed&lt;=MAX_ALLOT
 &amp;&amp; server_active(current_input)) { ...
-</code></pre>
+</code></p>
 
 <p>也许下面这样更好</p>
 
-<pre><code class="c">if (foo-&gt;next == NULL
+<p><code>c
+if (foo-&gt;next == NULL
 &amp;&amp; totalcount &lt; needed &amp;&amp; needed &lt;= MAX_ALLOT
 &amp;&amp; server_active(current_input))
 {
 ...
-</code></pre>
+</code></p>
 
 <p>类似地,复杂的循环条件也应该被拆分为不同行。</p>
 
-<pre><code class="c">for (curr = *listp, trail = listp;
+<p><code>c
+for (curr = *listp, trail = listp;
 curr != NULL;
 trail = &amp;(curr-&gt;next), curr = curr-&gt;next )
 {
 ...
-</code></pre>
+</code></p>
 
 <p>其他复杂的表达式,尤其是那些使用了?:操作符的表达式,最好也能拆分成多行。</p>
 
-<pre><code class="c">c = (a == b)
+<p><code>c
+c = (a == b)
 ? d + f(a)
 : f(b) – d;
-</code></pre>
+</code></p>
 
 <p>当关键字后面有放在括号内的表达式时,应该使用空格将关键字与左括号分隔(sizeof 操作符是个例外)。在参数列表中,我们也应该使用空格显式 的将各个参数隔开。然而,带有参数的宏定义一定不能在名字与左括号间插入空格,否则 C 预编译器将无法识别后面的参数列表。</p>
 
 <h2>6. 例子</h2>
 
-<pre><code class="c">/*
+<p><code>c
+/*
 * Determine if the sky is blue by checking that it isn't night.
 * CAVEAT: Only sometimes right.
  May return TRUE when the answer
@@ -325,13 +350,14 @@ for (np = lp = nodep; np != NULL; lp = np, np = np-&gt;next)
  /* VOID */
 return (lp);
 }
-</code></pre>
+</code></p>
 
 <h2>7. 简单语句</h2>
 
 <p>每行只应该有一条语句,除非多条语句关联特别紧密。</p>
 
-<pre><code class="c">case FOO:
+<p><code>c
+case FOO:
  oogle (zork);
  boogle (zork);
  break;
@@ -343,39 +369,47 @@ case BAZ:
  oogle (gork);
  boogle (bork);
  break;
-</code></pre>
+</code></p>
 
 <p>for 或 while 循环语句的空体应该单独放在一行并加上注释,这样可以清晰的看出空体是有意而为,并非遗漏代码。</p>
 
-<pre><code class="c">while (*dest++ = *src++)
+<p><code>c
+while (*dest++ = *src++)
 ;
  /* VOID */
-</code></pre>
+</code></p>
 
 <p>不要对非零表达式进行默认测试,例如:</p>
 
-<pre><code class="c">if (f() != FAIL)
-</code></pre>
+<p><code>c
+if (f() != FAIL)
+</code></p>
 
 <p>比下面的代码更好</p>
 
-<pre><code class="c">if (f())
-</code></pre>
+<p><code>c
+if (f())
+</code></p>
 
 <p>即使 FAIL 的值可能为0(在 C 中0被认为是假)。当后续有人决定使用-1替代0作为失败返回值时,一个显式的测试将解决你的问题。即使比较的值 永远不会改变,我们也应该使用显式的比较;例如</p>
 
-<pre><code class="c">if (!(bufsize % sizeof(int)))
-</code></pre>
+<p><code>c
+if (!(bufsize % sizeof(int)))
+</code></p>
 
 <p>应该被写成</p>
 
-<pre><code class="c">if ((bufsize % sizeof(int)) == 0)
-</code></pre>
+<p><code>c
+if ((bufsize % sizeof(int)) == 0)
+</code></p>
 
 <p>这样可以反映这个测试的数值(非布尔)本质。一个常见的错误点是使用 strcmp 测试字符串是否相同,这个测试的结果永远不应该被放弃。比较好的 方法是定义一个宏 STREQ。</p>
 
-<pre><code class="c">#define STREQ(a, b) (strcmp((a), (b)) == 0)
-</code></pre>
+<p>```c</p>
+
+<h1>define STREQ(a, b) (strcmp((a), (b)) == 0)</h1>
+
+<p>```</p>
 
 <p>对谓词或满足下面约束的表达式,非零测试经常被放弃:</p>
 
@@ -389,61 +423,81 @@ case BAZ:
 
 <p>一个非常常见的实践就是在一个全局头文件中声明一个布尔类型"bool"。这个特殊的名字可以极大地提高代码可读性。</p>
 
-<pre><code class="c">typedef int bool;
-#define FALSE 0
-#define TRUE 1
-</code></pre>
+<p>```c
+typedef int bool;</p>
+
+<h1>define FALSE 0</h1>
+
+<h1>define TRUE 1</h1>
+
+<p>```</p>
 
 <p>或</p>
 
-<pre><code class="c">typedef enum { NO=0, YES } bool;
-</code></pre>
+<p><code>c
+typedef enum { NO=0, YES } bool;
+</code></p>
 
 <p>即便有了这些声明,也不要检查一个布尔值与1(TRUE,YES 等)的相当性;可用测试与0(FALSE,NO 等)的不等性替代。绝大多数函数都 可以保证为假的时候返回0,但为真的时候只返回非零。</p>
 
-<pre><code class="c">if (func() == TRUE) { ...
-</code></pre>
+<p><code>c
+if (func() == TRUE) { ...
+</code></p>
 
 <p>必须被写成</p>
 
-<pre><code class="c">if (func() != FALSE) { ...
-</code></pre>
+<p><code>c
+if (func() != FALSE) { ...
+</code></p>
 
 <p>如果可能的话,最好为函数/变量重命名或者重写这个表达式,这样就可以显而易见的知道其含义,而无需再与 true 或 false 比较了(例如,重命 名为 isvalid())。</p>
 
 <p>嵌入赋值语句也有用武之地。在一些结构中,在没有降低代码可读性的前提下,没有比这更好的方式来实现这个结果了。</p>
 
-<pre><code class="c">while ((c = getchar()) != EOF) {
-    process the character
-}
+<p>```c
+while ((c = getchar()) != EOF) {</p>
+
+<pre><code>process the character
 </code></pre>
+
+<p>}
+```</p>
 
 <p>++和–操作符可算作是赋值语句。这样,为了某些意图,实现带有副作用的功能。使用嵌入赋值语句也可能提高运行时的性能。不过,大家应该在提高 的性能与下降的可维护性之间做好权衡。当在一些人为的地方使用嵌入赋值语句时,这种情况会发生,例如:</p>
 
-<pre><code class="c">a = b + c;
+<p><code>c
+a = b + c;
 d = a + r;
-</code></pre>
+</code></p>
 
 <p>不应该被下面代码替代:</p>
 
-<pre><code class="c">d = (a = b + c) + r;
-</code></pre>
+<p><code>c
+d = (a = b + c) + r;
+</code></p>
 
 <p>即使后者可能节省一个计算周期。在长期运行时,由于优化器渐获成熟,两者的运行时间差距将下降,而两者在维护性方面的差异将提高,因为人类的记忆 会随着时间的流逝而衰退。</p>
 
 <p>在任何结构良好的代码中, goto 语句都应该保守地使用。使用 goto 带来好处最大的地方是从 switch、for 和 while 多层嵌套中跳出, 但这样做的需求也暗示了代码的内层结构应该被抽取出来放到一个单独的返回值为成功或失败的函数中。</p>
 
-<pre><code class="c">for (...) {
-    while (...) {
-        ...
-    if (disaster)
-        goto error;
-    }
+<p>```c
+for (...) {</p>
+
+<pre><code>while (...) {
+    ...
+if (disaster)
+    goto error;
 }
-...
-error:
-    clean up the mess
 </code></pre>
+
+<p>}
+...
+error:</p>
+
+<pre><code>clean up the mess
+</code></pre>
+
+<p>```</p>
 
 <p>当需要 goto 时候,其对应的标签应该被放在单独一行,并且后续的代码缩进一级。使用 goto 语句时应该增加注释(可能放在代码块的头)以说明它 的功用和目的。 continue 应该保守地使用,并且尽可能靠近循环的顶部。Break 的麻烦比较少。</p>
 
@@ -453,67 +507,102 @@ error:
 
 <p>复合语句是一个由括号括起来的语句列表。有许多种常见的括号格式化方式。如果你有一个本地标准,那请你与本地标准保持一致,或选择一个标准,并持 续地使用它。在编辑别人的代码时,始终使用那些代码中使用的样式。</p>
 
-<pre><code class="c">control {
-    statement;
-    statement;
-}
+<p>```c
+control {</p>
+
+<pre><code>statement;
+statement;
 </code></pre>
+
+<p>}
+```</p>
 
 <p>上面的风格被称为"K&amp;R 风格",如果你还没有找到一个自己喜欢的风格,那么可以优先考虑这个风格。在 K&amp;R 风格中, if- else 语句中的 else 部分以及 do-while 语句中的 while 部分应该与结尾大括号在同一行中。而其他大部分风格中,大括号都是单独占据 一行的。</p>
 
 <p>当一个代码块拥有多个标签时,每个标签应该单独放在一行上。必须为 C 语言的 switch 语句的fall-through 特性(即在代码段与下一个 case 语句之前间没有 break)增加注释以利于后期更好的维护。最好是 lint 风格的注释/指示。</p>
 
-<pre><code class="c">switch (expr) {
-    case ABC:
-    case DEF:
-    statement;
-    break;
-    case UVW:
-    statement;
-    /*FALLTHROUGH*/
-    case XYZ:
-    statement;
-    break;
-}
+<p>```c
+switch (expr) {</p>
+
+<pre><code>case ABC:
+case DEF:
+statement;
+break;
+case UVW:
+statement;
+/*FALLTHROUGH*/
+case XYZ:
+statement;
+break;
 </code></pre>
+
+<p>}
+```</p>
 
 <p>这里,最后那个 break 是不必要的,但却是必须的,因为如果后续另外一个 case 添加到最后一个 case的后面时,它将阻止 fall- through 错误的发生。如果使用 default case,那么应该该 default case 放在最后,且不需要 break,如果它是最后一个 case。</p>
 
 <p>一旦一个 if-else 语句在 if 或 else 段中包含一个复合语句,if 和 else 两个段都应该用括号括上(称为全括号(fully bracketed)语法)。</p>
 
-<pre><code class="c">if (expr) {
-    statement;
-} else {
-    statement;
-    statement;
-}
+<p>```c
+if (expr) {</p>
+
+<pre><code>statement;
 </code></pre>
+
+<p>} else {</p>
+
+<pre><code>statement;
+statement;
+</code></pre>
+
+<p>}
+```</p>
 
 <p>在如下面那样的没有第二个 else 的 if-if-else 语句序列里,括号也是不必可少的。如果 ex1后面的括号被省略,编译器解析将出错:</p>
 
-<pre><code class="c">if (ex1) {
-    if (ex2) {
-    funca();
-    }
-} else {
-    funcb();
+<p>```c
+if (ex1) {</p>
+
+<pre><code>if (ex2) {
+funca();
 }
 </code></pre>
+
+<p>} else {</p>
+
+<pre><code>funcb();
+</code></pre>
+
+<p>}
+```</p>
 
 <p>一个带 else if 的 if-else 语句在书写上应该让 else 条件左对齐。</p>
 
-<pre><code class="c">if (STREQ (reply, "yes")) {
-    statements for yes
-    ...
-} else if (STREQ (reply, "no")) {
-    ...
-} else if (STREQ (reply, "maybe")) {
-    ...
-} else {
-    statements for default
-    ...
-}
+<p>```c
+if (STREQ (reply, "yes")) {</p>
+
+<pre><code>statements for yes
+...
 </code></pre>
+
+<p>} else if (STREQ (reply, "no")) {</p>
+
+<pre><code>...
+</code></pre>
+
+<p>} else if (STREQ (reply, "maybe")) {</p>
+
+<pre><code>...
+</code></pre>
+
+<p>} else {</p>
+
+<pre><code>statements for default
+...
+</code></pre>
+
+<p>}
+```</p>
 
 <p>这种格式看起来像一个通用的 switch 语句,并且缩进反映了在这些候选语句间的精确切换,而不是嵌套的语句。</p>
 
@@ -521,28 +610,45 @@ error:
 
 <p>下面的代码非常危险:</p>
 
-<pre><code class="c">#ifdef CIRCUIT
-#define CLOSE_CIRCUIT(circno) { close_circ(circno); }
-#else
-#define CLOSE_CIRCUIT(circno)
-#endif
-...
-if (expr)
-    statement;
-else
-    CLOSE_CIRCUIT(x)
-++i;
+<p>```c</p>
+
+<h1>ifdef CIRCUIT</h1>
+
+<h1>define CLOSE_CIRCUIT(circno) { close_circ(circno); }</h1>
+
+<h1>else</h1>
+
+<h1>define CLOSE_CIRCUIT(circno)</h1>
+
+<h1>endif</h1>
+
+<p>...
+if (expr)</p>
+
+<pre><code>statement;
 </code></pre>
+
+<p>else</p>
+
+<pre><code>CLOSE_CIRCUIT(x)
+</code></pre>
+
+<p>++i;
+```</p>
 
 <p>注意,在 CIRCUIT 没有定义的系统上,语句++i 仅仅在 expr 是假的时候获得执行。这个例子指出宏用大写命名的价值,以及让代码完全括号化 的价值。</p>
 
 <p>有些时候,通过 break,continue,goto 或 return,if 可以无条件地进行控制转移。else 应该是隐式的,并且代码不应该缩 进。</p>
 
-<pre><code class="c">if (level &gt; limit)
-    return (OVERFLOW)
-normal();
-return (level);
+<p>```c
+if (level > limit)</p>
+
+<pre><code>return (OVERFLOW)
 </code></pre>
+
+<p>normal();
+return (level);
+```</p>
 
 <p>平坦的缩进告诉读者布尔测试在密封块的其他部分是保持不变的。</p>
 
@@ -585,15 +691,20 @@ return (level);
 
 <p>常量的定义应该与其使用是一致的;例如使用540.0作为一个浮点数,而不是使用540外加一个隐式的float 类型转换。有些时候常量0和1被 直接使用而没有用 define 进行定义。例如,一个 for 循环语句中用于标识数组下标的常量,</p>
 
-<pre><code class="c">for (i = 0; i &lt; ARYBOUND; i++)
-</code></pre>
+<p><code>c
+for (i = 0; i &lt; ARYBOUND; i++)
+</code></p>
 
 <p>上面代码是合理的,但下面代码</p>
 
-<pre><code class="c">door_t *front_door = opens(door[i], 7);
-if (front_door == 0)
-    error("can't open %s\\\\n", door[i]);
+<p>```c
+door_t *front_door = opens(door[i], 7);
+if (front_door == 0)</p>
+
+<pre><code>error("can't open %s\\\\n", door[i]);
 </code></pre>
+
+<p>```</p>
 
 <p>是不合理的。在最后的那个例子中, front_door 是一个指针。当一个值是指针的时候,它应该与 NULL比较而不是与0比较。NULL 被定义 在标准 I/O 库头文件 stdio.h 中,在一些新系统中它在 stdlib.h 中定义。即使像1或0这样的简单值,我们最好也用 define 定义成 TRUE 和 FALSE 定义后再使用(有些时候,使用 YES 和 NO 可读性更好)。</p>
 
@@ -607,42 +718,73 @@ if (front_door == 0)
 
 <p>宏定义中应该避免使用全局变量,因为全局变量的名字很可能被局部声明遮盖。对于那些对具名参数进行修改(不是这些参数所指向的存储区域)或被用作 赋值语句左值的宏,我们应该添加相应的注释以给予提醒。那些不带参数但引用变量,或过长或作为函数别名的宏应该使用空参数列表,例如:</p>
 
-<pre><code class="c">#define OFF_A() (a_global+OFFSET)
-#define BORK() (zork())
-#define SP3() if (b) { int x; av = f (&amp;x); bv += x; }
-</code></pre>
+<p>```c</p>
+
+<h1>define OFF_A() (a_global+OFFSET)</h1>
+
+<h1>define BORK() (zork())</h1>
+
+<h1>define SP3() if (b) { int x; av = f (&amp;x); bv += x; }</h1>
+
+<p>```</p>
 
 <p>宏节省了函数调用和返回的额外开销,但当一个宏过长时,函数调用和返回的额外开销就变得微不足道了,这种情况下我们应该使用函数。</p>
 
 <p>在一些情况下,让编译器确保宏在使用时应该以分号结尾是很有必要的。</p>
 
-<pre><code class="c">if (x==3)
-    SP3();
-else
-    BORK();
+<p>```c
+if (x==3)</p>
+
+<pre><code>SP3();
 </code></pre>
+
+<p>else</p>
+
+<pre><code>BORK();
+</code></pre>
+
+<p>```</p>
 
 <p>如果省略 SP3调用后面的分号,后面的 else 将会匹配到 SP3宏中的那个 if。有了分号,else 分支就不会与任何 if 匹配。SP3宏可以这样 安全地实现:</p>
 
-<pre><code class="c">#define SP3() \\\\
-    do { if (b) { int x; av = f (&amp;x); bv += x; }} while (0)
+<p>```c</p>
+
+<h1>define SP3() \\</h1>
+
+<pre><code>do { if (b) { int x; av = f (&amp;x); bv += x; }} while (0)
 </code></pre>
+
+<p>```</p>
 
 <p>手工给宏定以加上 do-while 包围看起来很别扭,而且很多编译器和工具会抱怨在 while 条件是一个常量值。一个用来声明语句的宏可以使得编 码更加容易:</p>
 
-<pre><code class="c">#ifdef lint
-    static int ZERO;
-#else
-#define ZERO 0
-#endif
-#define STMT( stuff ) do { stuff } while (ZERO)
+<p>```c</p>
+
+<h1>ifdef lint</h1>
+
+<pre><code>static int ZERO;
 </code></pre>
+
+<h1>else</h1>
+
+<h1>define ZERO 0</h1>
+
+<h1>endif</h1>
+
+<h1>define STMT( stuff ) do { stuff } while (ZERO)</h1>
+
+<p>```</p>
 
 <p>我们可以用下面代码来声明 SP3宏:</p>
 
-<pre><code class="c">#define SP3() \\\\
-    STMT( if (b) { int x; av = f (&amp;x); bv += x; } )
+<p>```c</p>
+
+<h1>define SP3() \\</h1>
+
+<pre><code>STMT( if (b) { int x; av = f (&amp;x); bv += x; } )
 </code></pre>
+
+<p>```</p>
 
 <p>使用 STMT 宏可以有效阻止一些可以潜在改变程序行为的打印排版错误。除了类型转换、sizeof 以及上面那些技巧和手法,只有当整个宏用括号括上时才应该包含关键字。</p>
 
@@ -654,21 +796,36 @@ else
 
 <p>尽可能地将#ifdefs 放在头文件中,而不是源文件中。使用#ifdef 定义可以在源码中统一使用的宏。例如,一个用于检查内存分配的头文件可能这样实现:(省略了 REALLOC 和 FREE):</p>
 
-<pre><code class="C">#ifdef DEBUG
-extern void *mm_malloc();
-#define MALLOC(size) (mm_malloc(size))
-#else
-    extern void *malloc();
-#define MALLOC(size) (malloc(size))
-#endif
+<p>```C</p>
+
+<h1>ifdef DEBUG</h1>
+
+<p>extern void *mm_malloc();</p>
+
+<h1>define MALLOC(size) (mm_malloc(size))</h1>
+
+<h1>else</h1>
+
+<pre><code>extern void *malloc();
 </code></pre>
+
+<h1>define MALLOC(size) (malloc(size))</h1>
+
+<h1>endif</h1>
+
+<p>```</p>
 
 <p>条件编译通常应该基于一个接一个的特性的。多数情况下,都应该避免使用机器或操作系统依赖。</p>
 
-<pre><code class="C">#ifdef BSD4
-long t = time ((long *)NULL);
-#endif
-</code></pre>
+<p>```C</p>
+
+<h1>ifdef BSD4</h1>
+
+<p>long t = time ((long *)NULL);</p>
+
+<h1>endif</h1>
+
+<p>```</p>
 
 <p>上面代码之所以糟糕有两个原因:很可能在某个4BSD 系统上有更好的选择,并且也可能存在在某个非4BSD 系统中上述代码是最佳代码。我们可以通过定义诸 如 TIME_LONG 和 TIME_STRUCTD 等宏作为替代,并且在诸如 config.h 的配置文件中定义一个合适的宏。</p>
 
@@ -699,9 +856,10 @@ long t = time ((long *)NULL);
 </ul>
 
 
-<pre><code class="c">int *p = (int *) malloc (sizeof(int));
+<p><code>c
+int *p = (int *) malloc (sizeof(int));
 free (p);
-</code></pre>
+</code></p>
 
 <ul>
 <li>注意,一个对象的大小不能保证这个对象的精度。Cray-2可能使用64位来存储一个整型,但一个长整型转换为一个整型并且再转换回长整型后可能会被截断 为32位。</li>
@@ -710,20 +868,27 @@ free (p);
 </ul>
 
 
-<pre><code class="c">((int *) 2 )
+<p><code>c
+((int *) 2 )
 ((int *) 3 )
-</code></pre>
+</code></p>
 
 <p>如果你需要'magic'指针而不是 NULL,要么分配一些内存,要么将指针视为机器相关的。</p>
 
-<pre><code class="c">extern int x_int_dummy;
- /* in x.c */
-#define X_FAIL (NULL)
-#define X_BUSY (&amp;x_int_dummy)
-#define X_FAIL (NULL)
-#define X_BUSY MD_PTR1
- /* MD_PTR1 from "machdep.h" */
-</code></pre>
+<p>```c
+extern int x_int_dummy;
+ /<em> in x.c </em>/</p>
+
+<h1>define X_FAIL (NULL)</h1>
+
+<h1>define X_BUSY (&amp;x_int_dummy)</h1>
+
+<h1>define X_FAIL (NULL)</h1>
+
+<h1>define X_BUSY MD_PTR1</h1>
+
+<p> /<em> MD_PTR1 from "machdep.h" </em>/
+```</p>
 
 <ul>
 <li>浮点数字既包含精度也包含范围。这些都是数据对象大小无关的。但是,一个32位浮点数在不同机器上溢出时的值有所不同。同时,4.9乘以5.1在不同的机 器上可能产生两个不同的数字。在圆整(rounding)和截断方面的差异将给出特别不同的答案。</li>
@@ -741,16 +906,23 @@ free (p);
 </ul>
 
 
-<pre><code class="c">    c = foo (getchar(), getchar());
-char
+<p>```c</p>
+
+<pre><code>c = foo (getchar(), getchar());
+</code></pre>
+
+<p>char
 foo (c1, c2, c3)
 char c1, c2, c3;
-{
-    char bar = *(&amp;c1 + 1);
-    return (bar);
-    /* often won't return c2 */
-}
+{</p>
+
+<pre><code>char bar = *(&amp;c1 + 1);
+return (bar);
+/* often won't return c2 */
 </code></pre>
+
+<p>}
+```</p>
 
 <ul>
 <li>上面的例子有诸多问题。栈可能向上增长,也可能向下增长(事实上,甚至都不需要一个栈)。参数在传入时可能被扩大,例如一个 char 可能以 int 型被传 入。参数可能以从左到右,从右到左,或以任意顺序压入栈,或直接放在寄存器中(根本无需压栈)。参数求值的顺序也可能与压栈的次序有所不同。一个 编译器可能使用多种(不兼容的)调用约定。</li>
@@ -759,9 +931,10 @@ char c1, c2, c3;
 </ul>
 
 
-<pre><code class="c">s = "/dev/tty??";
+<p><code>c
+s = "/dev/tty??";
 strcpy (&amp;s[8], ttychars);
-</code></pre>
+</code></p>
 
 <ul>
 <li>地址空间可能有空洞。简单计算一个数组中未分配空间的元素(在数组实际存储区域之前或之后)的地址可能会导致程序崩溃。如果这个地址被用于比较,有时程序 可以运行,但会破坏数据,报错,或陷入死循环。在 ANSI C 中,指向一个对象数组的指针指向数组结尾后的第一个元素是合法的,这在一些老编译器上通常是安全的。不过这个"在外边"不可以被解引用。</li>
@@ -771,47 +944,59 @@ strcpy (&amp;s[8], ttychars);
 </ul>
 
 
-<pre><code class="c">a[i] = b[i++];
-</code></pre>
+<p><code>c
+a[i] = b[i++];
+</code></p>
 
 <p>在上面的例子中,我们只知道 b 的下标值没有被增加。a 的下标 i 值可能是自增后的值也可能是自增前的值。</p>
 
-<pre><code class="c">struct bar_t { struct bar_t *next; } bar;
+<p><code>c
+struct bar_t { struct bar_t *next; } bar;
 bar-&gt;next = bar = tmp;
-</code></pre>
+</code></p>
 
 <p>在第二个例子中,bar->next 的地址很可能在 bar 被赋值之前被计算使用。</p>
 
-<pre><code class="c">bar = bar-&gt;next = tmp;
-</code></pre>
+<p><code>c
+bar = bar-&gt;next = tmp;
+</code></p>
 
 <p>第三个例子中,bar 可能在 bar->next 之前被赋值。虽然这可能有悖于"赋值从右到左处理"的规则,但这确是一个合法的解析。考虑下 面的例子:</p>
 
-<pre><code class="c">long i;
+<p><code>c
+long i;
 short a[N];
 i = old
 i = a[i] = new;
-</code></pre>
+</code></p>
 
 <p>赋给 i 的值必须是一个按照从右到左的处理顺序进行赋值处理后的值。但是 i 可能在 ai 被赋值前而被赋值为"(long) (short)new"。不同编译器作法不同。
 * 质疑代码中出现的数值(“魔数”)。
 * 避免使用预处理器技巧。一些诸如使用/ /粘和字符串以及依赖参数字符串展开的宏会破坏代码可靠性。</p>
 
-<pre><code class="c">#define FOO(string) (printf("string = %s",(string)))
-...
+<p>```c</p>
+
+<h1>define FOO(string) (printf("string = %s",(string)))</h1>
+
+<p>...
 FOO(filename);
-</code></pre>
+```</p>
 
 <p>只是在有些时候会扩展为</p>
 
-<pre><code class="c">(printf("filename = %s",(filename)))
-</code></pre>
+<p><code>c
+(printf("filename = %s",(filename)))
+</code></p>
 
 <p>小心。诡异的预处理器在一些机器上可能导致宏异常中断。下面是一个宏的两种不同实现版本:</p>
 
-<pre><code class="c">#define LOOKUP(chr) (a['c'+(chr)]) /* Works as intended. */
-#define LOOKUP(c) (a['c'+(c)]) /* Sometimes breaks. */
-</code></pre>
+<p>```c</p>
+
+<h1>define LOOKUP(chr) (a['c'+(chr)]) /<em> Works as intended. </em>/</h1>
+
+<h1>define LOOKUP(c) (a['c'+(c)]) /<em> Sometimes breaks. </em>/</h1>
+
+<p>```</p>
 
 <p>第二个版本的 LOOKUP 可能以两种不同的方式扩展,并且会导致代码异常中断。
 * 熟悉现有的库函数和定义(但不用太熟悉。与其外部接口相反,库基础设施的内部细节常会改变并且没有警告,这些细节常常也是不可移植的)。你不应该再自己重 新编写字符串比较例程、终端控制例程或为系统结构编写你自己的定义。自己动手实现既浪费你的时间,又使得你的代码可读性变差,因为另外一个读者需 要知道你是否在新的实现中做了什么特殊的事情,并尝试证实它们的存在。同时这样做会使得你无法充分利用一些辅助的微代码或其他有助于提高系统例程 性能的方法。更进一步,它将是一个 bug 的高产源头。如果可能的话,要知道公共库之间的差异(如 ANSI、POSIX 等等)。
@@ -833,26 +1018,47 @@ FOO(filename);
 
 <p>最简单的方法就是定义一 个新类型 VOIDP(与机器和编译器相关),通常在老编译器下该类型被定义为 char*。</p>
 
-<pre><code class="C">#if __STDC__
-typedef void *voidp;
-#define COMPILER_SELECTED
-#endif
-#ifdef A_TARGET
-#define const
-#define volatile
-#define void int
-typedef char *voidp;
-#define COMPILER_SELECTED
-#endif
-#ifdef ...
-...
-#endif
-#ifdef COMPILER_SELECTED
-#undef COMPILER_SELECTED
-#else
-{ NO TARGET SELECTED! }
-#endif
-</code></pre>
+<p>```C</p>
+
+<h1>if <strong>STDC</strong></h1>
+
+<p>typedef void *voidp;</p>
+
+<h1>define COMPILER_SELECTED</h1>
+
+<h1>endif</h1>
+
+<h1>ifdef A_TARGET</h1>
+
+<h1>define const</h1>
+
+<h1>define volatile</h1>
+
+<h1>define void int</h1>
+
+<p>typedef char *voidp;</p>
+
+<h1>define COMPILER_SELECTED</h1>
+
+<h1>endif</h1>
+
+<h1>ifdef ...</h1>
+
+<p>...</p>
+
+<h1>endif</h1>
+
+<h1>ifdef COMPILER_SELECTED</h1>
+
+<h1>undef COMPILER_SELECTED</h1>
+
+<h1>else</h1>
+
+<p>{ NO TARGET SELECTED! }</p>
+
+<h1>endif</h1>
+
+<p>```</p>
 
 <p>注意在 ANSI C 中,#必须是同一行中预处理器指示符的第一个非空白字符。在一些老编译器中,它必须是同一行中的第一个字符。</p>
 
@@ -868,13 +1074,15 @@ typedef char *voidp;
 
 <p>由于 const 和 volatile 的绑定规则很奇怪,因此每个 const 或 volatile 对象都应该单独声明。</p>
 
-<pre><code class="C">int const *s; /* YES */
+<p><code>C
+int const *s; /* YES */
 int const *s, *t; /* NO */
-</code></pre>
+</code></p>
 
 <p>具备原型的函数将参数声明和定义归并在一个参数列表中了。应该在函数的注释中提供各个参数的注释。</p>
 
-<pre><code class="C">/*
+<p><code>C
+/*
 * `bp': boat trying to get in.
 * `stall': a list of stalls, never NULL.
 * returns stall number, 0 =&gt; no room.
@@ -883,42 +1091,52 @@ int
 enter_pier (boat_t const *bp, stall_t *stall)
 {
 ...
-</code></pre>
+</code></p>
 
 <h3>15.3 原型</h3>
 
 <p>应该使用函数原型使得代码更加健壮并且运行时性能更好。不幸地是原型的声明</p>
 
-<pre><code class="C">extern void bork (char c);
-</code></pre>
+<p><code>C
+extern void bork (char c);
+</code></p>
 
 <p>与定义不兼容。</p>
 
-<pre><code class="C">void bork (c)
+<p><code>C
+void bork (c)
 char c;
 ...
-</code></pre>
+</code></p>
 
 <p>原型中 c 应该以机器上最自然的类型传入,很可能是一个字节。而非原型化(向后兼容)的定义暗示 c总是以一个整型传入。如果一个函数具有可类型提升的参数, 那么调用者和被调用者必须以相等地方式编译。要么都必须使用函数原型,要么都不使用原型。如果在程序设计时参数就是可以提升类型的,那么问题就可以被避 免,例如 bork 可以定义成接受一个整型参数。</p>
 
 <p>如果定义也是原型化的,上面的声明将工作正常。</p>
 
-<pre><code class="C">void bork (char c)
+<p><code>C
+void bork (char c)
 {
 ...
-</code></pre>
+</code></p>
 
 <p>不幸地是,原型化的语法将导致非 ANSI 编译器拒绝这个程序。</p>
 
 <p>但我们可以很容易地通过编写外部声明来同时适应原型与老编译器。</p>
 
-<pre><code class="c">#if __STDC__
-#define PROTO(x) x
-#else
-#define PROTO(x) ()
-#endif
-extern char **ncopies PROTO((char *s, short times));
-</code></pre>
+<p>```c</p>
+
+<h1>if <strong>STDC</strong></h1>
+
+<h1>define PROTO(x) x</h1>
+
+<h1>else</h1>
+
+<h1>define PROTO(x) ()</h1>
+
+<h1>endif</h1>
+
+<p>extern char <em>*ncopies PROTO((char </em>s, short times));
+```</p>
 
 <p>注意 PROTO 必须使用双层括号。</p>
 
@@ -932,10 +1150,15 @@ extern char **ncopies PROTO((char *s, short times));
 
 <p>两个编译器可能通过两个不同的方式使用同一个给定的 pragma。例如,一个编译器可能使用 haggis发出一个优化信号。而另一个可能使用它暗示一个特 定语句,一旦执行到此,程序应该退出。不过,一旦使用了 pragma,它们必须总是被机器相关的#ifdef 包围。对于非 ANSI 编译器,Pragmas 必须总是被#ifdef。确保对#pragma 的#进行缩进,否则一些较老的预处理器处理它时会挂起。</p>
 
-<pre><code class="c">#if defined(__STDC__) &amp;&amp; defined(USE_HAGGIS_PRAGMA)
-#pragma (HAGGIS)
-#endif
-</code></pre>
+<p>```c</p>
+
+<h1>if defined(<strong>STDC</strong>) &amp;&amp; defined(USE_HAGGIS_PRAGMA)</h1>
+
+<h1>pragma (HAGGIS)</h1>
+
+<h1>endif</h1>
+
+<p>```</p>
 
 <p>"ANSI 标准中描述的'#pragma'命令具有任意实现定义的影响。在 GNU C 预处理中,'#pragma'首先尝试运行游戏'rogue';如果失败,它将尝试运行游戏'hack';如果失败,它将尝试运行 GNU Emacs显示汉诺塔;如果失败,它将报告一个致命错误。无论如何,预处理将不再继续。"
 —-- GNU CC 1.34 C 预处理手册。</p>
@@ -949,16 +1172,18 @@ extern char **ncopies PROTO((char *s, short times));
 * 不要依赖自动代码美化工具。良好代码风格的主要受益者就是代码的编写者,并且尤其在手写算法或伪代码的早期设计阶段。自动代码美化工具只应该用在那些已经 完成、语法正确并且此后不能满足当空白和缩进被更为关注的要求时。伴随着对细致程序员的细节的关注,对于那些将函数或文件布局解释清楚的工作,程 序员们会做得更好(换句话说,一些视觉布局是由意图而不是语法决定的,美化工具无法了解到程序员的思想)。粗心的程序员应该学习成为一个细致的程 序员,而不是依赖美化工具让代码可读性更好。
 * 意外地遗漏逻辑比较表达式中的第二个=是一个常犯的问题。使用显式测试。避免对赋值使用隐式测试。</p>
 
-<pre><code class="c">abool = bbool;
+<p><code>c
+abool = bbool;
 if (abool) { ...
-</code></pre>
+</code></p>
 
 <p>当嵌入的赋值表达式使用时,确保测试是显式的,这样后续它就无法被"修复"了。</p>
 
-<pre><code class="c">while ((abool = bbool) != FALSE) { ...
+<p><code>c
+while ((abool = bbool) != FALSE) { ...
 while (abool = bbool) { ... /* VALUSED */
 while (abool = bbool, abool) { ...
-</code></pre>
+</code></p>
 
 <p>显式地注释那些在正常控制流之外被修改的变量,或其他可能在维护过程中中断的代码。</p>
 
@@ -970,8 +1195,9 @@ while (abool = bbool, abool) { ...
 
 <p>应该注意的是使用 lint 的最好方法不是将 lint 作为官方验收之前的一道必须跨过的栅栏,而是作为一个在代码发生添加或变更之后使用的工具。 Lint 可以发现一些隐藏的 bug 并且可以在问题发生前保证程序的可移植性。lint 产生的许多信息确实暗示了一些事情是错误的。一个有意思的故 事是关于一个漏掉了 fprintf 的一个参数的程序:</p>
 
-<pre><code class="c">fprintf ("Usage: foo -bar &lt;file&gt;\n");
-</code></pre>
+<p><code>c
+fprintf ("Usage: foo -bar &lt;file&gt;\n");
+</code></p>
 
 <p>作者从未有过一个问题。但每当一个正常用户在命令行上犯错,这个程序就会产生一个 core。许多版本的 lint 工具都能发现这个问题。</p>
 
@@ -1070,13 +1296,7 @@ while (abool = bbool, abool) { ...
 </ol>
 </li>
 <li><ol>
-<li><ol type="a">
-<li><ol type="a">
-<li>Lapin Portable C and UNIX System Programming, Prentice Hall 1987, ISBN 0-13-686494-5.</li>
-</ol>
-</li>
-</ol>
-</li>
+<li>J. E. Lapin Portable C and UNIX System Programming, Prentice Hall 1987, ISBN 0-13-686494-5.</li>
 </ol>
 </li>
 <li><ol>
@@ -1128,17 +1348,41 @@ while (abool = bbool, abool) { ...
         <h2>Blog</h2>
         <ul class="artical-list">
         
+            <li><a href="/zh-cn-PEP333">PEP333中文概要</a></li>
+        
+            <li><a href="/python-skills">python小技巧</a></li>
+        
+            <li><a href="/nothing">博客搬家</a></li>
+        
+            <li><a href="/command">重用命令记录</a></li>
+        
+            <li><a href="/server-program-model">服务器编程的几种常见模型</a></li>
+        
+            <li><a href="/study-tornado">Python Tornado学习</a></li>
+        
+            <li><a href="/findwork">学习记录</a></li>
+        
+            <li><a href="/diff-py2-py3">python2.7.x和python3.x的简单区别</a></li>
+        
+            <li><a href="/linotp">LinOTP简单使用教程</a></li>
+        
+            <li><a href="/process-signal">进程同步的若干问题</a></li>
+        
+            <li><a href="/memo">备忘录</a></li>
+        
+            <li><a href="/python-spider">简单爬虫</a></li>
+        
+            <li><a href="/learn-python">半天简单总结python</a></li>
+        
             <li><a href="/raspberry-car">树莓派制作wifi控制小车</a></li>
         
-            <li><a href="/c-study">《c专家编程》学习笔记</a></li>
-        
-            <li><a href="/c-memory-manage-in-programs">c语言编程内存管理(未完成)</a></li>
+            <li><a href="/c-memory">c语言学习-内存</a></li>
         
             <li><a href="/C-stander">C 语言编码风格和标准</a></li>
         
-            <li><a href="/C-pointer">c语言学习——指针</a></li>
+            <li><a href="/C-pointer">c语言学习-指针</a></li>
         
-            <li><a href="/C-scanf">C语言学习——让人头疼的scanf</a></li>
+            <li><a href="/C-scanf">C语言学习-让人头疼的scanf</a></li>
         
             <li><a href="/learn-gitPage">使用Github Pages建独立博客</a></li>
         
