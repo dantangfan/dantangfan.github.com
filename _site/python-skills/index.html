@@ -5,7 +5,7 @@
     * Author:         dantangfan
     -->
     <meta charset="utf-8" />
-    <title>learn Git |  dantangfan </title>
+    <title>python小技巧 |  dantangfan </title>
     <meta name="author" content="dantangfan" />
     <meta name="description" content="hj's Blog" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
@@ -41,123 +41,142 @@
 
 <div id="content">
     <div class="entry">
-        <h1 class="entry-title"><a href="/learn-git" title="learn Git">learn Git</a></h1>
-        <p class="entry-date">2014-10-24</p>
-        <p>linux系统都可以直接软件包安装Git，如<code>apt-get install git</code></p>
+        <h1 class="entry-title"><a href="/python-skills" title="python小技巧">python小技巧</a></h1>
+        <p class="entry-date">2015-02-04</p>
+        <h4>迭代一个列表</h4>
 
-<h2>初始化配置</h2>
+<p>```python
+string=['a','b','c']
+for index in range(len(string)):</p>
 
-<p>首先配置帐号信息</p>
+<pre><code>print index, string[index]
+</code></pre>
 
-<p>```bash
-git config --global user.name dantangfan
-git config --global user.email dantangfan@gmail.com</p>
+<p>```</p>
 
-<p>git config --list #查看配置情况
-git help × #获取帮助
-```</p>
+<p>可以使用</p>
 
-<p>配置密钥</p>
+<p>```python
+string=['a','b','c']
+for index, item in enumerate(string):</p>
 
-<p><code>bash
-ssh-keygen -t rsa -C dantangfan@gmail.com #生成密钥
-ssh -T git@github.com #测试是否成功
-</code></p>
+<pre><code>pring index, item
+</code></pre>
 
-<h2>创建仓库</h2>
+<p>```</p>
 
-<p>```bash
-git init #初始化
-git status #查看状态
-git add <file>
-git commit -m 'msg'
-git remote add origin git@github.com:dantangfan/test.git #添加源
-git push -u origin master #push同时设置默认跟踪分支</p>
+<h4>检查列表中的每个元素</h4>
 
-<p>git clone https://github.com/xxx/xxx.git dic
-```</p>
+<p>```python
+numbers = [10,100,1000,10000]
+if [number for numeber in numbers if number&lt;10000]:</p>
 
-<h2>本地操作</h2>
+<pre><code>print "at list one small than 10000"
+</code></pre>
 
-<p>```bash
-git add * #跟踪更新
-rm * &amp; git rm * #从本地和仓库中删除文件
-git rm -rf * #删除文件夹
-git rm --cached #取消跟踪
-git mv filename new name
-git log
-git commit -m 'msg'
-git commit -a #跳过使用暂存区，把所有已跟踪的文件暂存起来一并提交
-git commit --amend #修改最后一次提交</p>
+<p>```</p>
 
-<p>git reset HEAD * #撤销已经暂存的文件
-git checkout -- file #取消对文件的修改（从暂存区取回file）
-git checkout branch|tag|commit -- filename #从仓库中取出file覆盖当前分支
-git checkout -- . #从暂存区取出文件覆盖工作区
-```</p>
+<p>可以使用</p>
 
-<h2>分支操作</h2>
+<p>```python
+numbers = [10,100,1000,10000]
+if any(number &lt; 10000 for number in numbers):</p>
 
-<p>```bash
-git branch #列出当前分支
-git branch -r #列出远端分支
-git branch -a #列出所有分支
-git branch -v #查看每个分支最后一次提交的情况
-git branch --merge #查看已经合并到当前分支的分支
-git branch --no-merge #查看未合并到当前分支的分支</p>
+<pre><code>print "at list one small than 10000"
+</code></pre>
 
-<p>git branch test #新建test分支
-git checkout test #切换到test分支
-git checkout -b test #注册并切换到test
-git checkout -b test dev #基于dev创建test分支</p>
+<p>```
+类似的</p>
 
-<p>git branch -d test #删除test分支
-git branch -D test #强制删除test分支</p>
+<p>```python
+numbers = [10,100,1000,10000]
+if all(number &lt; 10000 for number in numbers):</p>
 
-<p>git merge test #将test分支合并到当前分支
-git rebase master #将master分支上超前的分支变基到当前分支
-```</p>
+<pre><code>print "all small than 10000"
+</code></pre>
 
-<h2>远端操作</h2>
+<p>```</p>
 
-<p>```bash
-git fetch originname branchname #拉去远端上指定分支
-git merge originname branchname #合并远端上指定分支
-git push originname branchname #推送到远端上指定分支
-git push originname branchname:serverbranch #推送到远端指定分支</p>
+<h2>函数</h2>
 
-<p>git checkout -b test origin/dev #基于远端dev分支创建test分支</p>
+<h4>默认值只被计算一次</h4>
 
-<p>git push origin :server #删除远端分支
-```</p>
+<p>在python中，函数的默认值是在函数定义的时候实例化的，而不是在函数调用的时候！所以会出现下面结果</p>
 
-<h2>源管理</h2>
+<p>```python
+def func(item, stuff=[]):</p>
 
-<p>服务器上的仓库在本地称之为<code>remote</code>，个人开发的时候主要是使用单源。但是git的精华是多源，适合团体开发</p>
+<pre><code>stuff.append(item)
+print stuff
+</code></pre>
 
-<p><code>bash
-git remote add origin git@github.com:dantangfan/test.git #将本地仓库推送到远程
-git remote #显示全部源
-git remote -v #显示源和信息
-git remote originname newname
-git remote rm originname
-git remote show originname
-</code></p>
+<p>func(1)</p>
 
-<h2>tag</h2>
+<h1>print "[1]"</h1>
 
-<p>```bash
-git tag #显示当前标签
-git tag v0.1 #新建标签
-git tag -a v0.1 -m 'my version 1.4' #新建带注释的标签</p>
+<p>func(2)</p>
 
-<p>git checkout tagname #切换到标签</p>
+<h1>print "[1,2]"</h1>
 
-<p>git push origin v1.5 #推送到分支源上
-git push origin --tags #一次性推送所有分支</p>
+<p>```</p>
 
-<p>git tag -d v0.1 #删除标签
-git push origin :refs/tags/v0.1 #删除远程标签</p>
+<p>```python
+def foo(number=[]):</p>
+
+<pre><code>number.append(9)
+print number
+</code></pre>
+
+<p>foo()</p>
+
+<h1>[9]</h1>
+
+<p>foo([1,2])</p>
+
+<h1>[1,2,9]</h1>
+
+<p>foo()</p>
+
+<h1>[9]</h1>
+
+<p>foo()</p>
+
+<h1>[9,9]</h1>
+
+<p>foo()</p>
+
+<h1>[9,9,9]</h1>
+
+<p>```</p>
+
+<p>我们需要理解的是，调用函数的时候，这个默认值会被赋成不同值是因为每次在给函数指定一个默认值的时候，python都会储存这个值。如果在调用函数的时候重写了默认值，那么这个储存的值就不会被使用。当你不重写默认值的时候，python就会让默认值引用储存的值（例子中的number）。它并不是将存储的值拷贝来为这个变量赋值，可以这样理解：有两个变量，一个是内部的，一个是当前运行时的变量。现实就是我们有两个变量来用相同的值进行交互，所以一旦number发生变化，也会改变python里面保存的初始记录。</p>
+
+<p>但是问题不是我们想想那么简单的，比如下面</p>
+
+<p>```python
+def foo(count=0):</p>
+
+<pre><code>count+=1
+print count
+</code></pre>
+
+<p>foo()</p>
+
+<h1>1</h1>
+
+<p>foo()</p>
+
+<h1>1</h1>
+
+<p>```</p>
+
+<p>为什么上面函数运行的时候又是符合预期的呢？原因很简单，整形是一种不可变的类型，跟list不同，在函数的执行过程中，整形变量是不能被改变的。当我们执行count+=1的时候，我们并没有改变count的值，而是将count指向了新的地址；而在前面使用list的时候，我们是直接在当前地址操作了变量。</p>
+
+<p>需要记住的有两个点：</p>
+
+<blockquote><p>在python中，函数的默认值是在函数定义的时候实例化的，而不是在函数调用的时候！</p>
+
+<p>默认值会发生改变，是因为我们直接操作的默认值的地址。</p></blockquote>
 
 
         <div id="disqus_container">
@@ -197,11 +216,11 @@ git push origin :refs/tags/v0.1 #删除远程标签</p>
         <h2>Blog</h2>
         <ul class="artical-list">
         
+            <li><a href="/python-skills">python小技巧</a></li>
+        
             <li><a href="/nothing">博客搬家</a></li>
         
             <li><a href="/command">重用命令记录</a></li>
-        
-            <li><a href="/learn-git">learn Git</a></li>
         
             <li><a href="/study-tornado">Python Tornado学习</a></li>
         

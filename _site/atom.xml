@@ -4,13 +4,155 @@
    <title>dantangfan.github.io</title>
    <link href="http://dantangfan.github.io/atom.xml" rel="self" type="application/atom+xml"/>
    <link href="http://dantangfan.github.io" rel="alternate" type="text/html" />
-   <updated>2015-01-22T01:40:17+08:00</updated>
+   <updated>2015-02-07T23:12:00+08:00</updated>
    <id>http://dantangfan.github.io</id>
    <author>
      <name></name>
      <email></email>
    </author>
 
+   
+   <entry>
+     <title>python小技巧</title>
+     <link href="http://dantangfan.github.io/python-skills"/>
+     <updated>2015-02-04T00:00:00+08:00</updated>
+     <id>http://dantangfan.github.io/python-skills</id>
+     <content type="html">&lt;h4&gt;迭代一个列表&lt;/h4&gt;
+
+&lt;p&gt;```python
+string=['a','b','c']
+for index in range(len(string)):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;print index, string[index]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;p&gt;可以使用&lt;/p&gt;
+
+&lt;p&gt;```python
+string=['a','b','c']
+for index, item in enumerate(string):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;pring index, item
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;h4&gt;检查列表中的每个元素&lt;/h4&gt;
+
+&lt;p&gt;```python
+numbers = [10,100,1000,10000]
+if [number for numeber in numbers if number&amp;lt;10000]:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;print &quot;at list one small than 10000&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;p&gt;可以使用&lt;/p&gt;
+
+&lt;p&gt;```python
+numbers = [10,100,1000,10000]
+if any(number &amp;lt; 10000 for number in numbers):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;print &quot;at list one small than 10000&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;```
+类似的&lt;/p&gt;
+
+&lt;p&gt;```python
+numbers = [10,100,1000,10000]
+if all(number &amp;lt; 10000 for number in numbers):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;print &quot;all small than 10000&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;h2&gt;函数&lt;/h2&gt;
+
+&lt;h4&gt;默认值只被计算一次&lt;/h4&gt;
+
+&lt;p&gt;在python中，函数的默认值是在函数定义的时候实例化的，而不是在函数调用的时候！所以会出现下面结果&lt;/p&gt;
+
+&lt;p&gt;```python
+def func(item, stuff=[]):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;stuff.append(item)
+print stuff
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;func(1)&lt;/p&gt;
+
+&lt;h1&gt;print &quot;[1]&quot;&lt;/h1&gt;
+
+&lt;p&gt;func(2)&lt;/p&gt;
+
+&lt;h1&gt;print &quot;[1,2]&quot;&lt;/h1&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;p&gt;```python
+def foo(number=[]):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;number.append(9)
+print number
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;foo()&lt;/p&gt;
+
+&lt;h1&gt;[9]&lt;/h1&gt;
+
+&lt;p&gt;foo([1,2])&lt;/p&gt;
+
+&lt;h1&gt;[1,2,9]&lt;/h1&gt;
+
+&lt;p&gt;foo()&lt;/p&gt;
+
+&lt;h1&gt;[9]&lt;/h1&gt;
+
+&lt;p&gt;foo()&lt;/p&gt;
+
+&lt;h1&gt;[9,9]&lt;/h1&gt;
+
+&lt;p&gt;foo()&lt;/p&gt;
+
+&lt;h1&gt;[9,9,9]&lt;/h1&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;p&gt;我们需要理解的是，调用函数的时候，这个默认值会被赋成不同值是因为每次在给函数指定一个默认值的时候，python都会储存这个值。如果在调用函数的时候重写了默认值，那么这个储存的值就不会被使用。当你不重写默认值的时候，python就会让默认值引用储存的值（例子中的number）。它并不是将存储的值拷贝来为这个变量赋值，可以这样理解：有两个变量，一个是内部的，一个是当前运行时的变量。现实就是我们有两个变量来用相同的值进行交互，所以一旦number发生变化，也会改变python里面保存的初始记录。&lt;/p&gt;
+
+&lt;p&gt;但是问题不是我们想想那么简单的，比如下面&lt;/p&gt;
+
+&lt;p&gt;```python
+def foo(count=0):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;count+=1
+print count
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;foo()&lt;/p&gt;
+
+&lt;h1&gt;1&lt;/h1&gt;
+
+&lt;p&gt;foo()&lt;/p&gt;
+
+&lt;h1&gt;1&lt;/h1&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;p&gt;为什么上面函数运行的时候又是符合预期的呢？原因很简单，整形是一种不可变的类型，跟list不同，在函数的执行过程中，整形变量是不能被改变的。当我们执行count+=1的时候，我们并没有改变count的值，而是将count指向了新的地址；而在前面使用list的时候，我们是直接在当前地址操作了变量。&lt;/p&gt;
+
+&lt;p&gt;需要记住的有两个点：&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;在python中，函数的默认值是在函数定义的时候实例化的，而不是在函数调用的时候！&lt;/p&gt;
+
+&lt;p&gt;默认值会发生改变，是因为我们直接操作的默认值的地址。&lt;/p&gt;&lt;/blockquote&gt;
+</content>
+   </entry>
    
    <entry>
      <title>博客搬家</title>
@@ -232,129 +374,6 @@ Version Linux内存版本信息
 /var/mail：个人电子邮件
 /var/run：程序或者进程pid放置处
 &lt;/code&gt;&lt;/p&gt;
-</content>
-   </entry>
-   
-   <entry>
-     <title>learn Git</title>
-     <link href="http://dantangfan.github.io/learn-git"/>
-     <updated>2014-10-24T00:00:00+08:00</updated>
-     <id>http://dantangfan.github.io/learn-git</id>
-     <content type="html">&lt;p&gt;linux系统都可以直接软件包安装Git，如&lt;code&gt;apt-get install git&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2&gt;初始化配置&lt;/h2&gt;
-
-&lt;p&gt;首先配置帐号信息&lt;/p&gt;
-
-&lt;p&gt;```bash
-git config --global user.name dantangfan
-git config --global user.email dantangfan@gmail.com&lt;/p&gt;
-
-&lt;p&gt;git config --list #查看配置情况
-git help × #获取帮助
-```&lt;/p&gt;
-
-&lt;p&gt;配置密钥&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;bash
-ssh-keygen -t rsa -C dantangfan@gmail.com #生成密钥
-ssh -T git@github.com #测试是否成功
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2&gt;创建仓库&lt;/h2&gt;
-
-&lt;p&gt;```bash
-git init #初始化
-git status #查看状态
-git add &lt;file&gt;
-git commit -m 'msg'
-git remote add origin git@github.com:dantangfan/test.git #添加源
-git push -u origin master #push同时设置默认跟踪分支&lt;/p&gt;
-
-&lt;p&gt;git clone https://github.com/xxx/xxx.git dic
-```&lt;/p&gt;
-
-&lt;h2&gt;本地操作&lt;/h2&gt;
-
-&lt;p&gt;```bash
-git add * #跟踪更新
-rm * &amp;amp; git rm * #从本地和仓库中删除文件
-git rm -rf * #删除文件夹
-git rm --cached #取消跟踪
-git mv filename new name
-git log
-git commit -m 'msg'
-git commit -a #跳过使用暂存区，把所有已跟踪的文件暂存起来一并提交
-git commit --amend #修改最后一次提交&lt;/p&gt;
-
-&lt;p&gt;git reset HEAD * #撤销已经暂存的文件
-git checkout -- file #取消对文件的修改（从暂存区取回file）
-git checkout branch|tag|commit -- filename #从仓库中取出file覆盖当前分支
-git checkout -- . #从暂存区取出文件覆盖工作区
-```&lt;/p&gt;
-
-&lt;h2&gt;分支操作&lt;/h2&gt;
-
-&lt;p&gt;```bash
-git branch #列出当前分支
-git branch -r #列出远端分支
-git branch -a #列出所有分支
-git branch -v #查看每个分支最后一次提交的情况
-git branch --merge #查看已经合并到当前分支的分支
-git branch --no-merge #查看未合并到当前分支的分支&lt;/p&gt;
-
-&lt;p&gt;git branch test #新建test分支
-git checkout test #切换到test分支
-git checkout -b test #注册并切换到test
-git checkout -b test dev #基于dev创建test分支&lt;/p&gt;
-
-&lt;p&gt;git branch -d test #删除test分支
-git branch -D test #强制删除test分支&lt;/p&gt;
-
-&lt;p&gt;git merge test #将test分支合并到当前分支
-git rebase master #将master分支上超前的分支变基到当前分支
-```&lt;/p&gt;
-
-&lt;h2&gt;远端操作&lt;/h2&gt;
-
-&lt;p&gt;```bash
-git fetch originname branchname #拉去远端上指定分支
-git merge originname branchname #合并远端上指定分支
-git push originname branchname #推送到远端上指定分支
-git push originname branchname:serverbranch #推送到远端指定分支&lt;/p&gt;
-
-&lt;p&gt;git checkout -b test origin/dev #基于远端dev分支创建test分支&lt;/p&gt;
-
-&lt;p&gt;git push origin :server #删除远端分支
-```&lt;/p&gt;
-
-&lt;h2&gt;源管理&lt;/h2&gt;
-
-&lt;p&gt;服务器上的仓库在本地称之为&lt;code&gt;remote&lt;/code&gt;，个人开发的时候主要是使用单源。但是git的精华是多源，适合团体开发&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;bash
-git remote add origin git@github.com:dantangfan/test.git #将本地仓库推送到远程
-git remote #显示全部源
-git remote -v #显示源和信息
-git remote originname newname
-git remote rm originname
-git remote show originname
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;h2&gt;tag&lt;/h2&gt;
-
-&lt;p&gt;```bash
-git tag #显示当前标签
-git tag v0.1 #新建标签
-git tag -a v0.1 -m 'my version 1.4' #新建带注释的标签&lt;/p&gt;
-
-&lt;p&gt;git checkout tagname #切换到标签&lt;/p&gt;
-
-&lt;p&gt;git push origin v1.5 #推送到分支源上
-git push origin --tags #一次性推送所有分支&lt;/p&gt;
-
-&lt;p&gt;git tag -d v0.1 #删除标签
-git push origin :refs/tags/v0.1 #删除远程标签&lt;/p&gt;
 </content>
    </entry>
    

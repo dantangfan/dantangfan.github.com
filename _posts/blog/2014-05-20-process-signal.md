@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 进程同步的若干问题
-description: 不要看，我神码都不会，会误导你的
+description: 学习笔记，不具任何参考价值。
 category: blog
 ---
 

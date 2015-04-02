@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 半天简单总结python
-description: 我就是没事了写着玩儿的，草莽人不要看
+description: 30分钟入门python，有语言基础的同学学习python真是太容易了。
 category: blog
 ---
 

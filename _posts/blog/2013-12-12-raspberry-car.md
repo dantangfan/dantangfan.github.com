@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 树莓派制作wifi控制小车
-description: 求你不要看，我给嵌软丢脸了
+description: 用树莓派做个wifi小车，感觉这是真正的大才小用，不过确实比较有趣
 category: blog
 ---
 
