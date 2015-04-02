@@ -6,3 +6,4 @@ nohup
 nohup.out
 *.log
 _site/
+server/
