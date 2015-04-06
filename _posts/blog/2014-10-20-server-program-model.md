@@ -191,3 +191,60 @@ while true {
     }
 }
 ```
+
+### python中使用epoll
+
+这里只使用了水平触发的方式写做示例。如果使用边缘触发，那程序就需要在每次调用epoll.poll()之前处理完当前事件，这样就需要加入多个for循环，不过也不难理解。
+
+更多的示例请参见[python-epoll-howto](http://scotdoyle.com/python-epoll-howto.html)
+
+```python
+import socket, select  # select模块中已经集成了epoll
+
+EOL1 = b'\n\n'
+EOL2 = b'\n\r\n'
+response  = b'HTTP/1.0 200 OK\r\nDate: Mon, 1 Jan 1996 01:01:01 GMT\r\n'
+response += b'Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n'
+response += b'Hello, world!'
+
+serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+serversocket.bind(('0.0.0.0', 8080))
+serversocket.listen(1)
+serversocket.setblocking(0)  # socket默认是阻塞的，我们需要手动设置成非阻塞
+
+epoll = select.epoll()  # 建立一个epoll对象
+epoll.register(serversocket.fileno(), select.EPOLLIN)  #注册服务器socket，监听读取事件，服务器socket收到一个连接时，产生一个读取事件
+
+try:
+    connections = {}; requests = {}; responses = {}  # connections存储网络连接的文件描述符(file descripors, 整型)
+    while True:
+        events = epoll.poll(1)  # epoll对象查询是否有感兴趣对象产生， 参数1表示最多等1秒。如果有事件发生，立即返回事件列表。
+        for fileno, event in events:
+            if fileno == serversocket.fileno():  # 如果是服务器socket事件，就新建一个连接
+                connection, address = serversocket.accept()
+                connection.setblocking(0)  # 设置成非阻塞模式
+                epoll.register(connection.fileno(), select.EPOLLIN)  # 注册socket的read事件，等待从客户端读
+                connections[connection.fileno()] = connection
+                requests[connection.fileno()] = b''
+                responses[connection.fileno()] = response
+            elif event & select.EPOLLIN:  # 如果read事件发生，就从客户端读取事件
+                requests[fileno] += connections[fileno].recv(1024)
+                if EOL1 in requests[fileno] or EOL2 in requests[fileno]:  # 分片读取，如果http请求结束，取消注册读取，并注册写回
+                    epoll.modify(fileno, select.EPOLLOUT)
+                    print('-'*40 + '\n' + requests[fileno].decode()[:-2])
+            elif event & select.EPOLLOUT:  # 如果是写回，发送数据给客户端
+                byteswritten = connections[fileno].send(responses[fileno])
+                responses[fileno] = responses[fileno][byteswritten:]
+                if len(responses[fileno]) == 0:  # 每次发送一部分数据，直到结束。取消注册的写回事件，
+                    epoll.modify(fileno, 0)
+                    connections[fileno].shutdown(socket.SHUT_RDWR)  # 关闭连接（可选）
+            elif event & select.EPOLLHUP:  # 客户端断开连接
+                epoll.unregister(fileno)
+                connections[fileno].close()
+                del connections[fileno]
+finally:  # 可选，因为socket会主动关闭连接
+    epoll.unregister(serversocket.fileno())
+    epoll.close()
+    serversocket.close()
+```
