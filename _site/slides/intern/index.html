@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>实习小结</title>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Anonymous+Pro:400,700,400italic,700italic">
+    <link rel="stylesheet" href="css/default.css" media="screen">
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse
+# 不会做前端的后端不是好运维
+
+```c
+_        _        _  ______  _      
+\\      /|\      // | _____| ||     
+ \\    // \\    //  ||____   ||____ 
+  \\  //   \\  //   | ____|  ||___||
+   \\//     \\//    ||_____  ||___||
+    \/       \/     |______| |_____|
+```
+## 
+```
+By: 黄晋
+2015.1.27
+```
+---
+
+class:inverse, middle
+## 前端 VS 后端
+# 
+```python
+class IndexHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.render('index.html')
+```
+# 
+```html
+<div class="content">
+  <form action="/login" type="POST">
+    <label>用户名</label><input type="text" name="username"/>
+    <label>密码</label><input type="password" name="password"/>
+  </form>
+</div>
+```
+---
+
+class: inverse, middle, center
+## - 完成的工作
+# 
+## - 出现的问题
+# 
+## - 得到的收获
+---
+
+class: inverse
+## 完成的工作
+# 
+- [糗百官方号](http://public.qiushibaike.com)大部分前端功能
+# 
+- [糗百官方号](http://public.qiushibaike.com)部分后台功能
+# 
+- 群组项目部分后台逻辑
+---
+
+class: inverse
+### 完成的工作
+- 糗百官方号
+# 
+![login](img/login.png)
+---
+
+class:inverse
+### 完成的工作
+糗百官方号
+# 
+![page2](img/page2.png)
+---
+
+class: inverse
+### 完成的工作
+ 糗百官方号
+# 
+![page1](img/page1.png)
+---
+
+class: inverse
+## 遇到的问题
+# 
+- 太久没写前端
+# 
+- 前端的复杂性
+# 
+- javascript的复杂性
+# 
+- 用不用框架的区别，使用框架一天重构一周的代码
+---
+
+class: inverse
+### 遇到的问题
+# 
+前端的复杂性
+```css
+.compact-theme a:hover {
+text-decoration: none;
+background: #efefef; /* Old browsers */
+background: -moz-linear-gradient(top, #efefef 0%, #bbbbbb 100%);
+            /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#efefef), 
+            color-stop(100%,#bbbbbb)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, #efefef 0%,#bbbbbb 100%); 
+            /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, #efefef 0%,#bbbbbb 100%); 
+            /* Opera11.10+ */
+background: -ms-linear-gradient(top, #efefef 0%,#bbbbbb 100%); 
+            /* IE10+ */
+background: linear-gradient(top, #efefef 0%,#bbbbbb 100%);
+            /* W3C */
+}
+```
+[推荐链接](http://www.duitang.com/static/csshack.html)
+---
+
+class: inverse
+### 遇到的问题
+javascript的复杂性
+```javascript
+//比如说有10个class，value从1-10
+$(".class").each(function(){
+    value = $(this).attr("value");
+    $(this).parent().click(function(){
+        alert(value);
+    });
+});
+```
+VS
+```javascript
+$(".class").each(function(){
+    value = $(this).attr("value");
+    (function(e){
+        $(this).parent().click(function(){
+            alert(e);
+        });
+    })(value);
+});
+```
+[推荐链接](http://bonsaiden.github.io/JavaScript-Garden/zh/)
+---
+
+class: inverse
+### 遇到的问题
+```javascript
+    //In jQuery style
+    $(el).toggleClass(className);
+```
+VS
+```javascript
+    //Triditional javascript stylesheet
+    if (el.classList) {
+        el.classList.toggle(className);
+    } else {
+        var classes = el.className.split(' ');
+        var existingIndex = classes.indexOf(className);
+        if (existingIndex >= 0)
+            classes.splice(existingIndex, 1);
+        else
+            classes.push(className);
+        el.className = classes.join(' ');
+    }
+```
+- [推荐网址](http://youmightnotneedjquery.com/)
+---
+
+class:inverse, middle
+## 结论：
+# 
+- 只知道用，永远都学不到真技术；
+# 
+- 只知道问，永远都学部到真技术；
+# 
+- 什么都想学，永远都学不到真技术
+# 
+PS：以上观点仅对智商 <= 我的人有效
+---
+
+class: inverse
+## 得到的收获
+# 
+- 辩证的看待技术
+# 
+- 学习从用户的思维，从产品的角度思考
+# 
+- 不忘我还是写代码的
+---
+
+class:inverse
+### 得到的收获
+# 
+辩证的看待技术
+# 
+- 从前，别人用的不爽了我就爽了
+# 
+- 现在，用户用得舒服的产品才是好产品
+# 
+- 任何时候，烧死产品经理！！
+---
+
+class:inverse
+### 得到的收获
+# 
+学习用户思维，从产品的角度思考
+# 
+- 纯技术的程序猿是群奇葩的生物，要脱离
+# 
+- 为什么没有人模仿微信摇一摇？能模仿吗？
+# 
+- 在我不是产品之前，我还是要烧死产品经理！！嗯，还有交互
+---
+
+class:inverse, middle, center
+## [结论]
+### 得女人者得天下
+# 
+—————————————————————————————————————
+# 
+PS: 我就说说而已，我没当真
+---
+
+class:inverse
+## 因为
+# 
+女人喜欢——>晒——>其他女人看到——>攀比——>得到其他女用户
+# 
+女人喜欢——>晒——>其他屌丝看到——>蜂拥而聚——>得到屌丝用户
+# 
+女人喜欢——>晒——>高富帅看到——>当作没看到——>偶尔晒跟女神合照——>男屌丝，女屌丝，高富帅，白富美都有了
+---
+
+class:inverse
+### 得到的收获
+# 
+不忘了我还是写代码的
+# 
+代码整洁度会有大大的提高，代码重用性会有大大的提高，代码谨慎度会有大大的提高。特别是被明哥改掉所有代码之后。。。
+# 
+————————————————————————————————————
+PS： 明哥别打我，我是真心在夸你。。。
+---
+
+class: inverse, middle, center
+# 谢谢大家
+# 
+————————————————————————————————————
+## 
+```
+By： 期待能与各位小伙伴共事的小jj
+```
+    </textarea>
+    <script src="js/remark.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      var slideshow = remark.create({
+        highlightStyle: 'monokai',
+        highlightLanguage: 'remark'
+      });
+    </script>
+  </body>
+</html>

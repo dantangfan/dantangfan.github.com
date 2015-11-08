@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>进程同步的若干问题</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,600">
+  <link rel="stylesheet" href="/style.css">
+  </head>
+<body>
+  <div class="container">
+    <header class="masthead">
+  <h1 class="masthead-title--small">
+    <a href="/">Dantangfan</a>
+  </h1>
+</header>      
+<div class="content post">
+  <h1 class="post-title">进程同步的若干问题</h1>
+  <div class="post-date">
+    <time>20 May 2014</time>
+  </div>
+  <h2>背景</h2>
+
+<p>首先我们来看一个<code>生产者-消费者</code>的问题，在实际应用中我们使用<code>有限缓冲</code>方案。生产者消费者进程共享代码如下</p>
+
+<pre><code class="c">#define BUFFER_SIZE 10
+typedef struct{
+...
+} item;
+item buffer[BUFFER_SIZE];
+int in = 0;
+int out = 0;
+</code></pre>
+
+<p>共享缓冲区是通过循环数组和两个逻辑指针来实现的：in和out。变量in指向缓冲区的下一个空位；out指向缓冲区的第一个非空位。当in==out的时候缓冲区空，当(in+1)%BUFFER_SIZE==out的时候，缓冲器满。</p>
+
+<p>用counter记录缓冲区中的项，生产者进程有一个局部变量nextProducted存储锁新产生的项目，那么生产者的代码可以简单如下</p>
+
+<pre><code class="c">while(1){
+    while(counter==BUFFER_SIZE)
+        ;
+    buffer[in] = nextProducted;
+    in = (in+1)%BUFFER_SIZE;
+    counter++;
+}
+</code></pre>
+
+<p>消费者有一个局部变量nextConsumed存储要使用的项,消费者的代码如下</p>
+
+<pre><code class="c">while(1){
+    while(counter==0)
+        ;
+    nextConsumed=buffer[out];
+    out = (out+1)%BUFFER_SIZE;
+    counter--;
+}
+</code></pre>
+
+<p>生产者消费者各自的程序都正确，但是当并发执行的时候他们可能并不能正确的执行。原因是他们同时执行的过程中代码交叉是乱序的，两个程序可能对counter同时进行操作，导致判断结果不准确。这样的情况，即多个进程并发访问和操作同一数据并且执行结果与访问发生的特定顺序有关，称为竞争条件。为了防止竞争条件，需要确保一段之间里面只有一个进程能操作共享数据（counter），于是就需要进程同步。</p>
+
+<h3>临界区</h3>
+
+<p>每个进程有一个代码段称为<code>临界区</code>，该区中的进程可能修改共享变量、更新一个表、写一个文件等。这种系统的重要特征是当一个进程在临界区内执行时，没有其他进程被允许在临界区内执行。因此，临界区在时间上是互斥的。临界区的问题是设计一个进程能用来协作的协议，每个进程必须请求其进入临界区。实现这一请求的代码称为<code>进入区</code>，临界区之后有<code>退出区</code>，其他代码叫<code>剩余区</code></p>
+
+<p>关于临界区的问题的解答必须满足下面三项要求</p>
+
+<ul>
+<li><p>互斥：一个进程在临界区内执行，其他进程都不能在其临界区内</p></li>
+<li><p>有空让进：如果没有进程在临界区且有进程希望进入临界区，那么只有哪些在剩余区内执行的进程能参加决策，选取谁能进入临界区，并且这种选取不能无限延迟</p></li>
+<li><p>有限等待：在一个进程作出进入其临界区的请求到被允许的其间，其他进程进入临界区的次数有一个上限</p></li>
+</ul>
+
+
+<h2>信号量</h2>
+
+<p>为了解决临界区问题，通常做法是使用称为<code>信号量</code>的同步工具。信号量S是一个整数变量，除了初始化之外，只能通过两个标准的<code>原子操作</code>wait和signal来访问。wait的经典定义可以用位代码表示为</p>
+
+<pre><code class="c">wait(S){
+    while(S&lt;=0)
+        ;
+       S--;
+}
+</code></pre>
+
+<p>signal的经典定义可以用伪代码表示</p>
+
+<pre><code class="c">signal(S){
+    S++;
+}
+</code></pre>
+
+<p>在wait和signal操作中，对信号量整数值的修改必须不可分的执行，当一个进程修改信号量时，不能有其他进程同时修改同一信号量。而且对于wait操作，对s数值的测试（S&lt;=0）和对其可能的修改(S++)也必须没有中断的执行。</p>
+
+<h3>用法</h3>
+
+<p>可以用信号量来解决n个进程临界区问题。n个进程共享一个信号量mutex并初始化为1,每个进程的组织结构就如下</p>
+
+<pre><code class="c">do{
+    wait(mutex);
+    临界区;
+    signal(mutex);
+    剩余区；
+}while(1);
+</code></pre>
+
+<p>也可以用信号量来解决各种同步问题。比如两个正在并发执行的进程P1,P2，P1有语句S1,P2有语句S2,假设只有S1执行完之后才能有S2。那么我们可以让两个进程共享一个信号量synch,并且初始化为0,在P1中插入语句</p>
+
+<pre><code>S1;
+signal(synch);
+</code></pre>
+
+<p>在P2中插入语句</p>
+
+<pre><code>wait(synch);
+S2;
+</code></pre>
+
+<h3>实现</h3>
+
+<p>简单的信号量主要的缺点就是<code>忙等待</code>：当一个进程位于其临界区时，任何其他试图进入其临界区的进程都必须在其进入代码中连续的循环。为了克服忙等待，可以修改wait和signal的定义，当一个进程执行wait时，发现信号量不为正则它必须等待。然而，该进程不是忙等待而是<code>阻塞</code>自己。阻塞操作讲一个进程放入到放入到与信号量相关的等待队列中，且该进程状态被切换成等待状态。接着，控制被转到CPU<code>调度程序</code>，以选择一个进程执行。</p>
+
+<p>一个进程阻塞且等待信号量S，可以在其他进程执行signal后重新被执行。该进程的重新执行通过一个wakeup操作来进行，该操作讲进程从等待状态切换到就绪状态，接着放入就绪队列中。我们可以将信号量定义成一个结构</p>
+
+<pre><code class="c">typedef struct{
+    int value;
+    struct process *L;
+}semaphore;
+</code></pre>
+
+<p>每个信号都有一个整数值和一个进程表，当一个进程必须等待信号量shah，就加入到进程链表上。操作signal会从等待进程链表中取出一个进程唤醒。</p>
+
+<p>信号量wait操作可以如下定义</p>
+
+<pre><code class="c">void wait(semaphore S){
+    S.value--;
+    if(S.value&lt;0){
+        add this process to S.L;
+        block();
+    }
+}
+</code></pre>
+
+<p>信号量signal操作如下</p>
+
+<pre><code class="c">void signal(semaphore S){
+    S.value++;
+    if(S.value&lt;=0){
+        remove a process P from S.L;
+        wakeup(P);
+    }
+}
+</code></pre>
+
+<p>操作block挂起调用它的进程。操作wakeup重新启动阻塞的进程，他们都是操作系统提供的系统调用。</p>
+
+<p>信号量的关键之处是他们原子执行。必须确保没有两个进程能同时对一个信号量进程wait和signal操作。其实现在定义的信号量也没有取消忙等待，只是取消了应用程序进入临界区的忙等待。而且把忙等待限制在了wait和signal操作的临界区内。</p>
+
+<h3>死锁</h3>
+
+<p><code>死锁</code>：两个或多个进程无限的等待一个事件，而该事件只能又这些等待进程之一来产生。</p>
+
+<h2>经典同步问题</h2>
+
+<h3>哲学家就餐</h3>
+
+<p>哲学家就餐问题可以这样表述，假设有五位哲学家围坐在一张圆形餐桌旁，做以下两件事情之一：吃饭，或者思考。吃东西的时候，他们就停止思考，思考的时候也停止吃东西。餐桌中间有一大碗意大利面，每两个哲学家之间有一只餐叉。因为用一只餐叉很难吃到意大利面，所以假设哲学家必须用两只餐叉吃东西。他们只能使用自己左右手边的那两只餐叉。哲学家就餐问题有时也用米饭和筷子而不是意大利面和餐叉来描述，因为很明显，吃米饭必须用两根筷子。</p>
+
+</div>
+
+  </div>
+</body>
+</html>
