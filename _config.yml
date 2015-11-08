@@ -17,8 +17,8 @@ markdown:           rdiscount
 nav:
   - name:           "HOME"
     href:           "//dantangfan.com"
-  #- name:           "Download"
-  #  href:           "//github.com/gfjaru/Kiko/releases"
+  - name:           "Github"
+    href:           "//github.com/gfjaru/dantangfan"
 
 # Sass
 sass:

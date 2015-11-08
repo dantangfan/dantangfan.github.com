@@ -2,31 +2,31 @@
 layout: default
 ---
 <header class="masthead">        
-  <h1 class="masthead-title">
-    <a href="{{ site.baseurl }}/">{{ site.name }}<span>&#39;s blog</span></a>
-  </h1>
-  <nav class="masthead-nav">
-    {% for nav in site.nav %}
-    <a href="{{ nav.href }}">{{ nav.name }}</a>
-    {% endfor %}
-  </nav>
+    <h1 class="masthead-title">
+        <a href="{{ site.baseurl }}/">{{ site.name }}<span>&#39;s blog</span></a>
+      </h1>
+      <nav class="masthead-nav">
+      {% for nav in site.nav %}
+     <a href="{{ nav.href }}">{{ nav.name }}</a>
+     {% endfor %}
+    </nav>
 </header>
 <div class="content list">
 {% if site.posts.size == 0 %}
-  <h2>No post found</h2>
+    <h2>No post found</h2>
 {% else %}
 {% for post in site.posts %}
-  <div class="list-item">
-    <h2 class="list-post-title">
-      <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
-    </h2>
-    <div class="list-post-date">
-      <time>{{ post.date | date_to_string }}</time>
+    <div class="list-item">
+        <h3 class="list-post-title">
+        <a href="{{ site.baseurl }}{{ post.url }}" style="color: #555;">{{ post.title }}</a>
+        </h3>
+        <div class="list-post-date">
+        <time>{{ post.date | date_to_string }}</time>
+        </div>
+        <p style="color:#999;font-size: 16px;">{{post.description}}</p>
+        <hr style="height:1px;border:none;border-top:1px solid #eeeeee;"/>
+        <br/>
     </div>
-    <p>{{post.description}}</p>
-    <hr style="height:1px;border:none;border-top:1px solid #eeeeee;"/>
-    <br/>
-  </div>
 {% endfor %}
 {% endif %}
 </div>
