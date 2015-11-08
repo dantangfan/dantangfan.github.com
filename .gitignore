@@ -1,0 +1,9 @@
+*.pyc
+~*
+test/
+.idea/
+nohup
+nohup.out
+*.log
+_site/
+server/
