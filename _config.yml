@@ -13,6 +13,9 @@ permalink:          /:year/:month/:day/:title.html
 # Markdown
 markdown:           rdiscount
 
+paginate: 10
+paginate_path: "page/:num"
+
 # Navigation
 nav:
   - name:           "HOME"

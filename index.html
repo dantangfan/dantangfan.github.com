@@ -4,18 +4,18 @@ layout: default
 <header class="masthead">        
     <h1 class="masthead-title">
         <a href="{{ site.baseurl }}/">{{ site.name }}<span>&#39;s blog</span></a>
-      </h1>
-      <nav class="masthead-nav">
-      {% for nav in site.nav %}
-     <a href="{{ nav.href }}">{{ nav.name }}</a>
-     {% endfor %}
+    </h1>
+    <nav class="masthead-nav">
+        {% for nav in site.nav %}
+        <a href="{{ nav.href }}">{{ nav.name }}</a>
+        {% endfor %}
     </nav>
 </header>
 <div class="content list">
 {% if site.posts.size == 0 %}
     <h2>No post found</h2>
 {% else %}
-{% for post in site.posts %}
+    {% for post in paginator.posts %}
     <div class="list-item">
         <h3 class="list-post-title">
         <a href="{{ site.baseurl }}{{ post.url }}" style="color: #555;">{{ post.title }}</a>
@@ -27,6 +27,31 @@ layout: default
         <hr style="height:1px;border:none;border-top:1px solid #eeeeee;"/>
         <br/>
     </div>
-{% endfor %}
+    {% endfor %}
+    <nav>
+        <ul class="pagination pagination-posts">
+            {% if paginator.total_pages > 1 %}
+                {% if paginator.previous_page %}
+                <li>
+                  <a href="{{ paginator.previous_page_path | prepend: site.url}}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+                </li>
+                {% endif %}
+                {% for page in (1..paginator.total_pages) %}
+                    {% if page == paginator.page %}
+                    <li class="active"><span>{{ page }}</span></li>
+                    {% elsif page == 1 %}
+                    <li><a href="{{ site.url }}">{{ page }}</a></li>
+                    {% else %}
+                    <li><a href="{{ site.url}}/page/{{ page }}">{{ page }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if !paginator.next_page %}
+                    <li>
+                        <a href="{{ paginator.next_page_path | prepend: site.url}}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+                    </li>
+                {% endif %}
+            {% endif %}
+        </ul>
+    </nav>
 {% endif %}
 </div>
