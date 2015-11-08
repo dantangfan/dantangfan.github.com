@@ -23,6 +23,9 @@ layout: default
     <div class="list-post-date">
       <time>{{ post.date | date_to_string }}</time>
     </div>
+    <p>{{post.description}}</p>
+    <hr style="height:1px;border:none;border-top:1px solid #eeeeee;"/>
+    <br/>
   </div>
 {% endfor %}
 {% endif %}

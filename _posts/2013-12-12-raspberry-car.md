@@ -513,12 +513,6 @@ if __name__ == '__main__':
 
 ![ ](/images/raspberry-car/pc_client.png)
 
-为方便，可以直接使用git下载
-
-```
-git clone https://github.com/dantangfan/tank.git tank
-git clone https://github.com/dantangfan/clientTank clientTank
-```
 
 ###管理和应用
 * [berryio](https://github.com/NeonHorizon/berryio),[项目介绍](http://www.geekfan.net/3251/）
@@ -537,7 +531,3 @@ git clone https://github.com/dantangfan/clientTank clientTank
 
 * [raspberrytank](http://raspberrytank.ianrenton.com/)
 * [传感器的简单应用](http://www.apinglai.com/category/arm/)
-
-####联系人
-
-* 联系：dantangfan@gmail.com，316977394@qq.com

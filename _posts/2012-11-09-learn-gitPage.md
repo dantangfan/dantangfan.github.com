@@ -4,7 +4,55 @@ title: 使用Github Pages建独立博客
 description: Github本身就是不错的代码社区，他也提供了一些其他的服务，比如Github Pages，使用它可以很方便的建立自己的独立博客，并且免费。
 category: blog
 ---
-### 转自[www.beiyuu.com](http://www.beiyuu.com)增删涂改个人信息，感谢分享
+
+**2015-10-10更新**
+
+最近本来打算自己写一个博客系统，最后还是觉得站在巨人的肩膀上事半功倍。重新换了博客的主题，前提还是用jekyll，简单总结如下。
+
+1.在你的github上已经有了'xxxx.github.io'这个repo，如果没有，直接跳过本节看转载部分。
+
+2.搭建本地环境，现在已经有了一键安装的环境，不用像以前一样搞半天还被墙了[Using Jekyll with Pages](https://help.github.com/articles/using-jekyll-with-pages)
+
+安装bundle
+
+```
+sudo gem install bundle
+```
+
+Gemfile和Bundle安装
+
+在更目录下创建一个叫Gemfile的文件，注意没有后缀，输入
+
+```
+source 'http://ruby.taobao.org/'
+gem 'github-pages'
+```
+
+保存后，执行
+
+```
+sudo bundle install
+```
+
+这里如果`nokogiri`出错，看[nokogiri](http://www.nokogiri.org/tutorials/installing_nokogiri.html#mac_os_x)
+
+命令会根据当前目录下的Gemfile，安装所需要的所有软件。这一步所安装的东西，可以说跟github本身的环境是完全一致的，所以可以确保本地如果没有错误，上传后也不会有错误。而且可以在将来使用下面命令，随时更新环境，十分方便
+
+```
+sudo bundle update
+```
+
+使用下面命令，启动转化和本地服务：
+
+```
+ bundle exec jekyll serve
+```
+
+然后就可以到[模板](http://jekyllthemes.org/)里随便挑一个模板自己玩儿了
+
+<hr style="height:1px;border:none;border-top:1px solid #eeeeee;"/>
+
+### 以下转自[www.beiyuu.com](http://www.beiyuu.com)感谢分享
 [Github][]很好的将代码和社区联系在了一起，于是发生了很多有趣的事情，世界也因为他美好了一点点。Github作为现在最流行的代码仓库，已经得到很多大公司和项目的青睐，比如[jQuery][]、[Twitter][]等。为使项目更方便的被人理解，介绍页面少不了，甚至会需要完整的文档站，Github替你想到了这一点，他提供了[Github Pages][]的服务，不仅可以方便的为项目建立介绍站点，也可以用来建立个人博客。
 
 Github Pages有以下几个优点：
@@ -30,7 +78,7 @@ Github Pages有以下几个优点：
 
 域名的购买不用多讲，注册、选域名、支付，有网购经验的都毫无压力，优惠码也遍地皆是。域名的配置需要提醒一下，因为伟大英明的GFW的存在，我们必须多做些事情。
 
-流传Godaddy的域名解析服务器被墙掉，导致域名无法访问，后来这个事情在[dantangfan][]也发生了，不得已需要把域名解析服务迁移到国内比较稳定的服务商处，这个迁移对于域名来说没有什么风险，最终的控制权还是在Godaddy那里，你随时都可以改回去。
+流传Godaddy的域名解析服务器被墙掉，导致域名无法访问，后来这个事情在[Beiyuu.com][]也发生了，不得已需要把域名解析服务迁移到国内比较稳定的服务商处，这个迁移对于域名来说没有什么风险，最终的控制权还是在Godaddy那里，你随时都可以改回去。
 
 我们选择[DNSPod][]的服务，他们的产品做得不错，易用、免费，收费版有更高端的功能，暂不需要。注册登录之后，按照DNSPod的说法，只需三步（我们插入一步）：
 
