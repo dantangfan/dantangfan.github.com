@@ -362,4 +362,26 @@ if all(number < 10000 for number in numbers):
 	print "all small than 10000"
 ```
 
+### 16. filter函数
+相对于map、reduce而言，filter使用量相对要少些，就像他的名字一样，filter的作用就是按照规则过滤一些元素
+
+```
+lst = [1, 2, 3, 4, 5, 6]
+# 所有奇数都会返回True, 偶数会返回False被过滤掉
+print filter(lambda x: x % 2 != 0, lst)
+#输出结果
+[1, 3, 5]
+```
+
+### 17. print
+
+在python2.7之后，`>>`操作符被重载了，可以这样使用print
+
+```
+print >> sys.stderr, "message"
+print >> file("test.txt", 'w'), "message"
+```
+
+第一个参数需要是一个文件对象
+
 
