@@ -11,7 +11,7 @@ category: blog
 
 这是最简单的一种IO模型，它就是一个一问一答的形式。多数的python网络编程socket一节都会有一个简单服务器例子，就是这个模型：
 
-<pre class="prettyprint" style="border: 0">c
+```c
 bind(serverfd);
 listen(serverfd);
 while(1):{
@@ -20,7 +20,7 @@ while(1):{
     do_logic(buf); //对数据进行操作，内部逻辑处理
     write(clientfd, buf); //返回客户端数据
 }
-</pre>
+```
 
 很明显的可以看到，上面有几个地方是需要等待的。
 
@@ -32,7 +32,7 @@ while(1):{
 
 同步的方式几乎已经失传了，多进程稍稍改进了同步阻塞的问题：
 
-<pre class="prettyprint" style="border: 0">c
+```c
 bind(serverfd);
 listen(serverfd);
 while(1){
@@ -56,7 +56,7 @@ void clien(clientfd){
     do_logic(buf);
     write(clientfd, buf);
 }
-</pre>
+```
 
 这样做的效果很明显，可以让每个进程处理一个请求，所以有多个请求来的时候就不会等待了。
 
@@ -70,7 +70,7 @@ void clien(clientfd){
 
 多进程/线程模型每个进程/线程都只能处理一路IO，这样过多的请求也会让服务器不堪重负。而通过IO复用，让一个进程可以处理多个请求，简单描述如下：
 
-<pre class="prettyprint" style="border: 0">c 
+```c 
 bind(serverfd);
 listen(serverfd);
 FD_ZERO(&allset);
@@ -89,7 +89,7 @@ while(1){
         }
     }
 }
-</pre>
+```
 
 从代码中我们可以看到这种模型一样有缺点：
 
@@ -142,20 +142,20 @@ while(1){
 然后我们来说说阻塞I/O的缺点。但是阻塞I/O模式下，一个线程只能处理一个流的I/O事件。如果想要同时处理多个流，要么多进程(fork)，要么多线程(pthread_create)，很不幸这两种方法效率都不高。
 于是再来考虑非阻塞忙轮询的I/O方式，我们发现我们可以同时处理多个流了（把一个流从阻塞模式切换到非阻塞模式再此不予讨论）：
 
-<pre class="prettyprint" style="border: 0">c
+```c
 while true {
     for i in stream[]{
         if i has data
         read until unavailable;
     }
 }
-</pre>
+```
 
 我们只要不停的把所有流从头到尾问一遍，又从头开始。这样就可以处理多个流了，但这样的做法显然不好，因为如果所有的流都没有数据，那么只会白白浪费CPU。这里要补充一点，阻塞模式下，内核对于I/O事件的处理是阻塞或者唤醒，而非阻塞模式下则把I/O事件交给其他对象（后文介绍的select以及epoll）处理甚至直接忽略。
 
 为了避免CPU空转，可以引进了一个代理（一开始有一位叫做select的代理，后来又有一位叫做poll的代理，不过两者的本质是一样的）。这个代理比较厉害，可以同时观察许多流的I/O事件，在空闲的时候，会把当前线程阻塞掉，当有一个或多个流有I/O事件时，就从阻塞态中醒来，于是我们的程序就会轮询一遍所有的流（于是我们可以把“忙”字去掉了）。代码长这样:
 
-<pre class="prettyprint" style="border: 0">c
+```c
 while true {
     select(streams[]);
     for i in streams[] {
@@ -163,7 +163,7 @@ while true {
         read until unavailable;
     }
 }
-</pre>
+```
 
 于是，如果没有I/O事件产生，我们的程序就会阻塞在select处。但是依然有个问题，我们从select那里仅仅知道了，有I/O事件发生了，但却并不知道是那几个流（可能有一个，多个，甚至全部），我们只能无差别轮询所有流，找出能读出数据，或者写入数据的流，对他们进行操作。
 但是使用select，我们有O(n)的无差别轮询复杂度，同时处理的流越多，每一次无差别轮询时间就越长。再次
@@ -183,14 +183,14 @@ epoll可以理解为event poll，不同于忙轮询和无差别轮询，epoll之
 （注：当对一个非阻塞流的读写发生缓冲区满或缓冲区空，write/read会返回-1，并设置errno=EAGAIN。而epoll只关心缓冲区非满和缓冲区非空事件）。
 一个epoll模式的代码大概的样子是：
 
-<pre class="prettyprint" style="border: 0">c
+```c
 while true {
     active_stream[] = epoll_wait(epollfd);
     for i in active_stream[] {
         read or write till unavailable
     }
 }
-</pre>
+```
 
 ### python中使用epoll
 
@@ -198,7 +198,7 @@ while true {
 
 更多的示例请参见[python-epoll-howto](http://scotdoyle.com/python-epoll-howto.html)
 
-<pre class="prettyprint" style="border: 0">python
+```python
 import socket, select  # select模块中已经集成了epoll
 
 EOL1 = b'\n\n'
@@ -247,4 +247,4 @@ finally:  # 可选，因为socket会主动关闭连接
     epoll.unregister(serversocket.fileno())
     epoll.close()
     serversocket.close()
-</pre>
+```

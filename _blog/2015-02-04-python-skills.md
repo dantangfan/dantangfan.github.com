@@ -10,7 +10,7 @@ category: blog
 
 #### 1. 比较大小
 
-<pre class="prettyprint" style="border: 0">python
+```python
 >>> x = 5
 >>> 1 < x < 10
 True
@@ -22,11 +22,11 @@ True
 True
 >>> 5 == x > 4
 True
-</pre>
+```
 
 #### 2. 枚举对象
 
-<pre class="prettyprint" style="border: 0">python
+```python
 >>> a = ['a', 'b', 'c', 'd', 'e']
 >>> for index, item in enumerate(a): print index, item
 ...
@@ -36,21 +36,21 @@ True
 3 d
 4 e
 >>>
-</pre>
+```
 
 枚举对象还可以接收一个参数，代表其实值
 
-<pre class="prettyprint" style="border: 0">
+```
 >>> l = ["spam", "ham", "eggs"]
 >>> list(enumerate(l))
 >>> [(0, "spam"), (1, "ham"), (2, "eggs")]
 >>> list(enumerate(l, 1))
 >>> [(1, "spam"), (2, "ham"), (3, "eggs")]
-</pre>
+```
 
 #### 3. 注意你的默认参数
 
-<pre class="prettyprint" style="border: 0">python
+```python
 >>> def foo(x=[]):
 ...     x.append(1)
 ...     print x
@@ -61,20 +61,20 @@ True
 [1, 1]
 >>> foo()
 [1, 1, 1]
-</pre>
+```
 
 并没有达到我们的预期值，而是每次都在上一个x后面append了一个数。
 因为python参数并不是我们在C/C++等语言中所见的申明+赋值的形式，而是采用了创建+指向的类似于指针的方式实现，也就是说python的变量实际上是
 对值或者对象的一个指针，比如下面代码
 
-<pre class="prettyprint" style="border: 0">python
+```python
 >>> p=1
 >>> id(p)
 140680863166744
 >>> p=p+1
 >>> id(p)
 140680863166720
-</pre>
+```
 
 对于C/C++等传统语言，P的地址是不应该发生变化的，而是直接改变当前地址的值；在python代码中，实际是创建了一个整数1对象，然后用p指向它，
 当执行加法操作时，又创建了一个2对象，并用p指向它，整个过程中，改变的是p的地址。
@@ -85,7 +85,7 @@ This means that if you use a mutable default argument and mutate it, you will an
 可见，函数的默认参数在定义的时候就已经被绑定了。
 而对于foo函数中的默认参数`x=[]`，我们看如下代码
 
-<pre class="prettyprint" style="border: 0">python
+```python
 >>> a=[1]
 >>> a.append(1)
 >>> id(a)
@@ -93,13 +93,13 @@ This means that if you use a mutable default argument and mutate it, you will an
 >>> a.append(1)
 >>> id(a)
 4302841976
-</pre>
+```
 
 可以知道，修改列表类型的对象，是直接修改变量指向的地址，而不同于纯整数对象，因此就出现了上述陷阱，不知道算不算设计上的bug。
 
 因此，不要使用可变对象作为函数的默认参数。如下
 
-<pre class="prettyprint" style="border: 0">python
+```python
 >>> def foo(x=None):
 ...     x= [] if x is None
 ...     x.append(1)
@@ -108,27 +108,27 @@ This means that if you use a mutable default argument and mutate it, you will an
 [1]
 >>> foo()
 [1]
-</pre>
+```
 
 #### 4. 切片规则
 
-<pre class="prettyprint" style="border: 0">python
+```python
 a = [1,2,3,4,5]
 >>> a[::2]  # 跳两步
 [1,3,5]
 >>> a[::-1] # 反着跳
 [5,4,3,2,1]
-</pre>
+```
 
 #### 5. for的else语法
 
-<pre class="prettyprint" style="border: 0">python
+```python
 for i in foo:
     if i == 0:
         break
 else:
     print("i was never 0")
-</pre>
+```
 
 如果for循环执行完之后还没有执行break语句，那么就会执行else语句
 
@@ -144,17 +144,17 @@ else:
 
 我们知道可以使用with语法来处理文件，这样在使用完成之后能默认关闭文件，如下
 
-<pre class="prettyprint" style="border: 0">python
+```python
 with open('a.txt', 'r') as f:
     do something
-</pre>
+```
 
 原理是with关键字调用了对象的`__enter__`和`__exit__`函数，也就是说，我们可以对实现了这两个魔术方法的任何对象使用with关键字。
 
 - enter:进入上下文管理器的运行时上下文，在语句体执行前调用。with 语句将该方法的返回值赋值给 as 子句中的 target，如果指定了 as 子句的话
 - exit:退出与上下文管理器相关的运行时上下文，返回一个布尔值表示是否对发生的异常进行处理。参数表示引起退出操作的异常，如果退出时没有发生异常，则3个参数都为None。如果发生异常，返回True 表示不处理异常，否则会在退出该方法后重新抛出异常以由 with 语句之外的代码逻辑进行处理。如果该方法内部产生异常，则会取代由 statement-body 中语句产生的异常。要处理异常时，不要显示重新抛出异常，即不能重新抛出通过参数传递进来的异常，只需要将返回值设置为 False 就可以了。之后，上下文管理代码会检测是否 __exit__() 失败来处理异常
 
-<pre class="prettyprint" style="border: 0">python
+```python
 class DemoContextManger(object):
     def __init__(self, name):
         self.name = name
@@ -174,11 +174,11 @@ class DemoContextManger(object):
 
 with DemoContextManger("text") as t:
     pass
-</pre>
+```
 
 一个db的context manager例子
 
-<pre class="prettyprint" style="border: 0">python
+```python
 class DBConnection():
     ...
     def cursor(self):
@@ -198,11 +198,11 @@ class DBConnection():
 with DBConnection() cursor:
     cursor.execute("...")
     cursor.execute("...")
-</pre>
+```
 
 python也提供了一个简单模块contextlib来辅助实现上下文管理器
 
-<pre class="prettyprint" style="border: 0">python
+```python
 from contextlib import contextmanager
 import time
 import sys
@@ -215,7 +215,7 @@ def timeit(msg):
 
 with timeit('myfunc'):
     myfunc()
-</pre>
+```
 
 yield之前的语句等同于enter，之后的语句等同于exit，yield就是当前with之后的语句，如果有yield 值，那么这个值就是enter的返回值
 
@@ -223,16 +223,16 @@ yield之前的语句等同于enter，之后的语句等同于exit，yield就是�
 
 我们常见的错误处理方法如下
 
-<pre class="prettyprint" style="border: 0">python
+```python
 try:
     do something here
 exec Exception, e:
     do something here
-</pre>
+```
 
 我们可以为语句加上else语句，用于处理没有任何错误发生
 
-<pre class="prettyprint" style="border: 0">python
+```python
 try:
     do something here
 exec Exception, e:
@@ -241,11 +241,11 @@ else:
     do something here
 finally:
     close xxx
-</pre>
+```
 
 #### 9. 巧用set操作
 
-<pre class="prettyprint" style="border: 0">python
+```python
 >>> a = set([1,2,3,4])
 >>> b = set([3,4,5,6])
 >>> a | b # 并集
@@ -258,11 +258,11 @@ False
 {1, 2}
 >>> a ^ b # 亦或
 {1, 2, 5, 6}
-</pre>
+```
 
 ### 10. 字典操作
 
-<pre class="prettyprint" style="border: 0">
+```
 >>> dict((["a", 1], ["b", 2])) # ⽤两个序列类型构造字典
 {'a': 1, 'b': 2}
 
@@ -279,7 +279,7 @@ False
 200
 >>> d
 {'a': 1, 'c': 200, 'b': 2}
-</pre>
+```
 
 在collection中，还有一个`defaultdict`用于为字典添加默认类型，指定字典默认值。
 
@@ -295,14 +295,14 @@ False
     
 ### 12. partial函数
 
-<pre class="prettyprint" style="border: 0">
+```
 >>> from functools import partial
 >>> bound_func = partial(range, 0, 10)
 >>> bound_func()
 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 >>> bound_func(2)
 [0, 2, 4, 6, 8]
-</pre>
+```
 
 尽管这很常见，但是这在实际工作中十分有用。可以为函数绑定任意多个默认参数
 
@@ -310,7 +310,7 @@ False
 
 python的round函数可以根据需求保留浮点数的精确数位
 
-<pre class="prettyprint" style="border: 0">
+```
 >>> print round(1123.456789, 4)
 1123.4568
  >>> print round(1123.456789, 2)
@@ -321,13 +321,13 @@ python的round函数可以根据需求保留浮点数的精确数位
 1120.0
  >>> print round(1123.456789, -2)
 1100.0
-</pre>
+```
 
 ### 14. 深拷贝和浅拷贝
 
 我们在实际开发中都可以向对某列表的对象做修改,但是可能不希望改动原来的列表. 浅拷贝只拷贝父对象，深拷贝还会拷贝对象的内部的子对象
 
-<pre class="prettyprint" style="border: 0">
+```
 list1 = [1, 2, 3]
 list2 = list1  # 就是个引用, 你操作list2,其实list1的结果也会变，跟c语言传地址一样
 list3 = list1[:]
@@ -337,50 +337,50 @@ list2[0] = 5
 list3[1] = 10
 list4[2] = 15
 # 此时的list1=[5, 2, 3]
-</pre>
+```
 
 ### 15. 检查列表中的每个元素
 
-<pre class="prettyprint" style="border: 0">python 
+```python 
 numbers = [10,100,1000,10000]
 if [number for numeber in numbers if number<10000]:
     print "at list one small than 10000"
-</pre>
+```
 
 可以使用
 
-<pre class="prettyprint" style="border: 0">python 
+```python 
 numbers = [10,100,1000,10000]
 if any(number < 10000 for number in numbers):
     print "at list one small than 10000"
-</pre>
+```
 类似的
 
-<pre class="prettyprint" style="border: 0">python 
+```python 
 numbers = [10,100,1000,10000]
 if all(number < 10000 for number in numbers):
 	print "all small than 10000"
-</pre>
+```
 
 ### 16. filter函数
 相对于map、reduce而言，filter使用量相对要少些，就像他的名字一样，filter的作用就是按照规则过滤一些元素
 
-<pre class="prettyprint" style="border: 0">
+```
 lst = [1, 2, 3, 4, 5, 6]
 # 所有奇数都会返回True, 偶数会返回False被过滤掉
 print filter(lambda x: x % 2 != 0, lst)
 #输出结果
 [1, 3, 5]
-</pre>
+```
 
 ### 17. print
 
 在python2.7之后，`>>`操作符被重载了，可以这样使用print
 
-<pre class="prettyprint" style="border: 0">
+```
 print >> sys.stderr, "message"
 print >> file("test.txt", 'w'), "message"
-</pre>
+```
 
 第一个参数需要是一个文件对象
 

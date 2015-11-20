@@ -9,25 +9,25 @@ category: blog
 
 ###1.获取网页源代码：
 
-<pre class="prettyprint" style="border: 0">python
+```python
 import urllib# import urllib2
 response = urllib.urlopen('www.baidu.com')#获取网页
 html = response.read()#获取网页内容
-</pre>
+```
 
 在urllib2里面有Request对象来映射你提供的http请求，制造一个请求，而不是直接连接网页
 
-<pre class="prettyprint" style="border: 0">python
+```python
 import urllib2
 request = urllib2.Request('www.baidu.com')
 response = urllib2.urlopen(request)
 html = response.read()
 效果跟上面是一样的
-</pre>
+```
 
 ###2.一些网站不愿意被非自动化程序访问（非浏览器），那么我们就需要在获取网页的时候添加一点header内容，把自己伪装成浏览器
 
-<pre class="prettyprint" style="border: 0">python
+```python
 import urllib
 import urllib2
 url = 'www.baidu.com'
@@ -41,13 +41,13 @@ data = urllib.urlencode(values)#需要对头进行编码
 req = urllib2.Request(url, data, headers)    
 response = urllib2.urlopen(req)    
 the_page = response.read() 
-</pre>
+```
 
 ###3.简单的异常处理
 
 当由于各种原因连接不成功的时候，会发生异常。我们可以简单的处理这个异常
 
-<pre class="prettyprint" style="border: 0">python
+```python
 import urllib2
 
 req = urllib2.Request('http://www.baidu.com')
@@ -55,13 +55,13 @@ try:
     http = urllib2.urlopen(req)
 except urllib2.URLError, e:
     print e.reason#它会返回出错的原因
-</pre>
+```
 
 *知识：http状态码
 
 urllib2中还有很多错误反馈信息，可以参见urllib2的教程或者文档。对于常规情况来说，我们只要知道不能联通就够了。
 
-<pre class="prettyprint" style="border: 0">python
+```python
 from urllib2 import Request, urlopen, URLError, HTTPError
 
 req = Request('http://www.baidu.com')
@@ -76,7 +76,7 @@ except URLError, e:
         print 'unknow error'
 else:
     print 'successful'
-</pre>
+```
 
 ###4.Openers和Handles:
 `Openers:`当我们打开一个url的时候我们使用默认的的opener是urlopen（他是urllib2.OpenerDirector的实例），除此之外，我们可以自己构造opener
@@ -127,7 +127,7 @@ HTTPBasicAuthHandler使用一个密码管理的对象来处理URLs和realms来�
 
 最高层次的URL是第一个要求验证的URL。你传给.add_password()更深层次的URLs将同样合适。
 
-<pre class="prettyprint" style="border: 0">python
+```python
 # -*- coding: utf-8 -*-
 import urllib2
 
@@ -156,7 +156,7 @@ opener.open(a_url)
 # 安装 opener.
 # 现在所有调用 urllib2.urlopen 将用我们的 opener.
 urllib2.install_opener(opener)
-</pre>
+```
  
 注意：以上的例子我们仅仅提供我们的HHTPBasicAuthHandler给build_opener。
 默认的openers有正常状况的handlers：ProxyHandler，UnknownHandler，HTTPHandler，HTTPDefaultErrorHandler， HTTPRedirectHandler，FTPHandler， FileHandler， HTTPErrorProcessor。
@@ -173,7 +173,7 @@ urllib2中的urlopen返回的对象有两个方法很常用，info(),geturl()
 
 `geturl()`非常有用，因为urlopen可能会有重定向，比如说常见的新浪微博中，页面分享的视屏链接在新窗口中打开之后，链接会完全变化，这个时候的链接才是真正的url
 
-<pre class="prettyprint" style="border: 0">python
+```python
 import urllib2
 
 lod = 'http://t.cn/8si16mR'
@@ -181,19 +181,19 @@ req = urllib2.Request(old)
 http = urllib2.urlopen(req)
 new = http.geturl
 #这个时候的old和new是完全不一样的
-</pre>
+```
 
 `info()`返回一个字典，描述了获取的页面的状态，通常是服务器发送过来特定的header
 
-<pre class="prettyprint" style="border: 0">python
+```python
 import urllib2
 http = urllib2.urlopen('http://www.baidu.com')
 print http.info()
-</pre>
+```
 
 `proxy`的设置：urllib2会使用环境变量http_proxy来设置HTTP Proxy，如果想在程序中控制proxy，可以设置代理
 
-<pre class="prettyprint" style="border: 0">python
+```python
 import urllib2
 enable_proxy = True
 proxy_handler = urllib2.ProxyHandler({'http':'http://some-proxy.com:8080'})
@@ -203,13 +203,13 @@ if enable_proxy:
 else:
     opener = urllib.build_opener(null_proxy_handler)
 urllib.install_opener(opener)
-</pre>
+```
 
 `timeout`的设置：urllib2.urlopen(url,timeout = 10)
 
 在request中加入特定的头：
 
-<pre class="prettyprint" style="border: 0">python
+```python
 import urllib2
 request = urllib2.Request('http://www.baidu.com')
 request.add_header('User-Agent','fake-client')
@@ -225,11 +225,11 @@ for i in cookie:
     print 'name'+i.name
     print 'value'+i.value
 #运行之后就可以得到访问百度的cookie值
-</pre>
+```
 
 `表单处理`：从浏览器和抓包工具可以看到我们需要填写哪些表单,通常用字典的形式
 
-<pre class="prettyprint" style="border: 0">python
+```python
 import urllib
 import urllib2
 postdata = urllib.urlencode({
@@ -239,14 +239,14 @@ postdata = urllib.urlencode({
 })
 request = urllib2.Request(url,postdata)
 http = urllib2.urlopen(request)
-</pre>
+```
 
 `文件下载：`
 
-<pre class="prettyprint" style="border: 0">python
+```python
 import urllib
 download = urllib.urlretrieve(url)
-</pre>
+```
 
 ###6.[正则表达式](http://www.jb51.net/article/15707.htm)
 
@@ -270,7 +270,7 @@ download = urllib.urlretrieve(url)
 
 于是开始编码
 
-<pre class="prettyprint" style="border: 0">python
+```python
 # =============================================================================
 #      FileName: insysu.py
 #          Desc: a spider to walk through the isysu.com using your name and passwd
@@ -312,7 +312,7 @@ for item in cookie:
 #visit the target web site after login
 result = opener.open('http://www.insysu.com')
 print result.read()
-</pre>
+```
 
 * 注意的是要先登录，然后才能进入主页面。看看结果如何
 

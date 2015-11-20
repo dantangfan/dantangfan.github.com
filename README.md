@@ -17,3 +17,8 @@ HJ's blog
 
 #### 其实我不会说英文
 * Last updated 2013-12-10
+
+
+###使用方法
+
+文章写在_blog文件夹中，写完之后执行`python make_pretty.py filename`来高亮代码段。

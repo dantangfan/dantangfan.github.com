@@ -139,9 +139,9 @@ def parallel_fetch_many(urls):
     # responses is a list of HTTPResponses in the same order
 @gen.coroutine
 def parallel_fetch_dict(urls):
-    responses = yield {url: http_client.fetch(url)
-                        for url in urls}
-    # responses is a dict {url: HTTPResponse}
+    responses = yield \{url: http_client.fetch(url)
+                        for url in urls\}
+    # responses is a dict \{url: HTTPResponse\}
 ```
 
 ####Interleavin
@@ -198,13 +198,13 @@ def main():
 ```python
 class MainHandler(RequestHandler):
     def get(self):
-        self.write('<a href="%s">link to story 1</a>' %
+        self.write('<a href="\%s">link to story 1</a>' \%
                    self.reverse_url("story", "1"))
 class StoryHandler(RequestHandler):
     def initialize(self, db):
         self.db = db
     def get(self, story_id):
-        self.write("this is story %s" % story_id)
+        self.write("this is story \%s" \% story_id)
 app = Application([
     url(r"/", MainHandler),
     url(r"/story/([0-9]+)", StoryHandler, dict(db=db), name="story")
@@ -234,7 +234,7 @@ class MyFormHandler(RequestHandler):
 
 由于HTML编码是不明确的而且不知道出入的参数到底是单个值还是以list，于是`RequestHandler`提供了不同的方法来判定如何处理，利用`get_query_argument`/`get_body_argument`就可以处理list
 
-上传的文件可以以表单的形式通过`self.request.file`访问，它通过名字（在html中<input type='file'>表单的名称）映射到一系列的文件，每个文件有如下的字典形式**{"filename":..., "content_type":..., "body":...}**。`file`对象只有当文件是以form表单形式上传的时候才会存在，如果不是form形式，那么原始的文件列表可以通过`self.request.body`访问到。默认情况下，上传的文件会暂存在内存中，文件过大的情况可以在`stream_request_body`装饰器中看到。
+上传的文件可以以表单的形式通过`self.request.file`访问，它通过名字（在html中<input type='file'>表单的名称）映射到一系列的文件，每个文件有如下的字典形式**\{"filename":..., "content_type":..., "body":...\}**。`file`对象只有当文件是以form表单形式上传的时候才会存在，如果不是form形式，那么原始的文件列表可以通过`self.request.body`访问到。默认情况下，上传的文件会暂存在内存中，文件过大的情况可以在`stream_request_body`装饰器中看到。
 
 由于HTML怪异的编码格式，tornado并不统一输入参数的格式。特别的是，我们也不会解析JSON请求的主体，需要使用JSON的应用程序会重写`prepare`来解析请求
 ```python
@@ -333,13 +333,13 @@ Tornado也可以与任何其他模板语言结合使用，但`RequestHandler.ren
 ```
 <html>
    <head>
-      <title>{{ title }}</title>
+      <title>\{\{ title \}\}</title>
    </head>
    <body>
      <ul>
-       {% for item in items %}
-         <li>{{ escape(item) }}</li>
-       {% end %}
+       \{\% for item in items \%\}
+         <li>\{\{ escape(item) \}\}</li>
+       \{\% end \%\}
      </ul>
    </body>
  </html>
@@ -353,7 +353,7 @@ class MainHandler(tornado.web.RequestHandler):
         self.render("template.html", title="My title", items=items)
 ```
 
-Tornado的模板支持控制语句和表达式：控制语句用*{% statement %}*,表达式用*{{ var }}*。控制语句支持*if*,*for*,*while*,*try*等，每个完整的控制语句最后都需要使用*{% end %}*。同时，tornado也支持`extends`和`block`语句用于模板拓展(`tornado.template`中有详细描述)。
+Tornado的模板支持控制语句和表达式：控制语句用*\{\% statement \%\}*,表达式用*\{\{ var \}\}*。控制语句支持*if*,*for*,*while*,*try*等，每个完整的控制语句最后都需要使用*\{\% end \%\}*。同时，tornado也支持`extends`和`block`语句用于模板拓展(`tornado.template`中有详细描述)。
 表达式可以是任何的python表达式，连函数调用都可以。
 模板代码通常在命名空间中执行，空间中包含了以下对象和函数（适用于`RequestHandler.render`和`render_string`）
  -   escape: alias for tornado.escape.xhtml_escape
@@ -375,7 +375,7 @@ Tornado的模板支持控制语句和表达式：控制语句用*{% statement %}
  -   Any keyword arguments passed to render or render_string
 
 编写一个web应用的时候，我们通常需要用到tornado的很多特性，尤其是模板的拓展功能。我么可以在`tornado.template`中查看这些特性(有些特性，比如`UIModules`是在`tornado.web`中实现的)。
-所有的输出都是默认转义的（使用`tornado.escape.xhtml_excape`），我们可以在设置的时候使用`autoescape=None`,或者直接在模板文件中使用`{% autoescape=None %}`,对单一语句不转义，可以用`{% raw ...%}`代替`{{ }}`。
+所有的输出都是默认转义的（使用`tornado.escape.xhtml_excape`），我们可以在设置的时候使用`autoescape=None`,或者直接在模板文件中使用`\{\% autoescape=None \%\}`,对单一语句不转义，可以用`\{\% raw ...\%\}`代替`\{\{ \}\}`。
 
 ###本地化
 当前用户(无论是否登录)的语言环境总会作为请求头发送给服务器，并能从`self.location`访问。地点的名称可以通过`locate.name`访问到，可以使用`Locate.translate`来翻译传入的字符串。模板也提供了全局函数`_()`来翻译字符串，它一般有两种调用形式：
@@ -386,23 +386,23 @@ _("Translate this string")
 
 根据传入的第三个参数局定是单数还是复数
 ```python
-_("A person liked this", "%(num)d people liked this",
-  len(people)) % {"num": len(people)}
+_("A person liked this", "\%(num)d people liked this",
+  len(people)) \% \{"num": len(people)\}
 ```
 
-在这个例子中，如果`len(people)`的值是1,就会直接输出第一句话，如果不是就会输出第二句话。最常见的翻译模式就是使用python的站位符(%(num)d)，因为站位符可以在运行时变化。
+在这个例子中，如果`len(people)`的值是1,就会直接输出第一句话，如果不是就会输出第二句话。最常见的翻译模式就是使用python的站位符(\%(num)d)，因为站位符可以在运行时变化。
 比如下面有个常见的例子
 ```html
 <html>
    <head>
-      <title>FriendFeed - {{ _("Sign in") }}</title>
+      <title>FriendFeed - \{\{ _("Sign in") \}\}</title>
    </head>
    <body>
-     <form action="{{ request.path }}" method="post">
-       <div>{{ _("Username") }} <input type="text" name="username"/></div>
-       <div>{{ _("Password") }} <input type="password" name="password"/></div>
-       <div><input type="submit" value="{{ _("Sign in") }}"/></div>
-       {% module xsrf_form_html() %}
+     <form action="\{\{ request.path \}\}" method="post">
+       <div>\{\{ _("Username") \}\} <input type="text" name="username"/></div>
+       <div>\{\{ _("Password") \}\} <input type="password" name="password"/></div>
+       <div><input type="submit" value="\{\{ _("Sign in") \}\}"/></div>
+       \{\% module xsrf_form_html() \%\}
      </form>
    </body>
  </html>
@@ -442,12 +442,12 @@ class HomeHandler(tornado.web.RequestHandler):
         self.render("home.html", entries=entries)
 class EntryHandler(tornado.web.RequestHandler):
     def get(self, entry_id):
-        entry = self.db.get("SELECT * FROM entries WHERE id = %s", entry_id)
+        entry = self.db.get("SELECT * FROM entries WHERE id = \%s", entry_id)
         if not entry: raise tornado.web.HTTPError(404)
         self.render("entry.html", entry=entry)
-settings = {
+settings = \{
     "ui_modules": uimodules,
-}
+\}
 application = tornado.web.Application([
     (r"/", HomeHandler),
     (r"/entry/([0-9]+)", EntryHandler),
@@ -456,16 +456,16 @@ application = tornado.web.Application([
 
 然后在模板中，可以通过`module`来调用模块
 ```html
-{% for entry in entries %}
-  {% module Entry(entry) %}
-{% end %}
+\{\% for entry in entries \%\}
+  \{\% module Entry(entry) \%\}
+\{\% end \%\}
 ```
 
 通过重写`embedded_css`/`embedded_javascript`/`javascript_files`/`css_files`我么可以在模板中使用css和js
 ```python
 class Entry(tornado.web.UIModule):
     def embedded_css(self):
-        return ".entry { margin-bottom: 1em; }"
+        return ".entry \{ margin-bottom: 1em; \}"
     def render(self, entry, show_comments=False):
         return self.render_string(
             "module-entry.html", show_comments=show_comments)
@@ -474,13 +474,13 @@ class Entry(tornado.web.UIModule):
 不过模块被调用多少次，js和css都只会被包含一次，这样就避免了冲突。css通常包含在`<head>`标签中，js通常在`</body>`结束之前。
 不用额外的python代码也可以将一个template代码转换称为module，比如前面的例子可以重写成下面module-entry.html代码
 ```html
-{{ set_resources(embedded_css=".entry { margin-bottom: 1em; }") }}
+\{\{ set_resources(embedded_css=".entry \{ margin-bottom: 1em; \}") \}\}
 <!-- more template html... -->
 ```
 
 我们可以使用下面代码调用它
 ```html
-{% module Template("module-entry.html", show_comments=True) %}
+\{\% module Template("module-entry.html", show_comments=True) \%\}
 ```
 
 #认证和安全
@@ -552,10 +552,10 @@ class MainHandler(BaseHandler):
     def get(self):
         name = tornado.escape.xhtml_escape(self.current_user)
         self.write("Hello, " + name)
-settings = {
+settings = \{
     "cookie_secret": "__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",
     "login_url": "/login",
-}
+\}
 application = tornado.web.Application([
     (r"/", MainHandler),
     (r"/login", LoginHandler),
@@ -574,11 +574,11 @@ application = tornado.web.Application([
 为了防范伪造POST请求，我们会要求每个请求都包含一个参数值作为令牌来匹配存储在cookie中的对应值。我们的应用将通过一个cookie头和一个隐藏的HTML表单元素向页面提供令牌。当一个合法页面的表单被提交时，它将包括表单值和已存储的cookie。如果两者匹配，我们的应用认定请求有效。
 由于第三方站点没有访问cookie数据的权限，他们将不能在请求中包含令牌cookie。这有效地防止了不可信网站发送未授权的请求。tornado通过在设置中加入`xsrf_cookies=True`字段来预防xsrf
 ```python
-settings = {
+settings = \{
     "cookie_secret": "__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",
     "login_url": "/login",
     "xsrf_cookies": True,
-}
+\}
 application = tornado.web.Application([
     (r"/", MainHandler),
     (r"/login", LoginHandler),
@@ -588,7 +588,7 @@ application = tornado.web.Application([
 设置好这个字段之后，tornado的web应用会为每个用户设置`_xsrf`的cookie，并且会拒绝所有不包含正确的_xsrf值的请求(包括post，get，put，delete等)。如果我们设置了这个字段，就需要对所有通过post提交的form表单进行设置，这个设置是通过UI Module中的`xsrf_from_html()`来实现的，这个函数在所有的template中都能访问到。
 ```html
 <form action="/new_message" method="post">
-  {% module xsrf_form_html() %}
+  \{\% module xsrf_form_html() \%\}
   <input type="text" name="message"/>
   <input type="submit" value="Post"/>
 </form>
@@ -596,17 +596,17 @@ application = tornado.web.Application([
 
 当使用AJAX进行post方法数据请求时，也需要保证每个javascript都带有正确的_xsrf值，对jQuery来说，可以有如下例子
 ```javascript
-function getCookie(name) {
+function getCookie(name) \{
     var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
     return r ? r[1] : undefined;
-}
-jQuery.postJSON = function(url, args, callback) {
+\}
+jQuery.postJSON = function(url, args, callback) \{
     args._xsrf = getCookie("_xsrf");
-    $.ajax({url: url, data: $.param(args), dataType: "text", type: "POST",
-        success: function(response) {
+    $.ajax(\{url: url, data: $.param(args), dataType: "text", type: "POST",
+        success: function(response) \{
         callback(eval("(" + response + ")"));
-    }});
-};
+    \}\});
+\};
 ```
 
 如何建立安全的web应用是一个说不完的话题，但这并不是tornado主要特点，所以我们不多讨论。
@@ -643,18 +643,18 @@ user nginx;
 worker_processes 1;
 error_log /var/log/nginx/error.log;
 pid /var/run/nginx.pid;
-events {
+events \{
     worker_connections 1024;
     use epoll;
-}
-http {
+\}
+http \{
     # Enumerate all the Tornado servers here
-    upstream frontends {
+    upstream frontends \{
         server 127.0.0.1:8000;
         server 127.0.0.1:8001;
         server 127.0.0.1:8002;
         server 127.0.0.1:8003;
-    }
+    \}
     include /etc/nginx/mime.types;
     default_type application/octet-stream;
     access_log /var/log/nginx/access.log;
@@ -673,43 +673,43 @@ http {
     # on the Tornado server (to avoid propagating "queries of death"
     # to all frontends)
     proxy_next_upstream error;
-    server {
+    server \{
         listen 80;
         # Allow file uploads
         client_max_body_size 50M;
-        location ^~ /static/ {
+        location ^~ /static/ \{
             root /var/www;
-            if ($query_string) {
+            if ($query_string) \{
                 expires max;
-            }
-        }
-        location = /favicon.ico {
+            \}
+        \}
+        location = /favicon.ico \{
             rewrite (.*) /static/favicon.ico;
-        }
-        location = /robots.txt {
+        \}
+        location = /robots.txt \{
             rewrite (.*) /static/robots.txt;
-        }
-        location / {
+        \}
+        location / \{
             proxy_pass_header Server;
             proxy_set_header Host $http_host;
             proxy_redirect off;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Scheme $scheme;
             proxy_pass http://frontends;
-        }
-    }
-}
+        \}
+    \}
+\}
 ```
 
 ###静态文件和文件缓存
 可以使用`static_path`来告诉tornado静态文件的位置
 ```python
-settings = {
+settings = \{
     "static_path": os.path.join(os.path.dirname(__file__), "static"),
     "cookie_secret": "__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",
     "login_url": "/login",
     "xsrf_cookies": True,
-}
+\}
 application = tornado.web.Application([
     (r"/", MainHandler),
     (r"/login", LoginHandler),
@@ -722,10 +722,10 @@ application = tornado.web.Application([
 ```html
 <html>
    <head>
-      <title>FriendFeed - {{ _("Home") }}</title>
+      <title>FriendFeed - \{\{ _("Home") \}\}</title>
    </head>
    <body>
-     <div><img src="{{ static_url("images/logo.png") }}"/></div>
+     <div><img src="\{\{ static_url("images/logo.png") \}\}"/></div>
    </body>
  </html>
 ```
