@@ -426,10 +426,11 @@ def lazy_function():
 #outputs: I am an ordinary function
 </pre>
 
-两种调用方式完全一样。第一种方式直接调用了`my_decorator`。而通过`@my_decorator`的方式，我们告诉python，调用函数lazy_function的时候『这个函数被变量my_decorator标记了』
-(It’s exactly the same. "my_decorator" is called. So when you @my_decorator, you are telling Python to call the function 'labelled by the variable "my_decorator"'.)
+It’s exactly the same. "my_decorator" is called. So when you @my_decorator, you are telling Python to call the function 'labelled by the variable "my_decorator"'.
 
-这十分重要，你给的合格「标记」可以直接指向使用的装饰器
+This is important! The label you give can point directly to the decorator—or not.
+
+Let’s get evil. ☺
 
 <pre class="prettyprint" style="border: 0">
 def decorator_maker():
@@ -478,6 +479,8 @@ decorated_function()
 #I am the decorated function.
 </pre>
 
+到目前为止，一切正常
+
 然后，让我们剥去令人厌烦的中间变量在来一次
 
 <pre class="prettyprint" style="border: 0">
@@ -518,7 +521,7 @@ decorated_function()
 #I am the decorated function.
 </pre>
 
-到这里，认真读代码的人应该都理解了。
+瞧见了吗？直接用`@`也能愉快的工作。到这里，认真读代码的人应该都理解了。
 
 我们继续来看带参数的装饰器。我们可以用函数动态的生成装饰器，同时，对这个函数，我们是不是也可以传入参数呢！
 
@@ -528,12 +531,11 @@ def decorator_maker_with_arguments(decorator_arg1, decorator_arg2):
     print "I make decorators! And I accept arguments:", decorator_arg1, decorator_arg2
 
     def my_decorator(func):
-        # The ability to pass arguments here is a gift from closures.
-        # If you are not comfortable with closures, you can assume it’s ok,
-        # or read: http://stackoverflow.com/questions/13857/can-you-explain-closures-as-they-relate-to-python
+        # 这里能够自然的传参数都归功于闭包，如下链接能更好的让你了解闭包
+        # http://stackoverflow.com/questions/13857/can-you-explain-closures-as-they-relate-to-python
         print "I am the decorator. Somehow you passed me arguments:", decorator_arg1, decorator_arg2
 
-        # Don't confuse decorator arguments and function arguments!
+        # 不要把装饰器的参数和被装饰函数的参数搞混了
         def wrapped(function_arg1, function_arg2) :
             print ("I am the wrapper around the decorated function.\n"
                   "I can access all the variables\n"
@@ -564,3 +566,148 @@ decorated_function_with_arguments("Rajesh", "Howard")
 #Then I can pass them to the decorated function
 #I am the decorated function and only knows about my arguments: Rajesh Howard
 </pre>
+
+又如下面的例子，我们可以把变量当成参数传递给装饰器。
+
+<pre class="prettyprint" style="border: 0">
+c1 = "Penny"
+c2 = "Leslie"
+
+@decorator_maker_with_arguments("Leonard", c1)
+def decorated_function_with_arguments(function_arg1, function_arg2):
+    print ("I am the decorated function and only knows about my arguments:"
+           " {0} {1}".format(function_arg1, function_arg2))
+
+decorated_function_with_arguments(c2, "Howard")
+#outputs:
+#I make decorators! And I accept arguments: Leonard Penny
+#I am the decorator. Somehow you passed me arguments: Leonard Penny
+#I am the wrapper around the decorated function. 
+#I can access all the variables 
+#   - from the decorator: Leonard Penny 
+#   - from the function call: Leslie Howard 
+#Then I can pass them to the decorated function
+#I am the decorated function and only knows about my arguments: Leslie Howard
+</pre>
+
+正如我们看到的，我们可以像给普通函数传递参数那样给装饰器传递参数。如果愿意，你也可以使用`*args, **kwargs`来当成装饰器的参数。
+( But remember decorators are called only once. Just when Python imports the script. You can't dynamically set the arguments afterwards. When you do "import x", the function is already decorated, so you can't change anything.)
+
+##例子
+
+没看懂先不写
+
+##最佳实践
+
+- python2.4之后才能使用装饰器
+- 装饰器让函数调用变慢了
+- 一旦使用了装饰器，那么你函数里面的所有代码都被装饰了，不能撤销
+- 装饰器调试很困难
+
+我们应该很愉快的使用`functools.wrap()`这个python2.5之后提供的函数。
+
+<pre class="prettyprint" style="border: 0">
+# For debugging, the stacktrace prints you the function __name__
+def foo():
+    print "foo"
+
+print foo.__name__
+#outputs: foo
+
+# With a decorator, it gets messy    
+def bar(func):
+    def wrapper():
+        print "bar"
+        return func()
+    return wrapper
+
+@bar
+def foo():
+    print "foo"
+
+print foo.__name__
+#outputs: wrapper
+
+# "functools" can help for that
+
+import functools
+
+def bar(func):
+    # We say that "wrapper", is wrapping "func"
+    # and the magic begins
+    @functools.wraps(func)
+    def wrapper():
+        print "bar"
+        return func()
+    return wrapper
+
+@bar
+def foo():
+    print "foo"
+</pre>
+
+##装饰器到底该在哪些场合使用呢
+
+比如说下面一些场合例子
+
+<pre class="prettyprint" style="border: 0">
+def benchmark(func):
+    """
+    程序执行时间
+    """
+    import time
+    def wrapper(*args, **kwargs):
+        t = time.clock()
+        res = func(*args, **kwargs)
+        print func.__name__, time.clock()-t
+        return res
+    return wrapper
+
+
+def logging(func):
+    """
+    程序执行日志
+    """
+    def wrapper(*args, **kwargs):
+        res = func(*args, **kwargs)
+        print func.__name__, args, kwargs
+        return res
+    return wrapper
+
+
+def counter(func):
+    """
+    程序执行次数
+    """
+    def wrapper(*args, **kwargs):
+        wrapper.count = wrapper.count + 1
+        res = func(*args, **kwargs)
+        print "{0} has been used: {1}x".format(func.__name__, wrapper.count)
+        return res
+    wrapper.count = 0
+    return wrapper
+
+@counter
+@benchmark
+@logging
+def reverse_string(string):
+    return str(reversed(string))
+
+print reverse_string("Able was I ere I saw Elba")
+print reverse_string("A man, a plan, a canoe, pasta, heros, rajahs, a coloratura, maps, snipe, percale, macaroni, a gag, a banana bag, a tan, a tag, a banana bag again (or a camel), a crepe, pins, Spam, a rut, a Rolo, cash, a jar, sore hats, a peon, a canal: Panama!")
+
+#outputs:
+#reverse_string ('Able was I ere I saw Elba',) {}
+#wrapper 0.0
+#wrapper has been used: 1x 
+#ablE was I ere I saw elbA
+#reverse_string ('A man, a plan, a canoe, pasta, heros, rajahs, a coloratura, maps, snipe, percale, macaroni, a gag, a banana bag, a tan, a tag, a banana bag again (or a camel), a crepe, pins, Spam, a rut, a Rolo, cash, a jar, sore hats, a peon, a canal: Panama!',) {}
+#wrapper 0.0
+#wrapper has been used: 2x
+#!amanaP :lanac a ,noep a ,stah eros ,raj a ,hsac ,oloR a ,tur a ,mapS ,snip ,eperc a ,)lemac a ro( niaga gab ananab a ,gat a ,nat a ,gab ananab a ,gag a ,inoracam ,elacrep ,epins ,spam ,arutaroloc a ,shajar ,soreh ,atsap ,eonac a ,nalp a ,nam A
+</pre>
+
+python本身也提供了几个装饰器`property`,`staticmethod`,etc。
+
+使用面是很广的，例子根举不过来。
+
