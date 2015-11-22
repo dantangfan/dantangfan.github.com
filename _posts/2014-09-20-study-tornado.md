@@ -34,28 +34,28 @@ Tornado的web框架和HTTP服务器为WSGI提供了一个完备的替代方案�
 
 一个简单的同步函数
 
-<pre class="prettyprint" style="border: 0">pyhon
+```pyhon
 from tornado.httpclient import HTTPClient
 def synchronous_fetch(url):
     http_client = HTTPClient()
     response = http_client.fetch(url)
     reponse.body
-</pre>
+```
 
 把上面例子写成回调参数类型的异步函数如下
 
-<pre class="prettyprint" style="border: 0">python
+```python
 from tornado.httpclient import AsyncHTTPClient
 def asynchronous_fetch(url, callback):
     http_client = AsyncHTTPClient()
     def handle_response(response):
         callback(response.body)
     http_client.fetch(url, callback=handle_response)
-</pre>
+```
 
 写成带`Future`的异步函数如下
 
-<pre class="prettyprint" style="border: 0">python
+```python
 from tornado.concurrent import Future
 def async_fetch_future(url):
     http_client = AsyncHTTPClient()
@@ -64,34 +64,34 @@ def async_fetch_future(url):
     fetch_future.add_done_callback(
         lambda f: my_future.set_result(f.result()))
     return my_future
-</pre>
+```
 
 `Future`版本的明显更复杂也更难理解，但它却是Tornado中推荐的写法，因为它有两个明显的优势。首先，错误处理比较一致，因为`Future.result`可以抛出异常；其次，`Futures`很适合跟协程一起使用。后面将会详细讨论协程的用法，这里给出上面例子的协程版本
 
-<pre class="prettyprint" style="border: 0">python
+```python
 from tornado import gen
 @gen.coroutine
 def fetch_coroutine(url):
     http_client = AsyncHTTPClient()
     response = yield http_client.fetch(url)
     return response.body
-</pre>
+```
 
 #协程
 Tornado推荐使用协程来写异步代码，协程通过使用`python`的*`yield`*关键字来代替链式调用从而挂起和恢复进程。用协程方式写的代码就跟同步代码一样简单但却没有像同步一样浪费一个线程，通过减少上下文切换，协程更使得并发更加容易。
 比如
-<pre class="prettyprint" style="border: 0">python
+```python
 from tornado import gen
 @gen.coroutine
 def fetch_coroutine(url):
     http_client = AsyncHTTPClient()
     response = yield http_client.fetch(url)
     return response.body
-</pre>
+```
 
 ###代码是如何工作的呢
 包含*`yield`*关键字的函数叫生成器。所有的生成器都是异步的；当被调用的时候它们会返回一个生成器对象而不是直接执行完毕。`@gen.coroutine`装饰器通过返回一个`Future`来跟生成器和协程代码的调用者通信，下面是一个协程装饰内部循环的简化版本
-<pre class="prettyprint" style="border: 0">python
+```python
 # Simplified inner loop of tornado.gen.Runner
 def run(self):
     # send(x) makes the current yield return x.
@@ -101,34 +101,34 @@ def run(self):
         self.next = f.result()
         self.run()
     future.add_done_callback(callback)
-</pre>
+```
 
 装饰器接收到一个来自生成器的`Future`并等待`Future`执行完毕，然后“解析”这个`Future`并将结果发回给生成器作为*`yield`*表达式的结果。除了需要立即把异步函数返回的`Future`传递给*`yield`*之外，大多数的异步代码不会直接接触到`Future`类。
 
 ###协程模式
 ####与回调相互作用
 为了能与使用回调的异步代码相互作用，我们需要把调用包装在一个task中
-<pre class="prettyprint" style="border: 0">python
+```python
 @gen.coroutine
 def call_task():
     # Note that there are no parens on some_function.
     # This will be translated by Task into
     #   some_function(other_args, callback=callback)
     yield gen.Task(some_function, other_args)
-</pre>
+```
 
 ####调用阻塞函数
 最简单的方法就是使用一个能与协程媲美的`ThreadPoolExecutor`，它能返回`Futures`
-<pre class="prettyprint" style="border: 0">python
+```python
 thread_pool = ThreadPoolExecutor(4)
 @gen.coroutine
 def call_blocking():
     yield thread_pool.submit(blocking_func, args)
-</pre>
+```
 
 ####并行
 协程装饰器可以识别值为`Future`的list或者dict，并并行的等待他们的完成
-<pre class="prettyprint" style="border: 0">python
+```python
 @gen.coroutine
 def parallel_fetch(url1, url2):
     resp1, resp2 = yield [http_client.fetch(url1),
@@ -142,11 +142,11 @@ def parallel_fetch_dict(urls):
     responses = yield \{url: http_client.fetch(url)
                         for url in urls\}
     # responses is a dict \{url: HTTPResponse\}
-</pre>
+```
 
 ####Interleavin
 有时候暂时保存一个`Future`而非直接yielding它也很有用，这样一来就可以在等待之前启动另一个操作
-<pre class="prettyprint" style="border: 0">python
+```python
 @gen.coroutine
 def get(self):
     fetch_future = self.fetch_next_chunk()
@@ -156,11 +156,11 @@ def get(self):
         self.write(chunk)
         fetch_future = self.fetch_next_chunk()
         yield self.flush()
-</pre>
+```
 
 ####循环
 在协程中使用循环很棘手，因为python没有提供好的办法在for或者while循环中直接使用yield。
-<pre class="prettyprint" style="border: 0">python
+```python
 import motor
 db = motor.MotorClient().test
 @gen.coroutine
@@ -168,12 +168,12 @@ def loop_example(collection):
     cursor = db.collection.find()
     while (yield cursor.fetch_next):
         doc = cursor.next_object()
-</pre>
+```
 
 #Tornado web应用的结构
 一个Tornado应用总是会包含一个或多个`RequestHandler`的子类、一个将请求传入Handler的`Application`对象和一个用来启动应用的`main()`函数。
 一个最简单的**Hello word**实例如下
-<pre class="prettyprint" style="border: 0">python
+```python
 from tornado.ioloop import IOLoop
 from tornado.web import RequestHandler, Application, url
 class HelloHandler(RequestHandler):
@@ -187,7 +187,7 @@ def main():
     app = make_app()
     app.listen(8888)
     IOLoop.current().start()
-</pre>
+```
 
 ###`Application`对象
 
@@ -195,7 +195,7 @@ def main():
 映射请求路由表是以`URLSpec`对象（每个是一个tuple）为元素的list，每个tuple包含一个正则表达式和一个处理请求类。如果正则表达式中包含了捕获组，那么这些组将作为路径参数传递给处理程序的HTTP方法。如果包含一个字典作为`URLSpec`的第三个元素，那么这个字典将作为参数传递给`RequestHandler.initialize`。`URLSpec`也可以有名字，这样它就可以保被`RequestHandler.reverse_url`使用。
 在下面这个例子中，根URL被映射到MainHandler，/story/后面接数字的URL被map到StoryHandler，数字会以字符串的形式被`StoryHandler.get`捕获
 
-<pre class="prettyprint" style="border: 0">python
+```python
 class MainHandler(RequestHandler):
     def get(self):
         self.write('<a href="\%s">link to story 1</a>' \%
@@ -209,7 +209,7 @@ app = Application([
     url(r"/", MainHandler),
     url(r"/story/([0-9]+)", StoryHandler, dict(db=db), name="story")
     ])
-</pre>
+```
 
 `Application`类的构造函数可以接收很多参数用于自定义子类的行为。
 
@@ -220,7 +220,7 @@ Tornado中，大部分工作是通过这些子类完成的，主要的处理函�
 ###处理输入请求
 请求处理程序可以通过`self.request`访问当前处理请求，详细信息在`HTTPServerRequest`类中。
 HTML表单格式的请求可以通过`get_query_argument`/`get_body_argument`访问到。
-<pre class="prettyprint" style="border: 0">python
+```python
 class MyFormHandler(RequestHandler):
     def get(self):
         self.write('<html><body><form action="/myform" method="POST">'
@@ -230,20 +230,20 @@ class MyFormHandler(RequestHandler):
     def post(self):
         self.set_header("Content-Type", "text/plain")
         self.write("You wrote " + self.get_body_argument("message"))
-</pre>
+```
 
 由于HTML编码是不明确的而且不知道出入的参数到底是单个值还是以list，于是`RequestHandler`提供了不同的方法来判定如何处理，利用`get_query_argument`/`get_body_argument`就可以处理list
 
 上传的文件可以以表单的形式通过`self.request.file`访问，它通过名字（在html中<input type='file'>表单的名称）映射到一系列的文件，每个文件有如下的字典形式**\{"filename":..., "content_type":..., "body":...\}**。`file`对象只有当文件是以form表单形式上传的时候才会存在，如果不是form形式，那么原始的文件列表可以通过`self.request.body`访问到。默认情况下，上传的文件会暂存在内存中，文件过大的情况可以在`stream_request_body`装饰器中看到。
 
 由于HTML怪异的编码格式，tornado并不统一输入参数的格式。特别的是，我们也不会解析JSON请求的主体，需要使用JSON的应用程序会重写`prepare`来解析请求
-<pre class="prettyprint" style="border: 0">python
+```python
 def prepare(self):
     if self.request.headers["Content-Type"].startswith("application/json"):
         self.json_args = json.loads(self.request.body)
     else:
         self.json_args = None
-</pre>
+```
 
 ###重写`RequestHandler`的方法
 有时候，为了实现更多更复杂的基本HTML方法（get、post等），需要重写某些定义在`RequestHandler`中的函数。对于每个请求，都会顺序的发生以下事件：
@@ -269,28 +269,28 @@ def prepare(self):
 ###重定向
 通常有两种办法可以实现重定向，它们分别是`RequsetHandler.rediret`和`RediretHandler`。你可以在`RequestHandler`类的方法中使用`self.rediret()`把当前用户重定向到任何路径，此外，还有一个可选参数`permanent`用于永久性的重定向，它的默认值是`False`，这将产生一个`302Found`的HTTP状态码，这非常适用于响应post请求。如果`permanent`的值是`True`，将返回`301  Moved Permanently`HTTP状态码，这对把一个对SEO友好的页面重定向到目标页面非常有用（比如说google.com被重定向到google.com.hk）。
 `RedirectHandler`可以让你直接在`Application`中配置路由表，如下是一个单一静态重定向
-<pre class="prettyprint" style="border: 0">python
+```python
 app = tornado.web.Application([
     url(r"/app", tornado.web.RedirectHandler,
         dict(url="http://itunes.apple.com/my-app-id")),
     ])
-</pre>
+```
 
 它同样支持正则表达式
-<pre class="prettyprint" style="border: 0">python
+```python
 app = tornado.web.Application([
     url(r"/photos/(.*)", MyPhotoHandler),
     url(r"/pictures/(.*)", tornado.web.RedirectHandler,
         dict(url=r"/photos/\1")),
     ])
-</pre>
+```
 
 跟`redirect()`不一样的是，`RedirectHandler`默认就是使用永久重定向。原因是路由表不会在运行时改变，所以重定向的发生最大可能性就是处理逻辑发生了改变。想要进行非永久性重定向，只需要在`RedirectHandler`的初始化函数中将`permanent=False`就行了。
 
 ###异步处理程序
 Tornado的处理程序默认都是同步的：当get()/post()返回时，我们就任务请求结束了，于是马上响应客户端。由于在处理器处理一个程序的时候，其他所有的程序都会被阻塞，所以为了能让程序非阻塞的调用某些缓慢的操作，任何长时间运行的程序都应该写成异步的。
 让程序异步最简单的方式就是使用`coroutine`装饰器(如前面所说)，但在某些情况下协程可能不是很能胜任，这个时候就需要使用回调的方式，于是`tornado.web.asynchronous`装饰器就可以发挥作用了。如下是一个使用`AsyncHTTPClient`调用FriendFeed API的例子：
-<pre class="prettyprint" style="border: 0">python
+```python
 class MainHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self):
@@ -303,11 +303,11 @@ class MainHandler(tornado.web.RequestHandler):
         self.write("Fetched " + str(len(json["entries"])) + " entries "
                    "from the FriendFeed API")
         self.finish()
-</pre>
+```
 
 当get()函数返回的时候，请求并没有结束；当调用on_response()的时候，请求仍在继续。只有在调用了self.finish()之后，请求才真正的结束。
 下面将上面代码改写成协程的形式
-<pre class="prettyprint" style="border: 0">python
+```python
 class MainHandler(tornado.web.RequestHandler):
     @tornado.gen.coroutine
     def get(self):
@@ -316,7 +316,7 @@ class MainHandler(tornado.web.RequestHandler):
         json = tornado.escape.json_decode(response.body)
         self.write("Fetched " + str(len(json["entries"])) + " entries "
                    "from the FriendFeed API")
-</pre>
+```
 
 Tornado源代码实例中**Chat**的那个例子更好的展现了异步调用过程，同时也使用了AJAX和长轮询的推送技术。使用长轮询的用户需要重写`on_connection_close()`方法来进行连接技术之后的善后处理(重写时最好看下文档中的注意事项)。
 
@@ -330,7 +330,7 @@ Tornado也可以与任何其他模板语言结合使用，但`RequestHandler.ren
 
 ###模板语法
 模板仅仅是嵌入python控制程序和标志的HTML表达式，因此很简单。
-<pre class="prettyprint" style="border: 0">
+```
 <html>
    <head>
       <title>\{\{ title \}\}</title>
@@ -343,15 +343,15 @@ Tornado也可以与任何其他模板语言结合使用，但`RequestHandler.ren
      </ul>
    </body>
  </html>
-</pre>
+```
 
 将上面代码保存成template.html并放在.py文件的目录下， 通过下面代码就可以调用。
-<pre class="prettyprint" style="border: 0">python
+```python
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         items = ["Item 1", "Item 2", "Item 3"]
         self.render("template.html", title="My title", items=items)
-</pre>
+```
 
 Tornado的模板支持控制语句和表达式：控制语句用*\{\% statement \%\}*,表达式用*\{\{ var \}\}*。控制语句支持*if*,*for*,*while*,*try*等，每个完整的控制语句最后都需要使用*\{\% end \%\}*。同时，tornado也支持`extends`和`block`语句用于模板拓展(`tornado.template`中有详细描述)。
 表达式可以是任何的python表达式，连函数调用都可以。
@@ -380,19 +380,19 @@ Tornado的模板支持控制语句和表达式：控制语句用*\{\% statement 
 ###本地化
 当前用户(无论是否登录)的语言环境总会作为请求头发送给服务器，并能从`self.location`访问。地点的名称可以通过`locate.name`访问到，可以使用`Locate.translate`来翻译传入的字符串。模板也提供了全局函数`_()`来翻译字符串，它一般有两种调用形式：
 直接根据当前语言环境翻译
-<pre class="prettyprint" style="border: 0">python
+```python
 _("Translate this string")
-</pre>
+```
 
 根据传入的第三个参数局定是单数还是复数
-<pre class="prettyprint" style="border: 0">python
+```python
 _("A person liked this", "\%(num)d people liked this",
   len(people)) \% \{"num": len(people)\}
-</pre>
+```
 
 在这个例子中，如果`len(people)`的值是1,就会直接输出第一句话，如果不是就会输出第二句话。最常见的翻译模式就是使用python的站位符(\%(num)d)，因为站位符可以在运行时变化。
 比如下面有个常见的例子
-<pre class="prettyprint" style="border: 0">html
+```html
 <html>
    <head>
       <title>FriendFeed - \{\{ _("Sign in") \}\}</title>
@@ -406,10 +406,10 @@ _("A person liked this", "\%(num)d people liked this",
      </form>
    </body>
  </html>
-</pre>
+```
 
 默认情况下，tornado会通过浏览器发送的请求检测用户的语言环境，当找不到合适的语言的时候会选择英语（**en_US**）。如果让用户自由的定义自己的语言偏好，那么可以重写`RequestHandler.get_user_locate()`函数 
-<pre class="prettyprint" style="border: 0">python
+```python
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
         user_id = self.get_secure_cookie("user")
@@ -420,21 +420,21 @@ class BaseHandler(tornado.web.RequestHandler):
             # Use the Accept-Language header
             return None
         return self.current_user.prefs["locale"]
-</pre>
+```
 
 语言偏好之类的不会太常用。需要的时候可以自己查看`tornado.locate`
 
 ###UI modules
 Tornado支持UI模块，从而让前端代码重用变得可能。比如你正在实现一个博客，你希望能在多个页面上有博客条目功能，那么你就可以实现一个提供显示博客条目功能的模块，并嵌入到这些个页面中。首先，为你的UI modules创建一个python模块（uimodules.py）：
-<pre class="prettyprint" style="border: 0">python
+```python
 class Entry(tornado.web.UIModule):
     def render(self, entry, show_comments=False):
         return self.render_string(
             "module-entry.html", entry=entry, show_comments=show_comments)
-</pre>
+```
 
 接下来只需要在设置中使用UI modules就行了
-<pre class="prettyprint" style="border: 0">python
+```python
 from . import uimodules
 class HomeHandler(tornado.web.RequestHandler):
     def get(self):
@@ -452,41 +452,41 @@ application = tornado.web.Application([
     (r"/", HomeHandler),
     (r"/entry/([0-9]+)", EntryHandler),
 ], **settings)
-</pre>
+```
 
 然后在模板中，可以通过`module`来调用模块
-<pre class="prettyprint" style="border: 0">html
+```html
 \{\% for entry in entries \%\}
   \{\% module Entry(entry) \%\}
 \{\% end \%\}
-</pre>
+```
 
 通过重写`embedded_css`/`embedded_javascript`/`javascript_files`/`css_files`我么可以在模板中使用css和js
-<pre class="prettyprint" style="border: 0">python
+```python
 class Entry(tornado.web.UIModule):
     def embedded_css(self):
         return ".entry \{ margin-bottom: 1em; \}"
     def render(self, entry, show_comments=False):
         return self.render_string(
             "module-entry.html", show_comments=show_comments)
-</pre>
+```
 
 不过模块被调用多少次，js和css都只会被包含一次，这样就避免了冲突。css通常包含在`<head>`标签中，js通常在`</body>`结束之前。
 不用额外的python代码也可以将一个template代码转换称为module，比如前面的例子可以重写成下面module-entry.html代码
-<pre class="prettyprint" style="border: 0">html
+```html
 \{\{ set_resources(embedded_css=".entry \{ margin-bottom: 1em; \}") \}\}
 <!-- more template html... -->
-</pre>
+```
 
 我们可以使用下面代码调用它
-<pre class="prettyprint" style="border: 0">html
+```html
 \{\% module Template("module-entry.html", show_comments=True) \%\}
-</pre>
+```
 
 #认证和安全
 ###cookie和secure cookie
 我们可以在用户的浏览器中通过`set_cookies`设置cookie
-<pre class="prettyprint" style="border: 0">python
+```python
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         if not self.get_cookie("mycookie"):
@@ -494,17 +494,17 @@ class MainHandler(tornado.web.RequestHandler):
             self.write("Your cookie was not set yet!")
         else:
             self.write("Your cookie was set!")
-</pre>
+```
 
 普通的cookie并不安全，可以通过浏览器修改。如果想用cookie来确定当前登录的用户，就需要为cookie打标签来防止伪造。Tornado提供了`get_secure_cookie`和`set_secure_cookie`两个方法，只需要在应用的设置中添加`cookie_secret=value`就可以使用了。
-<pre class="prettyprint" style="border: 0">python
+```python
 application = tornado.web.Application([
     (r"/", MainHandler),
 ], cookie_secret="__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__")
-</pre>
+```
 
 签名后的cookie包含有编码后的时间戳和HMAC签名。如果cookie过期或者不匹配，`get_security_cookie`就会返回None。
-<pre class="prettyprint" style="border: 0">python
+```python
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         if not self.get_secure_cookie("mycookie"):
@@ -512,14 +512,14 @@ class MainHandler(tornado.web.RequestHandler):
             self.write("Your cookie was not set yet!")
         else:
             self.write("Your cookie was set!")
-</pre>
+```
 
 默认情况下，*Secure_cookie*会保存30天，我们可通过设置`set_secure_cookie()`的`expires_days`参数和`max_age_days`参数来修改默认值。这两个值支队当前的cookie发挥作用，这样一来，我们可以让普通的cookie有效期为30天，而让某些特殊的cookie作用期更短/长。
 
 ###用户认证
 已经认证过的用户可以通过`self.current_user`访问到，在模板中通过`current_user`访问到，但在默认情况下，`current_user=None`。
 为了在你的应用中实现用户认证，你需要重写`get_current_user()`方法来通过cookie等值决定当前用户如下就是简单使用cookie 认证的简单方法
-<pre class="prettyprint" style="border: 0">python
+```python
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
         return self.get_secure_cookie("user")
@@ -543,10 +543,10 @@ application = tornado.web.Application([
     (r"/", MainHandler),
     (r"/login", LoginHandler),
 ], cookie_secret="__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__")
-</pre>
+```
 
 我们可以通过`tornado.web.authenticated`装饰器来保证一个用户已经登录。使用这个装饰器之后，如果一个没有登录的用户要进行该操作，这个用户就会被重定向到登录页面，如下：
-<pre class="prettyprint" style="border: 0">python
+```python
 class MainHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
@@ -560,7 +560,7 @@ application = tornado.web.Application([
     (r"/", MainHandler),
     (r"/login", LoginHandler),
 ], **settings)
-</pre>
+```
 
 如果post()函数使用了这个装饰器，一旦被没登录的用户调用，就会返回一个`403`的状态码。
 我们可以在tornado实例中的`Blog`例子中看到更复杂的使用方法。
@@ -573,7 +573,7 @@ application = tornado.web.Application([
 有很多预防措施可以防止这种类型的攻击。首先你在开发应用时需要深谋远虑。任何会产生副作用的HTTP请求，比如点击购买按钮、编辑账户设置、改变密码或删除文档，都应该使用HTTP POST方法。但是，这并不足够：一个恶意站点可能会通过其他手段，如HTML表单或XMLHTTPRequest API来向你的应用发送POST请求。保护POST请求需要额外的策略。
 为了防范伪造POST请求，我们会要求每个请求都包含一个参数值作为令牌来匹配存储在cookie中的对应值。我们的应用将通过一个cookie头和一个隐藏的HTML表单元素向页面提供令牌。当一个合法页面的表单被提交时，它将包括表单值和已存储的cookie。如果两者匹配，我们的应用认定请求有效。
 由于第三方站点没有访问cookie数据的权限，他们将不能在请求中包含令牌cookie。这有效地防止了不可信网站发送未授权的请求。tornado通过在设置中加入`xsrf_cookies=True`字段来预防xsrf
-<pre class="prettyprint" style="border: 0">python
+```python
 settings = \{
     "cookie_secret": "__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",
     "login_url": "/login",
@@ -583,19 +583,19 @@ application = tornado.web.Application([
     (r"/", MainHandler),
     (r"/login", LoginHandler),
 ], **settings)
-</pre>
+```
 
 设置好这个字段之后，tornado的web应用会为每个用户设置`_xsrf`的cookie，并且会拒绝所有不包含正确的_xsrf值的请求(包括post，get，put，delete等)。如果我们设置了这个字段，就需要对所有通过post提交的form表单进行设置，这个设置是通过UI Module中的`xsrf_from_html()`来实现的，这个函数在所有的template中都能访问到。
-<pre class="prettyprint" style="border: 0">html
+```html
 <form action="/new_message" method="post">
   \{\% module xsrf_form_html() \%\}
   <input type="text" name="message"/>
   <input type="submit" value="Post"/>
 </form>
-</pre>
+```
 
 当使用AJAX进行post方法数据请求时，也需要保证每个javascript都带有正确的_xsrf值，对jQuery来说，可以有如下例子
-<pre class="prettyprint" style="border: 0">javascript
+```javascript
 function getCookie(name) \{
     var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
     return r ? r[1] : undefined;
@@ -607,38 +607,38 @@ jQuery.postJSON = function(url, args, callback) \{
         callback(eval("(" + response + ")"));
     \}\});
 \};
-</pre>
+```
 
 如何建立安全的web应用是一个说不完的话题，但这并不是tornado主要特点，所以我们不多讨论。
 
 #运行和部署
 由于tornado本身就能提供web server的功能，所以它跟一般的web框架部署方法有所不同：我们并不需要配置一个专门的WSGI容器，只需要写一个`main()`函数并执行，就能启动这个web服务器。
-<pre class="prettyprint" style="border: 0">python
+```python
 def main():
     app = make_app()
     app.listen(8888)
     IOLoop.current().start()
 if __name__ == '__main__':
     main()
-</pre>
+```
 
 ###进程和端口
 由于python有GIL的限制，要运行多个python进程实例就需要充分利用多核，也就是说每个cpu值跑一个python进程。Tornado有一套内置的多进程模式，只需要稍微修改main函数就能实现
-<pre class="prettyprint" style="border: 0">python
+```python
 def main():
     app = make_app()
     server = tornado.httpserver.HTTPServer(app)
     server.bind(8888)
     server.start(0)  # forks one process per cpu
     IOLoop.current().start()
-</pre>
+```
 
 这就是使用多进程共享同一个端口号的最简单的实现方式，但它有一定的缺陷。首先，每个子进程都有自己的IOLoop，在fork之前，不可以触发全局的IOLoop实例；其次，这个实例很难实现零停机时间的更新；最后，由于所有进程共享一个端口，要监视单个进程就变得十分困难。
 对更复杂的部署方式，强烈建议每个进程单独启动，并且监听不同的端口。一个好的办法是使用` supervisord `的’进程组‘功能。当每个进程监听不同端口的时候，通常需要一个负载均衡工具（如nginx等）来平衡每个进程上面的请求数量。
 
 ###如何在负载均衡器下运行
 当使用负载均衡工具的时候，建议传递参数`xheaders=True`给`HTTPServer`的构造函数。这句话的目的是告诉tornado使用类似`X-real-IP`的报头来获取真是的UserIp。下面列表是一个Nginx配置的示例。他类似与FriendFeed的配置，并假设nginx和tornado都运行在同一台机器上面，并且tornado监听了8001-8003几个端口。
-<pre class="prettyprint" style="border: 0">nginx
+```nginx
 user nginx;
 worker_processes 1;
 error_log /var/log/nginx/error.log;
@@ -699,11 +699,11 @@ http \{
         \}
     \}
 \}
-</pre>
+```
 
 ###静态文件和文件缓存
 可以使用`static_path`来告诉tornado静态文件的位置
-<pre class="prettyprint" style="border: 0">python
+```python
 settings = \{
     "static_path": os.path.join(os.path.dirname(__file__), "static"),
     "cookie_secret": "__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",
@@ -716,10 +716,10 @@ application = tornado.web.Application([
     (r"/(apple-touch-icon\.png)", tornado.web.StaticFileHandler,
      dict(path=settings['static_path'])),
 ], **settings)
-</pre>
+```
 
 可以这样调用静态文件
-<pre class="prettyprint" style="border: 0">html
+```html
 <html>
    <head>
       <title>FriendFeed - \{\{ _("Home") \}\}</title>
@@ -728,7 +728,7 @@ application = tornado.web.Application([
      <div><img src="\{\{ static_url("images/logo.png") \}\}"/></div>
    </body>
  </html>
-</pre>
+```
 
 ###debug模式和自动重启
 传递一个`debug=True`参数给Application类的构造函数就可以进入调试模式，在这个模式下存在多个在开发时很有用的功能。
@@ -741,7 +741,7 @@ autoreload模式并不与`HTTPServer`的多进程相兼容，如果你在多进�
 ###WSGI和GAE
 tornado不需要WSGI就能运行（有自己的server），但在WSGI环境下（如GAE/sae）就不能够使用自己的server。这种环境下tornado的功能就受到了限制，如：不支持异步、协程、`@asynchronous`装饰器、`AsyncHTTPClient`、外部认证和webSocket。
 可以使用` tornado.wsgi.WSGIAdapter`将一个tornado的应用装配到。下面这个例子，可以配置WSGI容器来包装tornado应用
-<pre class="prettyprint" style="border: 0">python
+```python
 import tornado.web
 import tornado.wsgi
 class MainHandler(tornado.web.RequestHandler):
@@ -751,6 +751,6 @@ tornado_app = tornado.web.Application([
     (r"/", MainHandler),
 ])
 application = tornado.wsgi.WSGIAdapter(tornado_app)
-</pre>
+```
 
 可以在`appengain`这个例子中看到具体实现。

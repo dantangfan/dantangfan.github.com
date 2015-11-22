@@ -528,12 +528,11 @@ def decorator_maker_with_arguments(decorator_arg1, decorator_arg2):
     print "I make decorators! And I accept arguments:", decorator_arg1, decorator_arg2
 
     def my_decorator(func):
-        # The ability to pass arguments here is a gift from closures.
-        # If you are not comfortable with closures, you can assume it’s ok,
-        # or read: http://stackoverflow.com/questions/13857/can-you-explain-closures-as-they-relate-to-python
+        # 这里能够自然的传参数都归功于闭包，如下链接能更好的让你了解闭包
+        # http://stackoverflow.com/questions/13857/can-you-explain-closures-as-they-relate-to-python
         print "I am the decorator. Somehow you passed me arguments:", decorator_arg1, decorator_arg2
 
-        # Don't confuse decorator arguments and function arguments!
+        # 不要把装饰器的参数和被装饰函数的参数搞混了
         def wrapped(function_arg1, function_arg2) :
             print ("I am the wrapper around the decorated function.\n"
                   "I can access all the variables\n"
@@ -564,3 +563,10 @@ decorated_function_with_arguments("Rajesh", "Howard")
 #Then I can pass them to the decorated function
 #I am the decorated function and only knows about my arguments: Rajesh Howard
 ```
+
+正如我们看到的，我们可以像给普通函数传递参数那样给装饰器传递参数。如果愿意，你也可以使用`*args, **kwargs`来当成装饰器的参数。
+( But remember decorators are called only once. Just when Python imports the script. You can't dynamically set the arguments afterwards. When you do "import x", the function is already decorated, so you can't change anything.)
+
+##例子
+
+
