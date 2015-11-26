@@ -5,7 +5,7 @@ description: 通读socketserver源码，了解tcp服务器原理
 category: blog
 ---
 
-<pre class="prettyprint" style="border: 0">
+```
 # -*- coding:utf-8 -*-
 """通用socket server类
 
@@ -824,4 +824,4 @@ TCPServer(('127.0.0.1', 8888), RequestHandler).serve_forever()
 # 多线程实例
 
 ThreadingTCPServer(("", 8888), RequestHandler).serve_forever()
-</pre>
+```

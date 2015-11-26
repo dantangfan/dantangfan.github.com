@@ -12,7 +12,7 @@ category: blog
 
 在学习元类之前，让我们先来看看什么是python类。在大多数语言中，类是只是一个能产生`对象`的代码段，这对python来说也是没问题的
 
-<pre class="prettyprint" style="border: 0">
+```
 >>> class ObjectCreator(object):
 ...       pass
 ... 
@@ -20,17 +20,17 @@ category: blog
 >>> my_object = ObjectCreator()
 >>> print(my_object)
 <__main__.ObjectCreator object at 0x8974f2c>
-</pre>
+```
 
 但是，在python中，类不仅仅是能产生对象的工具，类本身也是对象。
 
 一旦你使用了`class`关键字，python就会为它生成一个对象。如下指令
 
-<pre class="prettyprint" style="border: 0">
+```
 >>> class ObjectCreator(object):
 ...       pass
 ... 
-</pre>
+```
 
 就在内存中产生了一个名叫 **ObjectCreator** 的对象。
 
@@ -45,7 +45,7 @@ category: blog
 
 e.g.
 
-<pre class="prettyprint" style="border: 0">
+```
 >>> print(ObjectCreator) # 由于类也是一个对象，你可以打印一个类
 <class '__main__.ObjectCreator'>
 >>> def echo(o):
@@ -65,7 +65,7 @@ foo
 foo
 >>> print(ObjectCreatorMirror())
 <__main__.ObjectCreator object at 0x8997b4c>
-</pre>
+```
 
 
 ## 动态创建类
@@ -74,7 +74,7 @@ foo
 
 首先，我们可以再函数中用class关键字来创建一个类
 
-<pre class="prettyprint" style="border: 0">
+```
 >>> def choose_class(name):
 ...     if name == 'foo':
 ...         class Foo(object):
@@ -90,7 +90,7 @@ foo
 <class '__main__.Foo'>
 >>> print(MyClass()) # 我们可以用合格类来创建对象
 <__main__.Foo object at 0x89c6d4c>
-</pre>
+```
 
 但是这看起来还不是那么动态，毕竟，我们还是需要自己书写整个类.
 
@@ -100,7 +100,7 @@ foo
 
 还记得`type`函数吗？就是那个你用来判断对象是神马类型的函数（下面例子只有在新式类，也就是继承object的类中才有效）
 
-<pre class="prettyprint" style="border: 0">
+```
 >>> print(type(1))
 <type 'int'>
 >>> print(type("1"))
@@ -109,51 +109,51 @@ foo
 <type 'type'>
 >>> print(type(ObjectCreator()))
 <class '__main__.ObjectCreator'>
-</pre>
+```
 
 然而，type还有一个跟上述完全不同的行为，就是在运行时动态的创建类。type可以用类的描述作为参数，然后返回一个类！就像下面这样
 
-<pre class="prettyprint" style="border: 0">
+```
 type(name of the class, 
      tuple of the parent class (for inheritance, can be empty), 
      dictionary containing attributes names and values)
-</pre>
+```
 
 e.g.
 
-<pre class="prettyprint" style="border: 0">
+```
 >>> class MyShinyClass(object):
 ...       pass
-</pre>
+```
 
 可以被这样创建
 
-<pre class="prettyprint" style="border: 0">
+```
 >>> MyShinyClass = type('MyShinyClass', (), {}) # 返回一个类对象
 >>> print(MyShinyClass)
 <class '__main__.MyShinyClass'>
 >>> print(MyShinyClass()) # 用该类生成一个实例对象
 <__main__.MyShinyClass object at 0x8997cec>
-</pre>
+```
 
 上面，我们用 **MyShinyClass** 作为类名字，也用它作为type的参数。当然，他们本身是可以不同的，但是这样就会造成不必要的误解.
 
 `tpye` 用一个字典来接收类属性，所以
 
-<pre class="prettyprint" style="border: 0">
+```
 >>> class Foo(object):
 ...       bar = True
-</pre>
+```
 
 也可以被写成
 
-<pre class="prettyprint" style="border: 0">
+```
 >>> Foo = type('Foo', (), {'bar':True})
-</pre>
+```
 
 然后就能像正常类那样使用它
 
-<pre class="prettyprint" style="border: 0">
+```
 >>> print(Foo)
 <class '__main__.Foo'>
 >>> print(Foo.bar)
@@ -163,28 +163,28 @@ True
 <__main__.Foo object at 0x8a9b84c>
 >>> print(f.bar)
 True
-</pre>
+```
 
 当然，我们也可以继承这个类
 
-<pre class="prettyprint" style="border: 0">
+```
 >>>   class FooChild(Foo):
 ...         pass
-</pre>
+```
 
 也可以写成
 
-<pre class="prettyprint" style="border: 0">
+```
 >>> FooChild = type('FooChild', (Foo,), {})
 >>> print(FooChild)
 <class '__main__.FooChild'>
 >>> print(FooChild.bar) # bar is inherited from Foo
 True
-</pre>
+```
 
 最后，你肯定想为你的类增加方法。没问题，直接定义这些方法，然后绑定到类属性上就行了 
 
-<pre class="prettyprint" style="border: 0">
+```
 >>> def echo_bar(self):
 ...       print(self.bar)
 ... 
@@ -196,7 +196,7 @@ True
 >>> my_foo = FooChild()
 >>> my_foo.echo_bar()
 True
-</pre>
+```
 
 现在我们知道了：类也是对象，我们可以在运行时动态的创建类。
 
@@ -206,16 +206,16 @@ True
 
 元类是用来创建类的，我们定义类就是为了创建对象，但是我们知道类本身也是对象，元类就是用来创建类这些对象的，它们是类的类，你可以形象化地理解为:
 
-<pre class="prettyprint" style="border: 0">
+```
 MyClass = MetaClass()
 MyObject = MyClass()
-</pre>
+```
 
 我们知道type可以这样使用
 
-<pre class="prettyprint" style="border: 0">
+```
 MyClass = type('MyClass', (), {})
-</pre>
+```
 
 这是因为`type`实际上就是一个`metaclass`，python利用type这个元类来创建所有类。
 
@@ -223,7 +223,7 @@ MyClass = type('MyClass', (), {})
 
 python中一切皆对象，一切就是所有！包括int,str,function,object,class等等，他们都可以用类来创建
 
-<pre class="prettyprint" style="border: 0">
+```
 >>> age = 35
 >>> age.__class__
 <type 'int'>
@@ -240,11 +240,11 @@ python中一切皆对象，一切就是所有！包括int,str,function,object,cl
 >>> b.__class__
 <class '__main__.Bar'>
 >>>
-</pre>
+```
 
 那么`__class__`的`__class__`又是谁呢
 
-<pre class="prettyprint" style="border: 0">
+```
 >>> age.__class__.__class__
 <type 'type'>
 >>> name.__class__.__class__
@@ -253,7 +253,7 @@ python中一切皆对象，一切就是所有！包括int,str,function,object,cl
 <type 'type'>
 >>> b.__class__.__class__
 <type 'type'>
-</pre>
+```
 
 由此可见，元类就是用来创建类的。如果你喜欢，你可以把它叫做『类工厂』
 
@@ -263,11 +263,11 @@ python中一切皆对象，一切就是所有！包括int,str,function,object,cl
 
 可以在类中加入`__metaclass__`属性
 
-<pre class="prettyprint" style="border: 0">
+```
 class Foo(object):
   __metaclass__ = something...
   [...]
-</pre>
+```
 
 如果你这样做了，python就会用你定义的元类来创建Foo这个类。
 
@@ -279,10 +279,10 @@ python会在类定义中寻找`__metaclass__`，一旦找到了，就会用它�
 
 当写下
 
-<pre class="prettyprint" style="border: 0">
+```
 class Foo(Bar):
     pass
-</pre>
+```
 
 的时候，python会这样做
 
@@ -308,7 +308,7 @@ class Foo(Bar):
 
 所以，我们从一个函数开始
 
-<pre class="prettyprint" style="border: 0">
+```
 # the metaclass will automatically get passed the same argument
 # that you usually pass to `type`
 # 元类也需要那些传给type的参数
@@ -346,11 +346,11 @@ print(hasattr(Foo, 'BAR'))
 f = Foo()
 print(f.BAR)
 # Out: 'bip'
-</pre>
+```
 
 下面让我们用class来实现元类
 
-<pre class="prettyprint" style="border: 0">
+```
 # remember that `type` is actually a class like `str` and `int`
 # so you can inherit from it
 class UpperAttrMetaclass(type): 
@@ -372,11 +372,11 @@ class UpperAttrMetaclass(type):
 
         return type(future_class_name, future_class_parents, uppercase_attr)
 
-</pre>
+```
 
 这个方法不是很OOP，我们直接调用了type()，在把type当成父类的情况下，我们应该这样做`type.__new__()`，如下
 
-<pre class="prettyprint" style="border: 0">
+```
 class UpperAttrMetaclass(type): 
 
     def __new__(upperattr_metaclass, future_class_name, 
@@ -393,13 +393,13 @@ class UpperAttrMetaclass(type):
         # this is basic OOP, nothing magic in there
         return type.__new__(upperattr_metaclass, future_class_name, 
                             future_class_parents, uppercase_attr)
-</pre>
+```
 
 我们注意到这里有一个参数并没有使用`upperattr_metaclass`，但这并没有什么特别的：一个类的方法总是把自己的instance当成第一个参数，就跟self一样。
 
 为了清晰，这里的参数名都很长，实际上我会这样写
 
-<pre class="prettyprint" style="border: 0">
+```
 class UpperAttrMetaclass(type): 
 
     def __new__(cls, clsname, bases, dct):
@@ -412,11 +412,11 @@ class UpperAttrMetaclass(type):
                 uppercase_attr[name] = val
 
         return type.__new__(cls, clsname, bases, uppercase_attr)
-</pre>
+```
 
 可以使用`super`让这个例子变得更简洁
 
-<pre class="prettyprint" style="border: 0">
+```
 class UpperAttrMetaclass(type): 
 
     def __new__(cls, clsname, bases, dct):
@@ -429,7 +429,7 @@ class UpperAttrMetaclass(type):
                 uppercase_attr[name] = val
 
         return super(UpperAttrMetaclass, cls).__new__(cls, clsname, bases, uppercase_attr)
-</pre>
+```
 
 这就是有关元类的所有类容了！够简单吧！
 
@@ -454,18 +454,18 @@ class UpperAttrMetaclass(type):
 
 一般式用来创建API，比如jDango的ORM，允许这样定义
 
-<pre class="prettyprint" style="border: 0">
+```
 class Person(models.Model):
   name = models.CharField(max_length=30)
   age = models.IntegerField()
-</pre>
+```
 
 但是这样使用的时候
 
-<pre class="prettyprint" style="border: 0">
+```
 guy = Person(name='bob', age='35')
 print(guy.age)
-</pre>
+```
 
 并不会返回`IntegerField`，而是返回一个int，并且可以直接和数据库打交道。
 

@@ -15,38 +15,38 @@ category: blog
 
 安装bundle
 
-<pre class="prettyprint" style="border: 0">
+```
 sudo gem install bundle
-</pre>
+```
 
 Gemfile和Bundle安装
 
 在更目录下创建一个叫Gemfile的文件，注意没有后缀，输入
 
-<pre class="prettyprint" style="border: 0">
+```
 source 'http://ruby.taobao.org/'
 gem 'github-pages'
-</pre>
+```
 
 保存后，执行
 
-<pre class="prettyprint" style="border: 0">
+```
 sudo bundle install
-</pre>
+```
 
 这里如果`nokogiri`出错，看[nokogiri](http://www.nokogiri.org/tutorials/installing_nokogiri.html#mac_os_x)
 
 命令会根据当前目录下的Gemfile，安装所需要的所有软件。这一步所安装的东西，可以说跟github本身的环境是完全一致的，所以可以确保本地如果没有错误，上传后也不会有错误。而且可以在将来使用下面命令，随时更新环境，十分方便
 
-<pre class="prettyprint" style="border: 0">
+```
 sudo bundle update
-</pre>
+```
 
 使用下面命令，启动转化和本地服务：
 
-<pre class="prettyprint" style="border: 0">
+```
  bundle exec jekyll serve
-</pre>
+```
 
 然后就可以到[模板](http://jekyllthemes.org/)里随便挑一个模板自己玩儿了
 

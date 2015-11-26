@@ -9,7 +9,7 @@ category: blog
 
 首先我们来看一个`生产者-消费者`的问题，在实际应用中我们使用`有限缓冲`方案。生产者消费者进程共享代码如下
 
-<pre class="prettyprint" style="border: 0">c
+```c
 #define BUFFER_SIZE 10
 typedef struct{
 ...
@@ -17,13 +17,13 @@ typedef struct{
 item buffer[BUFFER_SIZE];
 int in = 0;
 int out = 0;
-</pre>
+```
 
 共享缓冲区是通过循环数组和两个逻辑指针来实现的：in和out。变量in指向缓冲区的下一个空位；out指向缓冲区的第一个非空位。当in==out的时候缓冲区空，当(in+1)%BUFFER_SIZE==out的时候，缓冲器满。
 
 用counter记录缓冲区中的项，生产者进程有一个局部变量nextProducted存储锁新产生的项目，那么生产者的代码可以简单如下
 
-<pre class="prettyprint" style="border: 0">c
+```c
 while(1){
     while(counter==BUFFER_SIZE)
         ;
@@ -31,11 +31,11 @@ while(1){
     in = (in+1)%BUFFER_SIZE;
     counter++;
 }
-</pre>
+```
 
 消费者有一个局部变量nextConsumed存储要使用的项,消费者的代码如下
 
-<pre class="prettyprint" style="border: 0">c
+```c
 while(1){
     while(counter==0)
         ;
@@ -43,7 +43,7 @@ while(1){
     out = (out+1)%BUFFER_SIZE;
     counter--;
 }
-</pre>
+```
 
 生产者消费者各自的程序都正确，但是当并发执行的时候他们可能并不能正确的执行。原因是他们同时执行的过程中代码交叉是乱序的，两个程序可能对counter同时进行操作，导致判断结果不准确。这样的情况，即多个进程并发访问和操作同一数据并且执行结果与访问发生的特定顺序有关，称为竞争条件。为了防止竞争条件，需要确保一段之间里面只有一个进程能操作共享数据（counter），于是就需要进程同步。
 
@@ -63,21 +63,21 @@ while(1){
 
 为了解决临界区问题，通常做法是使用称为`信号量`的同步工具。信号量S是一个整数变量，除了初始化之外，只能通过两个标准的`原子操作`wait和signal来访问。wait的经典定义可以用位代码表示为
 
-<pre class="prettyprint" style="border: 0">c
+```c
 wait(S){
     while(S<=0)
         ;
        S--;
 }
-</pre>
+```
 
 signal的经典定义可以用伪代码表示
 
-<pre class="prettyprint" style="border: 0">c
+```c
 signal(S){
     S++;
 }
-</pre>
+```
 
 在wait和signal操作中，对信号量整数值的修改必须不可分的执行，当一个进程修改信号量时，不能有其他进程同时修改同一信号量。而且对于wait操作，对s数值的测试（S<=0）和对其可能的修改(S++)也必须没有中断的执行。
 
@@ -85,28 +85,28 @@ signal(S){
 
 可以用信号量来解决n个进程临界区问题。n个进程共享一个信号量mutex并初始化为1,每个进程的组织结构就如下
 
-<pre class="prettyprint" style="border: 0">c
+```c
 do{
     wait(mutex);
     临界区;
     signal(mutex);
     剩余区；
 }while(1);
-</pre>
+```
 
 也可以用信号量来解决各种同步问题。比如两个正在并发执行的进程P1,P2，P1有语句S1,P2有语句S2,假设只有S1执行完之后才能有S2。那么我们可以让两个进程共享一个信号量synch,并且初始化为0,在P1中插入语句
 
-<pre class="prettyprint" style="border: 0">
+```
 S1;
 signal(synch);
-</pre>
+```
 
 在P2中插入语句
 
-<pre class="prettyprint" style="border: 0">
+```
 wait(synch);
 S2;
-</pre>
+```
 
 ###实现
 
@@ -114,18 +114,18 @@ S2;
 
 一个进程阻塞且等待信号量S，可以在其他进程执行signal后重新被执行。该进程的重新执行通过一个wakeup操作来进行，该操作讲进程从等待状态切换到就绪状态，接着放入就绪队列中。我们可以将信号量定义成一个结构
 
-<pre class="prettyprint" style="border: 0">c
+```c
 typedef struct{
     int value;
     struct process *L;
 }semaphore;
-</pre>
+```
 
 每个信号都有一个整数值和一个进程表，当一个进程必须等待信号量shah，就加入到进程链表上。操作signal会从等待进程链表中取出一个进程唤醒。
 
 信号量wait操作可以如下定义
 
-<pre class="prettyprint" style="border: 0">c
+```c
 void wait(semaphore S){
     S.value--;
     if(S.value<0){
@@ -133,11 +133,11 @@ void wait(semaphore S){
         block();
     }
 }
-</pre>
+```
 
 信号量signal操作如下
 
-<pre class="prettyprint" style="border: 0">c
+```c
 void signal(semaphore S){
     S.value++;
     if(S.value<=0){
@@ -145,7 +145,7 @@ void signal(semaphore S){
         wakeup(P);
     }
 }
-</pre>
+```
 
 操作block挂起调用它的进程。操作wakeup重新启动阻塞的进程，他们都是操作系统提供的系统调用。
 

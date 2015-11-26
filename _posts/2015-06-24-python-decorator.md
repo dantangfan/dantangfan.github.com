@@ -11,7 +11,7 @@ category: blog
 
 为了了解装饰器，我们必须先知道python中的函数也是对象，这非常重要。我们看看下面这个简单的例子
 
-<pre class="prettyprint" style="border: 0">
+```
 def shout(word="yes"):
     return word.capitalize()+"!"
 
@@ -37,13 +37,13 @@ except NameError, e:
 
 print scream()
 # outputs: 'Yes!'
-</pre>
+```
 
 OK!我们先把这个例子放在这儿，待会儿还会用到它
 
 另外一个有趣的特性就是，python的函数可以定义在函数体内部。
 
-<pre class="prettyprint" style="border: 0">
+```
 def talk():
 
     # 我们可以在talk函数内动态的定义函数
@@ -66,7 +66,7 @@ except NameError, e:
     print e
     #outputs : "name 'whisper' is not defined"*
     Python's functions are objects
-</pre>
+```
 
 ##函数引用
 
@@ -77,7 +77,7 @@ except NameError, e:
 
 既然是对象，那函数当然也能作为返回值啦
 
-<pre class="prettyprint" style="border: 0">
+```
 def getTalk(kind="shout"):
 
     # 我们先动态的定义两个函数
@@ -107,11 +107,11 @@ print talk()
 # 同理
 print getTalk("whisper")()
 #outputs : yes...
-</pre>
+```
 
 不仅如此，既然都能把函数当成返回值了，那把函数当成参数也是没问题滴
 
-<pre class="prettyprint" style="border: 0">
+```
 def doSomethingBefore(func): 
     print "I do something before then I call the function you gave me"
     print func()
@@ -120,7 +120,7 @@ doSomethingBefore(scream)
 #outputs: 
 #I do something before then I call the function you gave me
 #Yes!
-</pre>
+```
 
 到这里，我们学习了理解装饰器所需的所有预备知识。实际上，装饰器就仅仅是个『包装袋』而已，它可以让你在不改变函数体的情况下，在函数的周围(函数执行前执行后)做文章
 
@@ -128,7 +128,7 @@ doSomethingBefore(scream)
 
 我们可以这样做
 
-<pre class="prettyprint" style="border: 0">
+```
 # 装饰器就是一个以函数作为参数的函数
 def my_shiny_new_decorator(a_function_to_decorate):
 
@@ -165,13 +165,13 @@ a_stand_alone_function_decorated()
 #Before the function runs
 #I am a stand alone function, don't you dare modify me
 #After the function runs
-</pre>
+```
 
 ##揭开装饰器的神秘的面纱
 
 对上面的例子，我们用装饰器语法可以这样写
 
-<pre class="prettyprint" style="border: 0">
+```
 @my_shiny_new_decorator
 def another_stand_alone_function():
     print "Leave me alone"
@@ -181,19 +181,19 @@ another_stand_alone_function()
 #Before the function runs
 #Leave me alone
 #After the function runs
-</pre>
+```
 
 `@`语法糖就等价于
 
-<pre class="prettyprint" style="border: 0">
+```
 another_stand_alone_function = my_shiny_new_decorator(another_stand_alone_function)
-</pre>
+```
 
 装饰器只是[装饰器模式](http://en.wikipedia.org/wiki/Decorator_pattern)在python中的变种。
 
 当然，我们可以使用多层装饰器
 
-<pre class="prettyprint" style="border: 0">
+```
 def bread(func):
     def wrapper():
         print "</''''''\>"
@@ -221,11 +221,11 @@ sandwich()
 # --ham--
 # ~salad~
 #<\______/>
-</pre>
+```
 
 用装饰器语法糖可以这样写
 
-<pre class="prettyprint" style="border: 0">
+```
 @bread
 @ingredients
 def sandwich(food="--ham--"):
@@ -238,11 +238,11 @@ sandwich()
 # --ham--
 # ~salad~
 #<\______/>
-</pre>
+```
 
 具体的输出和装饰器的顺序息息相关
 
-<pre class="prettyprint" style="border: 0">
+```
 @ingredients
 @bread
 def strange_sandwich(food="--ham--"):
@@ -255,12 +255,12 @@ strange_sandwich()
 # --ham--
 #<\______/>
 # ~salad~
-</pre>
+```
 
 #装饰器进阶
 ##被装饰的函数有参数
 
-<pre class="prettyprint" style="border: 0">
+```
 def a_decorator_passing_arguments(function_to_decorate):
     def a_wrapper_accepting_arguments(arg1, arg2):
         print "I got args! Look:", arg1, arg2
@@ -278,11 +278,11 @@ print_full_name("Peter", "Venkman")
 # outputs:
 #I got args! Look: Peter Venkman
 #My name is Peter Venkman
-</pre>
+```
 
 便于理解，我们可以看到，在给没有参数的函数用装饰器的时候，实际过程是这样的
 
-<pre class="prettyprint" style="border: 0">
+```
 @decorator
 def func():
     pass
@@ -292,7 +292,7 @@ func()
 # 等价于下面两行
 aft = decorator(func)
 aft()
-</pre>
+```
 
 也就是说`func()`等价于`decorator(func)()`
 
@@ -304,7 +304,7 @@ aft()
 
 那么只要将self参数正确地传入了，那方法的装饰器跟函数的装饰器也没什么两样
 
-<pre class="prettyprint" style="border: 0">
+```
 def method_friendly_decorator(method_to_decorate):
     def wrapper(self, lie):
         lie = lie - 3 # very friendly, decrease age even more :-)
@@ -324,11 +324,11 @@ class Lucy(object):
 l = Lucy()
 l.sayYourAge(-3)
 #outputs: I am 26, what did you think?
-</pre>
+```
 
 更多地情况下，我们使用不定参数`*args, **kwargs`
 
-<pre class="prettyprint" style="border: 0">
+```
 def a_decorator_passing_arbitrary_arguments(function_to_decorate):
     # wrapper函数可以接受任何参数
     def a_wrapper_accepting_arbitrary_arguments(*args, **kwargs):
@@ -391,7 +391,7 @@ m.sayYourAge()
 #(<__main__.Mary object at 0xb7d303ac>,)
 #{}
 #I am 28, what did you think?
-</pre>
+```
 
 
 ##带参数的装饰器
@@ -400,7 +400,7 @@ m.sayYourAge()
 
 首先我们回顾一下上面类似的例子
 
-<pre class="prettyprint" style="border: 0">
+```
 # 装饰器就是普通函数
 def my_decorator(func):
     print "I am an ordinary function"
@@ -424,7 +424,7 @@ def lazy_function():
     print "zzzzzzzz"
 
 #outputs: I am an ordinary function
-</pre>
+```
 
 It’s exactly the same. "my_decorator" is called. So when you @my_decorator, you are telling Python to call the function 'labelled by the variable "my_decorator"'.
 
@@ -432,7 +432,7 @@ This is important! The label you give can point directly to the decorator—or n
 
 Let’s get evil. ☺
 
-<pre class="prettyprint" style="border: 0">
+```
 def decorator_maker():
 
     print "I make decorators! I am executed only once: "+\
@@ -477,13 +477,13 @@ decorated_function()
 #I am the wrapper around the decorated function. I am called when you call the decorated function.
 #As the wrapper, I return the RESULT of the decorated function.
 #I am the decorated function.
-</pre>
+```
 
 到目前为止，一切正常
 
 然后，让我们剥去令人厌烦的中间变量在来一次
 
-<pre class="prettyprint" style="border: 0">
+```
 def decorated_function():
     print "I am the decorated function."
 decorated_function = decorator_maker()(decorated_function)
@@ -499,11 +499,11 @@ decorated_function()
 #I am the wrapper around the decorated function. I am called when you call the decorated function.
 #As the wrapper, I return the RESULT of the decorated function.
 #I am the decorated function.
-</pre>
+```
 
 语法糖来写一遍
 
-<pre class="prettyprint" style="border: 0">
+```
 @decorator_maker()
 def decorated_function():
     print "I am the decorated function."
@@ -519,13 +519,13 @@ decorated_function()
 #I am the wrapper around the decorated function. I am called when you call the decorated function.
 #As the wrapper, I return the RESULT of the decorated function.
 #I am the decorated function.
-</pre>
+```
 
 瞧见了吗？直接用`@`也能愉快的工作。到这里，认真读代码的人应该都理解了。
 
 我们继续来看带参数的装饰器。我们可以用函数动态的生成装饰器，同时，对这个函数，我们是不是也可以传入参数呢！
 
-<pre class="prettyprint" style="border: 0">
+```
 def decorator_maker_with_arguments(decorator_arg1, decorator_arg2):
 
     print "I make decorators! And I accept arguments:", decorator_arg1, decorator_arg2
@@ -565,11 +565,11 @@ decorated_function_with_arguments("Rajesh", "Howard")
 #   - from the function call: Rajesh Howard 
 #Then I can pass them to the decorated function
 #I am the decorated function and only knows about my arguments: Rajesh Howard
-</pre>
+```
 
 又如下面的例子，我们可以把变量当成参数传递给装饰器。
 
-<pre class="prettyprint" style="border: 0">
+```
 c1 = "Penny"
 c2 = "Leslie"
 
@@ -588,7 +588,7 @@ decorated_function_with_arguments(c2, "Howard")
 #   - from the function call: Leslie Howard 
 #Then I can pass them to the decorated function
 #I am the decorated function and only knows about my arguments: Leslie Howard
-</pre>
+```
 
 正如我们看到的，我们可以像给普通函数传递参数那样给装饰器传递参数。如果愿意，你也可以使用`*args, **kwargs`来当成装饰器的参数。
 ( But remember decorators are called only once. Just when Python imports the script. You can't dynamically set the arguments afterwards. When you do "import x", the function is already decorated, so you can't change anything.)
@@ -606,7 +606,7 @@ decorated_function_with_arguments(c2, "Howard")
 
 我们应该很愉快的使用`functools.wrap()`这个python2.5之后提供的函数。
 
-<pre class="prettyprint" style="border: 0">
+```
 # For debugging, the stacktrace prints you the function __name__
 def foo():
     print "foo"
@@ -644,13 +644,13 @@ def bar(func):
 @bar
 def foo():
     print "foo"
-</pre>
+```
 
 ##装饰器到底该在哪些场合使用呢
 
 比如说下面一些场合例子
 
-<pre class="prettyprint" style="border: 0">
+```
 def benchmark(func):
     """
     程序执行时间
@@ -705,7 +705,7 @@ print reverse_string("A man, a plan, a canoe, pasta, heros, rajahs, a coloratura
 #wrapper 0.0
 #wrapper has been used: 2x
 #!amanaP :lanac a ,noep a ,stah eros ,raj a ,hsac ,oloR a ,tur a ,mapS ,snip ,eperc a ,)lemac a ro( niaga gab ananab a ,gat a ,nat a ,gab ananab a ,gag a ,inoracam ,elacrep ,epins ,spam ,arutaroloc a ,shajar ,soreh ,atsap ,eonac a ,nalp a ,nam A
-</pre>
+```
 
 python本身也提供了几个装饰器`property`,`staticmethod`,etc。
 

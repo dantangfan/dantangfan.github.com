@@ -44,7 +44,7 @@ category: blog
 
 编辑 /etc/network/interfaces
 
-<pre class="prettyprint" style="border: 0">
+```
 auto lo
  
 iface lo inet loopback
@@ -61,17 +61,17 @@ gateway 192.168.1.1
 wpa-ssid 要连接的wlan ssid
 wpa-passphrase wlan密码
 wireless-channel 11
-</pre>
+```
 
 重启网络服务：
 
-<pre class="prettyprint" style="border: 0">
+```
 #root用户，或者加sudo
 /etc/init.d/networking restart 
 OR
 service networking restart 
 
-</pre>
+```
 
 ###wifi控制小车
 
@@ -79,48 +79,48 @@ service networking restart
 
 * 将USB摄像头插上，查看是否找到设备，输入：
 
-<pre class="prettyprint" style="border: 0">
+```
 root@raspberrypi:/# lsusb
-</pre>
+```
 
 其中Logitech就是摄像头，说明找到usb设备了，然后再看看设备驱动是否正常：
 
-<pre class="prettyprint" style="border: 0">
+```
 root@raspberrypi:/# ls /dev/vid*
 /dev/video0
-</pre>
+```
 
 看到video0说明成功。
 
 * 安装必要的软件集：
 
-<pre class="prettyprint" style="border: 0">
+```
 sudo apt-get install subversion
 sudo apt-get install libv4l-dev
 sudo apt-get install libjpeg8-dev
 sudo apt-get install imagemagick
-</pre>
+```
 
 * 下载mipg-steamer软件，编译并安装：
 
-<pre class="prettyprint" style="border: 0">
+```
 svn co https://mjpg-streamer.svn.sourceforge.net/svnroot/mjpg-streamer mjpg-streamer
 cd mjpg-streamer/mjpg-streamer
 make USE_LIBV4L2=true clean all
 make DESTDIR=/usr install
-</pre>
+```
 
 注：如果这个svn的地址可能已经失效，请使用下面源
 
-<pre class="prettyprint" style="border: 0">
+```
 wget http://sourceforge.net/code-snapshots/svn/m/mj/mjpg-streamer/code/mjpg-streamer-code-182.zip
 unzip mjpg-streamer-code-182.zip
 cd mjpg-streamer-code-182/mjpg-streamer
-</pre>
+```
 
 * 创建一个文件video.sh并编辑如下代码
 
-<pre class="prettyprint" style="border: 0">
+```
 #!/bin/sh
 
 STREAMER=mjpg_streamer
@@ -133,18 +133,18 @@ PLUGINPATH=/usr/lib
 
 $STREAMER -i "$PLUGINPATH/input_uvc.so -n -d $DEVICE -r $RESOLUTION -f $FRAMERATE -y YUYV" -o        "$PLUGINPATH/output_http.so -n -p $HTTP_PORT " &
 
-</pre>
+```
 
 * 执行代码
 
-<pre class="prettyprint" style="border: 0">
+```
 sudo chmod 777 video.sh 
 sudo ./video.sh
-</pre>
+```
 
 * 在pc上建立一个html文件，如下编辑
 
-<pre class="prettyprint" style="border: 0">html
+```html
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -169,7 +169,7 @@ sudo ./video.sh
         </div>
 </body>
 
-</pre>
+```
 
 在pc上运行上面index.html”文件看到视频了，就说明摄像头工作正常了，到此摄像头的工作就结束了
 
@@ -179,15 +179,15 @@ sudo ./video.sh
 
 * 在执行的过程中，如果显示摄像头关闭不成功，则要杀死进程
 
-<pre class="prettyprint" style="border: 0">
+```
 kill $(pgrep video.sh)
-</pre>
+```
 
 ####控制代码
 
 小车的控制可以用任何raspberry上能运行的语言编写，这里为方便，直接使用python
 
-<pre class="prettyprint" style="border: 0">python
+```python
 #!/usr/bin/env python
 #wheel.py
 import RPi.GPIO as GPIO
@@ -217,9 +217,9 @@ class wheel:
     def __del__(self):
         pass
         #GPIO.cleanup()
-</pre>
+```
 
-<pre class="prettyprint" style="border: 0">python
+```python
 #!/usr/bin/env python
 #car.py
 from wheel import *
@@ -254,9 +254,9 @@ class car:
         for wheel in car.wheels:
             wheel.stop()
 
-</pre>
+```
 
-<pre class="prettyprint" style="border: 0">python
+```python
 #!/usr/bin/env python
 #action.py
 
@@ -285,9 +285,9 @@ def action(com):
     #clean all
     elif com=="clean":
         clean.clean()
-</pre>
+```
 
-<pre class="prettyprint" style="border: 0">python
+```python
 #!/usr/bin/env python
 #server.py
 
@@ -324,7 +324,7 @@ while 1:
     #action("clean")
     #GPIO.cleanup()
     #conn.close()
-</pre>
+```
 
 
 
@@ -334,7 +334,7 @@ PC客户端代码：
 
 注意：请先安装wxpython
 
-<pre class="prettyprint" style="border: 0">python
+```python
 #!/usr/bin/env python
 #coding:utf-8
 import time
@@ -507,7 +507,7 @@ if __name__ == '__main__':
     frame = InsertFrame(parent=None, id=-1)
     frame.Show()
     app.MainLoop()
-</pre>
+```
 
 效果图
 

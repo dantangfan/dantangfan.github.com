@@ -12,18 +12,18 @@ help(func)随便什么函数都可以查到
 
 """三引号表示注释,三引号表示格式化输入
 
-<pre class="prettyprint" style="border: 0">python
+```python
 mail = """ Hi
     I am 
     Jim
 """
-</pre>
+```
 
 序列切片-->str[x:y],str[x,step,y]
 
 序列都有的函数
 
-<pre class="prettyprint" style="border: 0">python
+```python
 len()
 +
 *    str=str1*5
@@ -32,38 +32,38 @@ max()
 min()
 cmp(tuple1,tuple2)
 id(str)查看内存空间
-</pre>
+```
 
 内存存储的是值，不是元素，每当变量值改变的时候，内存都会变化
 
-<pre class="prettyprint" style="border: 0">python
+```python
 str = "ssg"
 id(str)
 str = "ss"
 id(str)#两次结果是不一样的
-</pre>
+```
 
 ###元组：元组不可以单独元素变化，
 
 创建元祖：
 
-<pre class="prettyprint" style="border: 0">python
+```python
 myempty = ()
 singleone = (2,)
 many = (1,3,4)
-</pre>
+```
 
 ###列表：
 
-<pre class="prettyprint" style="border: 0">python
+```python
 list.append(msg)
 list.remove('msg')选第一次出现的msg删除
-</pre>
+```
 
 
 ###字典：
 
-<pre class="prettyprint" style="border: 0">python
+```python
 key不可变，value可变
 keys()返回键列表
 values()返回键值列表
@@ -77,20 +77,20 @@ dict.git(key,'msg')取值不存在返回msg，msg可选
 dict.fromkeys(seq,val=None)以seq中的元素为键创建一个字典，键值为空
 dict.has_key(key) 判断是否存在key，常用in或者not in 代替
 dict.update(temp_dict)把temp中的元素添加到dict，不存在则建立，存在则覆盖
-</pre>
+```
 
 分支语句：if,if-else,if-elif-else
 
 ##函数
 
-<pre class="prettyprint" style="border: 0">python
+```python
 def f(x,*args.**kwarg):
     print x
     if(args):
         print args
     if(kwarg):
         print kwarg
-</pre>
+```
 
 可以传入任意数量参数，f('x',1,2,y=9)
 
@@ -107,13 +107,13 @@ lambda x,y:x*y 直接返回x*y
 
 ##文件操作：
 
-<pre class="prettyprint" style="border: 0">python
+```python
 fileptr = file(filename)
 fileptr = open(filename,mode)默认模式是r.
 fileptr.read()读取整个文件
 fileptr.close()关闭
 fileptr.write('msg')只有当关闭文件或者缓冲区的时候才会写入
-</pre>
+```
 
 ::r+读写，w+先删除再读写，没有则创建
 r+直接从指针开头写入，如果要追加就需要先read()到文件尾部然后再来write
@@ -122,7 +122,7 @@ b打开二进制文件
 
 ###文件方法：
 
-<pre class="prettyprint" style="border: 0">python
+```python
 string = f.readline(size)size可选，小于一行
 List = f.readlines(size)...
 string = f.read(size)...
@@ -132,7 +132,7 @@ for i in open(filename):
 
 f.write(msg)写一行
 f.writelines(List)写多行
-</pre>
+```
 
 f.seek(偏移量,选项)
 
@@ -155,7 +155,7 @@ f.seek(偏移量,选项)
 
 ##OS模块：常见函数
 
-<pre class="prettyprint" style="border: 0">python
+```python
 import os
 os.mkdir('/home/hj/test')
 os.mkdir(path[,mode=0777])
@@ -171,21 +171,21 @@ os.path.join(path)#会把当前路进跟path连接起来
 os.walk(path)返回一个元祖，有三个元素，分别为每次遍历的路径名，目录列表，文件列表
 g = os.walk('.')
 g.next()每次遍历一个目录下
-</pre>
+```
 
 于是就有了这样的办法来遍历目录打印全路径
 
-<pre class="prettyprint" style="border: 0">python
+```python
 for path,d,filelist in os.walk('.'):
     for filename in filelist:
         os.path.join(path,filename)
 
-</pre>
+```
 
 
 ##面向对象：
 
-<pre class="prettyprint" style="border: 0">python
+```python
 class hj:
     first = 1
     second = 2
@@ -219,7 +219,7 @@ class son(father):
 test = son()
 test.f()
 test.func()
-</pre>
+```
 
 
 ##正则表达式：
@@ -248,7 +248,7 @@ re.findall(s,'avxxaagadfgdfg')返回一个列表
 
 ###常用函数
 
-<pre class="prettyprint" style="border: 0">python
+```python
 r = r'\d{3,4}-?\d{8}'
 p_tel = re.compile(r)
 p_tel.findall('010-12345678')效果和re.findall(r,'101-12345678')一样，但是速度更快
@@ -279,11 +279,11 @@ dir(re)查看re的内置属性和方法，任何包都可以使用
 S匹配任何字符，包括换行等re.findall(r,str,re.S)
 M多行匹配 re.findall(r,file,re.M)
 I大小写不敏感re.I
-</pre>
+```
 
 ##调用外部程序
 
-<pre class="prettyprint" style="border: 0">python
+```python
 import subprocess
 subprocess.call('ls -l ', shell=True)#默认false，为true时使用shell执行命令
 subprocess.call(['ls','l','.'])相同效果，推荐使用上面
@@ -300,7 +300,7 @@ stdin.write('c\n')
 stdin.write('b\n')
 stdin.close()
 stdout.read()
-</pre>
+```
 
 
 
@@ -309,7 +309,7 @@ stdout.read()
 
 首先查看网页代码，图片代码的特征。正则提取图片地址，开始下载
 
-<pre class="prettyprint" style="border: 0">python
+```python
 #!/bin/env python
 
 import re
@@ -333,7 +333,7 @@ def getImage(html):
 if __name__=='__main__':
     getImage(getHtml('www.baidu.com'))
 
-</pre>
+```
 
 ##GUI--wxpython:
 
@@ -359,7 +359,7 @@ if __name__=='__main__':
 
 ###一个简单的记事本，通过像素管理尺寸（特别是文本框）
 
-<pre class="prettyprint" style="border: 0">python
+```python
 import wx
 app = wx.App()
 win = wx.Frame(None,title='hj',size = (410,335))
@@ -370,12 +370,12 @@ saveButton = wx.Button(win,lable='save',pos = (315,5), size = (80,25))
 filename = wx.TextCtrl(win,pos = (5,5),size = (210,25))#文本框
 content = wx.TextCtrl(win, pos = (5,35), size = (390,260), style = wx.TE_MULTILINE | wx.HSCROLL)#style分别有竖着的下拉跳和横着的下拉条
 app.MainLoop()
-</pre>
+```
 
 
 ###记事本，用尺寸器管理大小
 
-<pre class="prettyprint" style="border: 0">python
+```python
 import wx
 app = wx.App()
 win = wx.Frame(None,title='hj',size = (410,335))
@@ -401,11 +401,11 @@ bkg.SetSize(bbox)#让布局管理器生效
 
 win.Show()#显示
 app.MainLoop()
-</pre>
+```
 
 ###按钮事件处理，事件绑定
 
-<pre class="prettyprint" style="border: 0">python
+```python
 import wx
 app = wx.App()
 win = wx.Frame(None,title='hj',size = (410,335))
@@ -446,11 +446,11 @@ bkg.SetSize(bbox)#让布局管理器生效
 
 win.Show()#显示
 app.MainLoop()
-</pre>
+```
 
 ##多线程：
 
-<pre class="prettyprint" style="border: 0">python
+```python
 import thread
 import time
 def go(name,n):
@@ -461,11 +461,11 @@ def go(name,n):
 thread.start_new_thread(go,('baby',3))
 thread.start_new_thread(go,('gay', 3))
 time.sleep(6)#线程工作需要时间，如果不sleep，进程就会直接瞬间结束，这个时候线程也就自动结束了，不会相互等待
-</pre>
+```
 
 ###线程锁:
 
-<pre class="prettyprint" style="border: 0">python
+```python
 import thread
 import time
 def go(name,n,l):
@@ -483,7 +483,7 @@ thread.start_new_thread(go,('baby',3),locket)
 
 while locket.locked():
     pass
-</pre>
+```
 
 其实个人感觉python的多线程就是一个坑，很多情况下根本达不到多线程的效果，或者是我根本就不会用。估计是后者。。。orz...
 
@@ -491,11 +491,11 @@ while locket.locked():
 
 Json必须是unicode类型的（utf-32,utf-16,utf-8默认）
 
-<pre class="prettyprint" style="border: 0">python
+```python
 import json
 d = {'n':,'tag':89,'id':('sdf',234),'pk':[12,'sfs']}#元组会自动转化成列表
 with open('test.txt','w') as f:
     json.dump(d,f)#顺序储存
     json.dump(d,f,indent = 0)#每个数据存一行
     json.dump(d,f,indent = 2)#每个数据的内部数据缩进为2
-</pre>
+```
