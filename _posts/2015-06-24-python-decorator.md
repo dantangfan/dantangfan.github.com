@@ -593,6 +593,9 @@ decorated_function_with_arguments(c2, "Howard")
 正如我们看到的，我们可以像给普通函数传递参数那样给装饰器传递参数。如果愿意，你也可以使用`*args, **kwargs`来当成装饰器的参数。
 ( But remember decorators are called only once. Just when Python imports the script. You can't dynamically set the arguments afterwards. When you do "import x", the function is already decorated, so you can't change anything.)
 
+其实，我猜测，python解释器内，如果遇到`@deco`这样的语法，就会默认将它下面的第一个函数当成参数传入deco中，如果遇到`@deco()`这样的语法，就会将它下面第一个函数当成参数传入deco()的返回值中当成参数
+简单的说，就是解释器遇到这种语法`@deco()()()`括号数量无所谓，都会最终解释成`deco()()()(func)`，都是在最后多加了一对括号而已，这样理解带参数的装饰器就简单了
+
 ##例子
 
 没看懂先不写

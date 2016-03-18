@@ -385,3 +385,9 @@ print >> file("test.txt", 'w'), "message"
 第一个参数需要是一个文件对象
 
 
+### 18.快速把一个序列按照n个元素生成一组
+
+```
+seq = range(10)
+zip(*[iter(seq)]*3)
+```
