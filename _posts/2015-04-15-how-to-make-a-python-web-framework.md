@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 自己动手写一个简单的 python web framework
-description: 2011心路历程
+description: 每天都使用 web 框架，实际上实现一个简单的 web 框架也是很容易的
 category: opinion
 ---
 
