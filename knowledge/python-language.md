@@ -1,4 +1,9 @@
-#python 基础
+python 语言基础
+
+python 轻度使用者，知道语法和库就行了；python 中度使用者，就需要知道下面这些基础知识；python 重度使用者，就需要去看 python 的实现了。
+
+## 语言基础
+
 ### python是如何执行代码的，也就是说解释型语言如何执行
 http://www.cnblogs.com/kym/archive/2012/05/14/2498728.html
 ### 什么是绑定，把一个对象绑定到一个变量意味着什么
@@ -59,9 +64,6 @@ b outside fun2: 33
 测试\脚本\爬虫
 
 ### 理解python中的dict，是如何实现的
-
-### python中怎么跨文件共享全局变量，是如何实现的
-通过 import xxx
 http://blog.csdn.net/digimon/article/details/7875789
 
 ### list切片操作
@@ -137,8 +139,6 @@ python是直接改变了变量指向的地址，c语言是直接操作当前地�
 
 ### tornado template、coroutine、stact_context是怎么实现的
 
-### 推荐一本看过最好的python书籍？ 拉开话题好扯淡
-
 ### 标准库线程安全的队列是哪一个？不安全的是哪一个？logging是线程安全的吗？
 
 ### python适合的场景有哪些？当遇到计算密集型任务怎么办？
@@ -155,40 +155,7 @@ twisted 没用过,tornado 并不是最好的,特别是涉及到使用其他库�
 
 自己理解:要形成闭包，首先得有一个嵌套的函数，即函数中定义了另一个函数，闭包则是一个集合，它包括了外部函数的局部变量，这些局部变量在外部函数返回后也继续存在，并能被内部函数引用。
 
-### 语法糖
-语法糖（Syntactic sugar），也译为糖衣语法，是由英国计算机科学家彼得·约翰·兰达（Peter J. Landin）发明的一个术语，指计算机语言中添加的某种语法，这种语法对语言的功能并没有影响，但是更方便程序员使用。通常来说使用语法糖能够增加程序的可读性，从而减少程序代码出错的机会。
-
-### partial 函数的实现
-其实就是使用闭包的方式实现的,也可以说就是一个装饰器而已
-
-```
-def partial(func, *args, **kwargs):
-    def _(*fn_args, **fn_kwargs):
-        kwargs.update(fn_kwargs)
-        return func(*args + fn_args, **kwargs)
-    return _
-```
-
-### python单例模式
-
-```
-class Singleton(objict):
-    def __new__(cls, *args, **kwargs):
-        if not hasattr(cls, "_instance"):
-            #setattr(cls, "_instance", object.__new__(cls, *args, **kwargs))
-            setattr(cls, "_instance", super(Singleton, cls).__new__(*args, **kwargs))
-        return getattr(cls, "_instance")
-# 这个用装饰器好理解
-def singleton(cls):
-    _instance = {}
-    def _(*args, **kwargs):
-        if not _instance.get(cls):
-            _instance[cls] = cls(*args, **kwargs)
-        return _instance[cls]
-    return _
-```
-
-### 什么是 lambda函数？它有什么好处？另外 python在函数式编程方面提供了些什么函数和语 法？
+### 什么是 lambda函数？它有什么好处？另外 python在函数式编程方面提供了些什么函数和语法？
 Python允许你定义一种单行的小函数。
 定义lambda函数的形式如下：labmda 参数：表达式lambda函数默认返回表达式的值。
 你也可以将其赋值给一个变量。lambda函数可以接受任意个参数，包括可选参数，但是表达式只有一个：
@@ -211,6 +178,83 @@ Python允许你定义一种单行的小函数。
 
 语法有map,reduce, filter, zip
 
+
+### 知道 greenlet、stackless 吗？说说你对线程、协程、进程的理解；
+greenlet 类似于 goto 语句的功能，但是在函数或者说微线程之间实现了跳转，且在结束后
+能自动回到调用处
+一个 “greenlet” 是一个很小的独立微线程。可以把它想像成一个堆栈帧，栈底是初始调用，
+而栈顶是当前 greenlet 的暂停位置。你使用 greenlet 创建一堆这样的堆栈，然后在他们之间
+跳转执行。跳转不是绝对的：一个 greenlet 必须选择跳转到选择好的另一个 greenlet，这会
+让前一个挂起，而后一个恢复。两 个 greenlet 之间的跳转称为 切换(switch) 。
+当你创建一个 greenlet，它得到一个初始化过的空堆栈；当你第一次切换到它，他会启动指
+定的函数，然后切换跳出 greenlet。当最终栈底 函数结束时， greenlet 的堆栈又编程空的了，
+而 greenlet 也就死掉了。greenlet 也会因为一个未捕捉的异常死掉。
+stackless 是 python 的一个协程实现版本？还没有仔细看。
+线程，进程是比较经典的概念了，进程可以包括文件句柄等系统资源的单位，线程一般是
+现代 CPU 的基本调度单位
+而协程是通过用户调度，切换的消耗要小于线程/进程的切换。
+协程的优势在于可以自己控制切换，适合于顺序执行的一些情况，而线程更加适合并行处
+理数据的情况；同时使用协程可以控制调度，减少切换的消耗。
+
+### 关于 python 程序的运行性能方面，有什么手段能提升性能？
+合理的使用数据结构：比如由于 dict 使用了 hash table，当需要经常在大容量 list 中使用查找时，将 list 转换成 dict 将大大提高性能
+在一些性能瓶颈问题上，考虑使用 c/c++库来实现，将大大提高程序性能
+
+1. 使用内建函数
+2. 使用 join()连接字符串.
+3. 使用 Python 多重赋值，交换变量
+4. 尽量使用局部变量
+5. 尽量使用 "in"
+6. 使用延迟加载加速
+7. 为无限循环使用 "while 1"
+8. 使用 list comprehension
+9. 使用 xrange()处理长序列
+10. 使用 Python generator
+11. 了解 itertools 模块
+12. 学习 bisect 模块保持列表排序
+13. 理解 Python 列表，实际上是一个数组
+14. 使用 dict 和 set 测试成员
+15. 使用 Schwartzian Transform 的 sort()
+16. Python 装饰器缓存结果
+17. 理解 Python 的 GIL（全局解释器锁）
+
+### 什么是pyc文件,为什么需要pyc
+pyc是一种二进制文件，是由py文件经过编译后，生成的文件，是一种byte code，py文件变成pyc文件后，加载的速度有所提高，而且pyc是一种跨平台的字节码，
+是由python的虚拟机来执行的，这个是类似于JAVA或者.NET的虚拟机的概念。pyc的内容，是跟python的版本相关的，不同版本编译后的pyc文件是不同的，2.5编译的pyc文件，2.4版本的 python是无法执行的。
+
+### dict中的.items() .iteritems()区别
+一个生成全部，一个是迭代器
+
+### 为什么不能并行计算？Python的线程实际上是使用单核在运行。
+在大多数系统上，Python同时支持消息传递和基于线程的并发编程。
+尽管大多数程序员熟悉的往往是线程接口，但实际上Python线程受到的限制有很多。
+尽管最低限度是线程安全的，但Python解释器还是使用了内部的GIL(Global Interperter Lock,全局解释器锁定)，在任意指定的时刻只能在一个处理器上运行。
+尽管GIL经常是Python社区中争论的热点，但在可以预见的将来它都不可能消失。
+
+
+### 元类
+
+### @staticmethod, @classmethod
+
+### python 的自省机制
+
+### 格式化 %s 和 .format
+
+### 鸭子类型
+新类和旧类 http://www.cnblogs.com/btchenguang/archive/2012/09/17/2689146.html
+
+python3 已经不存在旧类了，这个问题只需要了解一下
+
+### __init__ 和 __new__ 的区别
+
+### 垃圾回收
+1. 引用计数
+2. 标记清除
+3. 分代回收
+
+
+## 简单编程
+
 ### 列表去重的几种方法
 
 ```
@@ -219,7 +263,7 @@ newa = []
 for i in a:
     if i not in newa:
         newa.append(i)
-        
+
 newa = list(set(a))  # 但是这样是乱序的,还需要排序
 newa.sort(a.index)
 
@@ -287,7 +331,7 @@ class Dict(object):
     @property
     def now(self):
         return int(time.time())
-        
+
 def lru_cache(expire=3600, max_size=1024):
     cache = Dict(expire, max_size)
     def deco(func):
@@ -302,72 +346,50 @@ def lru_cache(expire=3600, max_size=1024):
         return __
     return deco
 ```
+### partial 函数的实现
+其实就是使用闭包的方式实现的,也可以说就是一个装饰器而已
 
-### 知道 greenlet、stackless 吗？说说你对线程、协程、进程的理解；
-greenlet 类似于 goto 语句的功能，但是在函数或者说微线程之间实现了跳转，且在结束后
-能自动回到调用处
-一个 “greenlet” 是一个很小的独立微线程。可以把它想像成一个堆栈帧，栈底是初始调用，
-而栈顶是当前 greenlet 的暂停位置。你使用 greenlet 创建一堆这样的堆栈，然后在他们之间
-跳转执行。跳转不是绝对的：一个 greenlet 必须选择跳转到选择好的另一个 greenlet，这会
-让前一个挂起，而后一个恢复。两 个 greenlet 之间的跳转称为 切换(switch) 。
-当你创建一个 greenlet，它得到一个初始化过的空堆栈；当你第一次切换到它，他会启动指
-定的函数，然后切换跳出 greenlet。当最终栈底 函数结束时， greenlet 的堆栈又编程空的了，
-而 greenlet 也就死掉了。greenlet 也会因为一个未捕捉的异常死掉。
-stackless 是 python 的一个协程实现版本？还没有仔细看。
-线程，进程是比较经典的概念了，进程可以包括文件句柄等系统资源的单位，线程一般是
-现代 CPU 的基本调度单位
-而协程是通过用户调度，切换的消耗要小于线程/进程的切换。
-协程的优势在于可以自己控制切换，适合于顺序执行的一些情况，而线程更加适合并行处
-理数据的情况；同时使用协程可以控制调度，减少切换的消耗。
+```python
+def partial(func, *args, **kwargs):
+    def _(*fn_args, **fn_kwargs):
+        kwargs.update(fn_kwargs)
+        return func(*args + fn_args, **kwargs)
+    return _
+```
 
-### 关于 python 程序的运行性能方面，有什么手段能提升性能？
-合理的使用数据结构：比如由于 dict 使用了 hash table，当需要经常在大容量 list 中使用查找时，将 list 转换成 dict 将大大提高性能
-在一些性能瓶颈问题上，考虑使用 c/c++库来实现，将大大提高程序性能
+### python单例模式
 
-1. 使用内建函数
-2. 使用 join()连接字符串.
-3. 使用 Python 多重赋值，交换变量
-4. 尽量使用局部变量
-5. 尽量使用 "in"
-6. 使用延迟加载加速
-7. 为无限循环使用 "while 1"
-8. 使用 list comprehension
-9. 使用 xrange()处理长序列
-10. 使用 Python generator
-11. 了解 itertools 模块
-12. 学习 bisect 模块保持列表排序
-13. 理解 Python 列表，实际上是一个数组
-14. 使用 dict 和 set 测试成员
-15. 使用 Schwartzian Transform 的 sort()
-16. Python 装饰器缓存结果
-17. 理解 Python 的 GIL（全局解释器锁）
+```python
+class Singleton(objict):
+    def __new__(cls, *args, **kwargs):
+        if not hasattr(cls, "_instance"):
+            #setattr(cls, "_instance", object.__new__(cls, *args, **kwargs))
+            setattr(cls, "_instance", super(Singleton, cls).__new__(*args, **kwargs))
+        return getattr(cls, "_instance")
 
-### 什么是pyc文件,为什么需要pyc
-pyc是一种二进制文件，是由py文件经过编译后，生成的文件，是一种byte code，py文件变成pyc文件后，加载的速度有所提高，而且pyc是一种跨平台的字节码，
-是由python的虚拟机来执行的，这个是类似于JAVA或者.NET的虚拟机的概念。pyc的内容，是跟python的版本相关的，不同版本编译后的pyc文件是不同的，2.5编译的pyc文件，2.4版本的 python是无法执行的。
-
-### dict中的.items() .iteritems()区别
-一个生成全部，一个是迭代器
-
-### range xrange区别（python3中统一成了xrange，并命名为range）
-一个列表 一个迭代器 xrange
-
-### 为什么不能并行计算？Python的线程实际上是使用单核在运行。
-在大多数系统上，Python同时支持消息传递和基于线程的并发编程。
-尽管大多数程序员熟悉的往往是线程接口，但实际上Python线程受到的限制有很多。
-尽管最低限度是线程安全的，但Python解释器还是使用了内部的GIL(Global Interperter Lock,全局解释器锁定)，在任意指定的时刻只能在一个处理器上运行。
-尽管GIL经常是Python社区中争论的热点，但在可以预见的将来它都不可能消失。
+# 这个用装饰器好理解
+def singleton(cls):
+    _instance = {}
+    def _(*args, **kwargs):
+        if not _instance.get(cls):
+            _instance[cls] = cls(*args, **kwargs)
+        return _instance[cls]
+    return _
+```
 
 ### 检查一个对象属性的方法
 dir(obj)
 
-### list 对象 alist [{'name':'a','age':20},{'name':'b','age':30},{'name':'c','age':25}]， 请按 alist 中元素的age 由大到小排序；
+### list 排序
 
-```
+alist = [{'name':'a','age':20},{'name':'b','age':30},{'name':'c','age':25}]， 请按 alist 中元素的age 由大到小排序；
+
+```python
 alist.sort(key=lambda x: x['age'])
 ```
 
-### 两个 list 对象 alist ['a','b','c','d','e','f'], blist ['x','y','z','d','e','f']，请用简洁的方法合并这两个 list， 并且 list 里面的元素不能重复；
+### list 合并
+alist = ['a','b','c','d','e','f'], blist = ['x','y','z','d','e','f']，请用简洁的方法合并这两个 list， 并且 list 里面的元素不能重复；
 
 ```
 c = list(set(a)|set(b))
@@ -376,6 +398,7 @@ c = list(set(a.extend(b)))
 ```
 
 ### 实现一个stack，其实list本身就可以当stack用
+这里我们不需要把size记录下来，因为 list 是指针数组实现的
 
 ```
 class Stack:
