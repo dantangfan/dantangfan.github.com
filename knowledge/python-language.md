@@ -6,6 +6,7 @@ python 轻度使用者，知道语法和库就行了；python 中度使用者，
 
 ### python是如何执行代码的，也就是说解释型语言如何执行
 http://www.cnblogs.com/kym/archive/2012/05/14/2498728.html
+
 ### 什么是绑定，把一个对象绑定到一个变量意味着什么
 ### 什么是generator，可以用来干什么
 见generator-coroutine.md

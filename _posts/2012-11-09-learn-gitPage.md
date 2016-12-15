@@ -24,7 +24,7 @@ Gemfile和Bundle安装
 在更目录下创建一个叫Gemfile的文件，注意没有后缀，输入
 
 ```
-source 'http://ruby.taobao.org/'
+source 'https://gems.ruby-china.org'
 gem 'github-pages'
 ```
 
