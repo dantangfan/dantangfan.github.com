@@ -1,7 +1,7 @@
 ---
 layout: post
 title: python小技巧
-description:<持续更新> 平时使用python的时候总结出来的一些小技巧
+description: <持续更新> 平时使用python的时候总结出来的一些小技巧
 category: blog
 ---
 

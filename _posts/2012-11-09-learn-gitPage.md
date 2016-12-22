@@ -36,6 +36,12 @@ sudo bundle install
 
 这里如果`nokogiri`出错，看[nokogiri](http://www.nokogiri.org/tutorials/installing_nokogiri.html#mac_os_x)
 
+或者使用系统自带 libxml2
+
+```bash
+sudo gem install nokogiri -- --use-system-libraries=true --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/usr/include/libxml2  
+```
+
 命令会根据当前目录下的Gemfile，安装所需要的所有软件。这一步所安装的东西，可以说跟github本身的环境是完全一致的，所以可以确保本地如果没有错误，上传后也不会有错误。而且可以在将来使用下面命令，随时更新环境，十分方便
 
 ```
