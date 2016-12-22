@@ -85,7 +85,7 @@ dd {
 
 ul {
   list-style: inside circle;
-  padding-left: 0;
+  padding-left: 10;
   
   li {
     margin-bottom: .25rem;
@@ -322,7 +322,7 @@ tbody tr:nth-child(odd) th {
       }
 
       + a {
-        margin-left: .25rem;
+        margin-left: .50rem;
       }
     }
   }
