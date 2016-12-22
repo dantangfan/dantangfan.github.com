@@ -9,6 +9,7 @@ category: blog
 
 首先一个问题是如何生成长微博？逛了挺久，没有啥成熟的方案或者分享。要自己写一个工具基本是不可能的，没那个技术也没那么多时间。于是就从 git 上面找工具，经过一番测试之后，找到了两款还算舒服的工具
 
+<!-- more -->
 - [wkhtmltoimage](https://github.com/wkhtmltopdf/wkhtmltopdf)
 - [phantomjs](https://github.com/ariya/phantomjs)
 

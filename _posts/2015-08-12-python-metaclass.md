@@ -6,6 +6,7 @@ category: blog
 ---
 
 本文译自[stackoverflow](http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python)
+<!-- more -->
 
 
 ## 类也是对象

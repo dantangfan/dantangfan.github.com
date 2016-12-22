@@ -5,6 +5,8 @@ description: python 参数传递方式也是老生常谈的问题，这里做个
 category: opinion
 ---
 
+python 参数传递方式也是老生常谈的问题，这里做个简单总结
+<!-- more -->
 
 ###基本概念
 

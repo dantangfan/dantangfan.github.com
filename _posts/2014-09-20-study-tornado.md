@@ -7,6 +7,7 @@ category: blog
 
 #简介
 Tornado是使用python编写的一个强大的，异步的web服务器，最初是由FriendFeed开发，在被Facebook收购之后得以开源。通过使用非阻塞模式，tornado可以接受巨大规模的连接（C10k问题，现在应该叫c10M问题了吧），这使得tornado非常适合长轮询、WebSockte、以及其他需要对每个用户保持长连接的应用。
+<!-- more -->
 Tornado可以简单的分为以下四个主要组件：
 - 一个web框架（包含`RequestHandler`类，由它创建的子类可以建立web应用也可以作为web应用的支持类）
 - HTTP的C/S模型实现（包含`HTTPServer`和`AsyncHTTPClient`等类）

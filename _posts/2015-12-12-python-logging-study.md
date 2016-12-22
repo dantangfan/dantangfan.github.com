@@ -7,6 +7,7 @@ category: opinion
 ---
  **转自** [关于 logging 的一些琐事](http://www.keakon.net/2013/02/21/%E5%85%B3%E4%BA%8Elogging%E7%9A%84%E4%B8%80%E4%BA%9B%E7%90%90%E4%BA%8B)
  
+<!-- more -->
 ### 1. 为什么logging.info()默认不输出
 
 因为默认生成的 root logger 的 level 是 logging.WARNING，低于该级别的就不输出了。可以进行如下设置来输出：

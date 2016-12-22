@@ -13,6 +13,8 @@ category: blog
 
 2.搭建本地环境，现在已经有了一键安装的环境，不用像以前一样搞半天还被墙了[Using Jekyll with Pages](https://help.github.com/articles/using-jekyll-with-pages)
 
+<!-- more -->
+
 安装bundle
 
 ```

@@ -23,7 +23,7 @@ layout: default
         <div class="list-post-date">
         <time>{{ post.date | date_to_string }}</time>
         </div>
-        <p style="color:#999;font-size: 16px;">{{post.description}}</p>
+        <p style="color:#999;font-size: 16px;">{{post.excerpt | strip_html}}</p>
         <hr style="height:1px;border:none;border-top:1px solid #eeeeee;"/>
         <br/>
     </div>

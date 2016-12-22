@@ -5,6 +5,8 @@ description: 说一千道一万，还是不如直接用框架来的快，不过�
 category: blog
 ---
 
+<!-- more -->
+
 ###基础知识要求：uri，url，html，http，正则表达式
 
 ###1.获取网页源代码：

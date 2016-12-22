@@ -5,6 +5,9 @@ description: python 类中的几种类型的方法各有各的用途，一般情
 category: opinion
 ---
 
+ python 类中的几种类型的方法各有各的用途，一般情况下我们不会很严格的区分，但知道各个类型的作用确是很有必要的
+<!-- more -->
+
 ##python中的方法是怎么工作的
 
 method是被当做类属性的function，它介于function和class之间。我们可以像下面这样声明和获取一个方法

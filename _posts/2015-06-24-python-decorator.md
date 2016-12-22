@@ -7,6 +7,7 @@ category: blog
 
 本文译自[stackoverflow](http://stackoverflow.com/questions/739654/how-can-i-make-a-chain-of-function-decorators-in-python/1594484#1594484)
 
+<!-- more -->
 ##函数也是对象
 
 为了了解装饰器，我们必须先知道python中的函数也是对象，这非常重要。我们看看下面这个简单的例子

@@ -16,6 +16,9 @@ permalink:          /:year/:month/:day/:title.html
 paginate: 10
 paginate_path: "page/:num"
 
+# 摘要
+excerpt_separator:  '<!-- more -->'
+
 # Navigation
 nav:
   - name:           "HOME"

@@ -4,6 +4,7 @@ title: SocketServer源码阅读
 description: 通读socketserver源码，了解tcp服务器原理
 category: blog
 ---
+<!-- more -->
 
 ```
 # -*- coding:utf-8 -*-

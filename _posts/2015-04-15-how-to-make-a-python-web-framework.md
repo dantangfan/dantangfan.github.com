@@ -4,7 +4,9 @@ title: 自己动手写一个简单的 python web framework
 description: 每天都使用 web 框架，实际上实现一个简单的 web 框架也是很容易的
 category: opinion
 ---
+每天都使用 web 框架，实际上实现一个简单的 web 框架也是很容易的
 
+<!-- more -->
 ##写在前面
 虽然这篇文章很简单，但是依然需要一些基础知识。
 

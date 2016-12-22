@@ -5,6 +5,7 @@ description: 用树莓派做个wifi小车，感觉这是真正的大才小用，
 category: blog
 ---
 
+<!-- more -->
 ##树莓派小车
 ###材料
 * [树莓派](http://trade.taobao.com/trade/detail/tradeSnap.htm?spm=a1z09.2.9.8.M4n9cw&tradeID=567688753132954)
