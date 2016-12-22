@@ -5,20 +5,12 @@ HJ's blog
  [Blog](http://dantangfan.github.io/)
 
 ### Education
-* Graduate from SUN YAT-SEN UNIVERSITY
+* SUN YAT-SEN UNIVERSITY, 2011-1015
 
 ### Experience
-* 2014 ~ [qiushibaike.com](http://www.qiushibaike.com)
+* 2014.10 ~ 2016.4[qiushibaike.com](http://www.qiushibaike.com)
+* 2015.4 ~ now [ejoy| 简悦](http://www.ejoy.com)
 
 ### Connect ME
 * Email: dantangfan@gmail.com
 * Github: dantangfan
-* Tel: @@@@@@@@@@
-
-#### 其实我不会说英文
-* Last updated 2013-12-10
-
-
-###使用方法
-
-文章写在_blog文件夹中，写完之后执行`python make_pretty.py filename`来高亮代码段。

@@ -28,7 +28,7 @@ nav:
   - name:           "Opinions"
     href:           "//dantangfan.github.io"
   - name:           "About"
-    href:           "//dantangfan.github.io"
+    href:           "/about.html"
 
 # Sass
 sass:
