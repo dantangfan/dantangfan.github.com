@@ -13,4 +13,4 @@ HJ's blog
 
 ### Connect ME
 * Email: dantangfan@gmail.com
-* Github: dantangfan
+* Github: [dantangfan](https://github.com/dantangfan)

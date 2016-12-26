@@ -14,4 +14,4 @@ title: 关于我
 #### Connect ME
 > Email: <dantangfan@gmail.com>
 
-> Github: [dantangfan](github.com/dantangfan)
+> Github: [dantangfan](https://github.com/dantangfan)
