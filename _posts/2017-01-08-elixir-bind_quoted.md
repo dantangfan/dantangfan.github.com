@@ -5,6 +5,8 @@ description: nil
 category: blog
 ---
 
+<!-- more -->
+
 今天看 sf 的时候逛到这么个问题 [stackoverflow](http://stackoverflow.com/questions/34889369/elixir-macros-and-bind-quoted)，想起自己以前写宏代码生成的时候也遇到过奇葩的问题，具体怎样记不清了，或多或少跟这个有些相似。于是，我也很不建议在代码中随意使用 bind_quoted 操作。
 
 bind_quoted 实际上做的工作很简单，比如代码

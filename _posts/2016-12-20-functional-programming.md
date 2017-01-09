@@ -166,3 +166,11 @@ end
 ### 参考文档
 - [Functional Programming For The Rest of Us](http://www.defmacro.org/ramblings/fp.html)，[译文](https://github.com/justinyhuang/Functional-Programming-For-The-Rest-of-Us-Cn/blob/master/FunctionalProgrammingForTheRestOfUs.cn.md)
 
+
+### 后记
+
+最近又看到了这篇文章，是 Elixir 作者写的。开篇就点明：函数式不是 Erlang VM 的目标(goal)，而是达到目标的手段(end)
+
+```
+I would like to add a slightly different perspective to functional programming in the Erlang VM: functional programming is not a goal in the Erlang VM. It is a means to an end.
+```
