@@ -169,7 +169,7 @@ end
 
 ### 后记
 
-最近又看到了这篇文章，是 Elixir 作者写的。开篇就点明：函数式不是 Erlang VM 的目标(goal)，而是达到目标的手段(end)
+最近又看到了 [这篇文章](http://blog.plataformatec.com.br/2016/05/beyond-functional-programming-with-elixir-and-erlang/)，是 Elixir 作者写的。开篇就点明：函数式不是 Erlang VM 的目标(goal)，而是达到目标的手段(end)
 
 ```
 I would like to add a slightly different perspective to functional programming in the Erlang VM: functional programming is not a goal in the Erlang VM. It is a means to an end.
