@@ -8,7 +8,8 @@ category: blog
 本文译自[stackoverflow](http://stackoverflow.com/questions/739654/how-can-i-make-a-chain-of-function-decorators-in-python/1594484#1594484)
 
 <!-- more -->
-##函数也是对象
+
+## 函数也是对象
 
 为了了解装饰器，我们必须先知道python中的函数也是对象，这非常重要。我们看看下面这个简单的例子
 
@@ -69,7 +70,7 @@ except NameError, e:
     Python's functions are objects
 ```
 
-##函数引用
+## 函数引用
 
 前面我们知道函数也是对象，于是就有
 
@@ -125,7 +126,7 @@ doSomethingBefore(scream)
 
 到这里，我们学习了理解装饰器所需的所有预备知识。实际上，装饰器就仅仅是个『包装袋』而已，它可以让你在不改变函数体的情况下，在函数的周围(函数执行前执行后)做文章
 
-##手动模拟装饰器
+## 手动模拟装饰器
 
 我们可以这样做
 
@@ -168,7 +169,7 @@ a_stand_alone_function_decorated()
 #After the function runs
 ```
 
-##揭开装饰器的神秘的面纱
+## 揭开装饰器的神秘的面纱
 
 对上面的例子，我们用装饰器语法可以这样写
 
@@ -258,8 +259,9 @@ strange_sandwich()
 # ~salad~
 ```
 
-#装饰器进阶
-##被装饰的函数有参数
+# 装饰器进阶
+
+## 被装饰的函数有参数
 
 ```
 def a_decorator_passing_arguments(function_to_decorate):
@@ -299,7 +301,7 @@ aft()
 
 同理，如果func有参数的时候，调用`func(arg1, arg2)`就等价于`decorator(func)(arg1, arg2)`
 
-##装饰方法
+## 装饰方法
 
 在python中，函数和方法其实是一样的，唯一的不同是：方法有一个self参数。
 
@@ -395,7 +397,7 @@ m.sayYourAge()
 ```
 
 
-##带参数的装饰器
+## 带参数的装饰器
 
 带参数的装饰器是难点。
 
@@ -597,11 +599,11 @@ decorated_function_with_arguments(c2, "Howard")
 其实，我猜测，python解释器内，如果遇到`@deco`这样的语法，就会默认将它下面的第一个函数当成参数传入deco中，如果遇到`@deco()`这样的语法，就会将它下面第一个函数当成参数传入deco()的返回值中当成参数
 简单的说，就是解释器遇到这种语法`@deco()()()`括号数量无所谓，都会最终解释成`deco()()()(func)`，都是在最后多加了一对括号而已，这样理解带参数的装饰器就简单了
 
-##例子
+## 例子
 
 没看懂先不写
 
-##最佳实践
+## 最佳实践
 
 - python2.4之后才能使用装饰器
 - 装饰器让函数调用变慢了
@@ -650,7 +652,7 @@ def foo():
     print "foo"
 ```
 
-##装饰器到底该在哪些场合使用呢
+## 装饰器到底该在哪些场合使用呢
 
 比如说下面一些场合例子
 

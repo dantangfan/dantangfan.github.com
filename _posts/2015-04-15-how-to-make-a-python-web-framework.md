@@ -7,7 +7,9 @@ category: opinion
 每天都使用 web 框架，实际上实现一个简单的 web 框架也是很容易的
 
 <!-- more -->
-##写在前面
+
+## 写在前面
+
 虽然这篇文章很简单，但是依然需要一些基础知识。
 
 - 如果你不会Python，那就不用看了
@@ -18,7 +20,8 @@ category: opinion
 
 **重中之重**，处略看完代码之后，可以看**[这幅图](https://www.zybuluo.com/dantangfan/note/83077)**来理清逻辑
 
-##框架设计
+## 框架设计
+
 我们的目标是用python原生的包来构建一个可以响应的web框架，它非常简单：支持url路由、get、post方法，支持cookie，其他内容实现并不困难，但这里只介绍最简单的。
 
 我们要实现的web框架最终的`helloworld`可以这样写
@@ -39,7 +42,7 @@ runserver()
 
 上面几乎就是这篇文章要实现的所有功能。
 
-##服务器
+## 服务器
 
 于是我们就先从服务器说起吧，如果您使用过wsgiref这个包，强烈建议您去看看他的源代码，因为我的代码多数也是从里面copy过来。
 
@@ -52,6 +55,7 @@ runserver()
 def index(request):
     return 'hello world !'
 ```
+
 其实，这里的request是已经被服务器处理过的数据了，不要认为浏览器那么聪明，一下子就发过来一个你需要的数据类型。
 
 相信你已经看过PEP333了，一个典型的WSGI应用一般长这样：
@@ -201,7 +205,8 @@ def make_server(host, port, app, server_class=WSGIServer, handle_class=WSGIReque
     return server
 ```
 
-##框架
+## 框架
+
 刚刚我们看到我们的应用程序是长这样的
 
 ```python
@@ -357,6 +362,7 @@ class Response(object):
 当然，需要改进的地方还有很多。但是我不打算修改了，代码和文档和翻译已经耗费了一周的时间。
 
 
-##参考文件
+## 参考文件
+
 - [廖雪峰的官方网站](http://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/001397616003925a3d157284cd24bc0952d6c4a7c9d8c55000)
 - [pep333](./zh_cn_PEP333.md)

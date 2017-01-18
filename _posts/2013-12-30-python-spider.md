@@ -6,10 +6,10 @@ category: blog
 ---
 
 <!-- more -->
+  
+### 基础知识要求：uri，url，html，http，正则表达式
 
-###基础知识要求：uri，url，html，http，正则表达式
-
-###1.获取网页源代码：
+### 1.获取网页源代码：
 
 ```python
 import urllib# import urllib2
@@ -27,7 +27,7 @@ html = response.read()
 效果跟上面是一样的
 ```
 
-###2.一些网站不愿意被非自动化程序访问（非浏览器），那么我们就需要在获取网页的时候添加一点header内容，把自己伪装成浏览器
+### 2.一些网站不愿意被非自动化程序访问（非浏览器），那么我们就需要在获取网页的时候添加一点header内容，把自己伪装成浏览器
 
 ```python
 import urllib
@@ -45,7 +45,7 @@ response = urllib2.urlopen(req)
 the_page = response.read() 
 ```
 
-###3.简单的异常处理
+### 3.简单的异常处理
 
 当由于各种原因连接不成功的时候，会发生异常。我们可以简单的处理这个异常
 
@@ -59,7 +59,7 @@ except urllib2.URLError, e:
     print e.reason#它会返回出错的原因
 ```
 
-*知识：http状态码
+* 知识：http状态码
 
 urllib2中还有很多错误反馈信息，可以参见urllib2的教程或者文档。对于常规情况来说，我们只要知道不能联通就够了。
 
@@ -80,13 +80,16 @@ else:
     print 'successful'
 ```
 
-###4.Openers和Handles:
+### 4.Openers和Handles:
+
 `Openers:`当我们打开一个url的时候我们使用默认的的opener是urlopen（他是urllib2.OpenerDirector的实例），除此之外，我们可以自己构造opener
 
 `Handers:`Openers使用handlers处理各种事物，每个handler知道如何通过特殊的协议打开特定的url，或者处理特定url打开时的各个方面，例如http重定向。因此，我们就需要自己创建handers来处理我们的需要，比如创建能处理cookie的handler
 
 下面转自http://blog.csdn.net/pleasecallmewhy/article/details/8924889
-**********************
+
+--------
+
 要创建一个 opener，可以实例化一个OpenerDirector，然后调用.add_handler(some_handler_instance)。
 
 同样，可以使用build_opener，这是一个更加方便的函数，用来创建opener对象，他只需要一次函数调用。
@@ -167,9 +170,10 @@ urllib2.install_opener(opener)
 也可以是一个“authority”(即主机名和可选的包含端口号)。
 例如：“example.com” or “example.com:8080”。
 后者包含了端口号。
-******************
 
-###5.简单方法和函数
+-------------
+
+### 5.简单方法和函数
 
 urllib2中的urlopen返回的对象有两个方法很常用，info(),geturl()
 
@@ -250,9 +254,9 @@ import urllib
 download = urllib.urlretrieve(url)
 ```
 
-###6.[正则表达式](http://www.jb51.net/article/15707.htm)
+### 6.[正则表达式](http://www.jb51.net/article/15707.htm)
 
-###7.实战，用爬虫访问insysu.com
+### 7.实战，用爬虫访问insysu.com
 
 首先浏览器进入我们美到一逼的第三方教务系统 
 

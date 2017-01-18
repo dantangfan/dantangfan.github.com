@@ -12,6 +12,7 @@ category: blog
 Elixir 模块属性有很多可以对编译代码做 trick。
 
 #### @after_compile
+
 会在当前模块编译之后调用，他接收一个 module 或者一个 {module, function atom} 形式的 tuple，如果只提供了一个 module ，那 function atom 就会默认为 `__after_compile__/2`，这个 function 会接收两个参数：env 和 bytecode，如下例子
 
 ```elixir
@@ -24,6 +25,7 @@ Elixir 模块属性有很多可以对编译代码做 trick。
 ```
 
 #### @before_compie
+
 会在当前模块编译之前调用，他接收一个 module 或者一个 {module, function/macro atom} 形式的 tuple，如果只提供了一个 module ，那 function/macro atom 就会默认为 `__before_compile__/1`。如果是个 macro，那么这个宏产生的数据就会被注入到当前模块的最后。
 
 跟 after_compile 不一样的是，这里的 function/macro 必须在别的模块中。原因很简单：这个时候当前模块还么被编译，还不存在任何 function/macro。如下例子
@@ -42,9 +44,11 @@ Elixir 模块属性有很多可以对编译代码做 trick。
 ```
 
 #### @external_resource
+
 有时候，我们需要根据外部文件数据来生成代码，当数据变化的时候，我们的代码就需要重新编译来保证正确性。比如所有 unicode 数据的转换和 MIME 类型的生成
 
 #### @on_definition
+
 会在每个 function/macro 被定义的时候被调用（确切的说，是定义好，但是还没有被放入到当前 module 中，也就是说，这个时候调用 Module.defines? 是会返回 false 的）。他接收一个 module 或者一个 {module, function atom} 形式的 tuple，如果只提供了一个 module ，那 function atom 就会默认为 `__on_definiation__/6`，他接收如下的六个参数
 
 - the module environment

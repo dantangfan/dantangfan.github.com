@@ -8,7 +8,7 @@ category: opinion
  python 类中的几种类型的方法各有各的用途，一般情况下我们不会很严格的区分，但知道各个类型的作用确是很有必要的
 <!-- more -->
 
-##python中的方法是怎么工作的
+## python中的方法是怎么工作的
 
 method是被当做类属性的function，它介于function和class之间。我们可以像下面这样声明和获取一个方法
 
@@ -74,6 +74,7 @@ TypeError: unbound method get_size() must be called with Pizza instance as first
 ```
 
 ### static method
+
 静态方法是方法中的特例，有时候，我们希望有一个属于类的方法，但是这个方法又没有涉及到类实例
 
 ```
@@ -102,7 +103,6 @@ True
 ```
 
 - 增强了代码可读性，一旦我们看到了这个装饰器，我们就应该知道这个方法适合类实例本省没有关系的
-
 - 我们可以重载这个方法。尽管这个方法是和类无关的，但如果单独隔离出来当成一个函数，那所有的子类都必须使用这个函数而不能重写他，可喜的是，如果我们当成静态方法，子类就可以自由的改动。
 
 我们一般在这些情况下使用静态方法
@@ -165,7 +165,7 @@ class Pizza(object):
         return self.compute_volume(self.height, self.radius)
 ```
 
-###abstract method
+### abstract method
 
 虚方法(虚函数)定义在基类中但没有被实现
 

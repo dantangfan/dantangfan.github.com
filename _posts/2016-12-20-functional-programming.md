@@ -10,9 +10,11 @@ category: blog
 说起函数式编程的时候，大多数人都知道 Erlang/Haskell/Lisp 是函数式编程语言，并且常见的命令式编程语言如 C/Java/Python 也支持一些函数式的特性。但是，到底什么是函数式编程呢？
 
 <!-- more -->
+
 跟面向对象编程一样，函数式编程只是一些列的思想，也就是如何撸代码的方法论，而不是一套严苛的规定。它的思想源自于 [阿隆佐·邱奇](http://zh.wikipedia.org/zh/%E9%98%BF%E9%9A%86%E4%BD%90%C2%B7%E9%82%B1%E5%A5%87) 的 [lambda演算](http://zh.wikipedia.org/wiki/%CE%9B%E6%BC%94%E7%AE%97)，与之对应的是 [艾伦·图灵](http://zh.wikipedia.org/zh/%E8%89%BE%E4%BC%A6%C2%B7%E5%9B%BE%E7%81%B5) 发明的 [图灵机](http://zh.wikipedia.org/zh/%E5%9B%BE%E7%81%B5%E6%9C%BA)，他们实际上是基友，只是阿隆佐运气没那么好，我们所使用的计算机都是 [冯·诺伊曼设计架构](http://zh.wikipedia.org/zh/%E5%86%AF%C2%B7%E8%AF%BA%E4%BC%8A%E6%9B%BC%E7%BB%93%E6%9E%84)。一直到 Lisp 语言的发明，函数式编程才慢慢的被世人认可。
 
 ### 变量不变
+
 跟面向对象所谓的一切皆对象相对应，函数式编程有个一切皆表达式的说法。函数是由更小的函数组成的，函数的参数是函数，函数的返回值也是函数。
 
 Erlang 在这方面就十分严格的遵循了变量不变这一教条，但实际来看，这也带来了不少麻烦。比如一个作用域里的一个名字只能指向一个特定值/地址。比如说要实现斐波那契数列，python 可以这样写
@@ -62,6 +64,7 @@ end
 这里我们没有使用 for 循环，是因为函数式编程的每个表达式/函数都会返回一个值。而 for 循环作用域中的 a/b 改变，并不会影响到作用域之外的 a/b，也就是说，如果在 for 循环中写了 `{a, b} = {b, a+b}`，每次循环结束之后并不会影响到 for 之外初始化的 a/b，它们的值永远不变。
 
 ### 模式匹配
+
 模式匹配本身也不是函数式编程的固有特征，不过加入这个特性，可以让代码简洁很多，省去了一大部分 if-else/switch 之类的分支判断。原理其实也很简单，运用模式匹配的函数，在运行时，编译器会对传入的参数和函数定义的参数进行比较，并选择最为接近的那个。
 
 比如对普通函数的一个多层if语句
@@ -87,9 +90,11 @@ def func(a, _, _, _), do: a
 后者明显比前者更加清晰易懂，不过需要注意的是，函数定义的顺序一定要对，模式匹配是从上往下一个一个来的。
 
 ### 管道操作
+
 以前只在 linux 中见识过管道，概念简单但却威力惊人。管道使得代码的易读性大大增高，曾经的一层一层的函数包裹，只需要简单 `|>` 即可实现参数传递
 
 ### 惰性求值
+
 惰性求值是函数式的一个基本特征。一般情况下，我们再写代码的时候并不关心编译器会如何执行、何时执行我们的语句。指令式编程语言的所有代码都是顺序执行的，这让我们很容易调试比如说一些 print 语句就可以打印出当前上下文的一些信息。可喜的是，大多数函数式在执行的时候也是顺序执行的，我也不知道编译器是如何优化成顺序执行的。但是既然是函数式编程语言，惰性求值自然也不能少。
 
 比如，我们会熟练的使用 Enum 枚举类型
@@ -113,6 +118,7 @@ Strea.map(1..n, fn x -> x*x end)
 只有在最后碰到 Enum.sum 的时候，前面才会进行求值。
 
 ### 闭包
+
 实际上，大多数编程语言都会不自觉的提到闭包，似乎闭包已经是现代编程语言一项不可缺少的特性。同样，Elixir 也支持闭包，并且是真正的闭包，对作用域外的变量无副作用，也就是仅仅包含指向数据的指针。比如
 
 ```elixir
@@ -141,12 +147,15 @@ def deco(func):
 ```
 
 ### 宏
+
 这才是最令人兴奋的地方，为元编程提供了极大的便利。Python 也提供源编程，并且也有提供访问 AST 的库，比如 ast 和 [pythoscope](http://pythoscope.org)，但好像作用并不是很大，因为是解释型语言并且已经有了各种好用的语法糖。虽然还有如 `__metaclass__` 等更高级的特性来实现元编程，可是在实际生产中却鲜有使用，除非要写一个 ORM 库之类的，少用的另一个原因是难学，要理解 Python 元变成的概念都要花大把时间。
 
 Elixir 完全破解了这种魔咒，在 [元编程](http://dantangfan.github.io/2016/10/10/metaprogramming-elixir-cn.html) 里，我们可以轻轻松松的实现各种奇葩的功能，甚至是直接编写自己的 DSL。后面我想尝试用简单易懂的方法来实现一个 mongodb 的 orm 库，并跟 python 实现相比较，感受一下是否能甩几条街。
 
 ### 不爽的地方
+
 #### 作为参数的函数的调用
+
 在把函数当成参数之后，被调用的函数需要在后面加个`.`号，略感奇葩。比如
 
 ```elixir
@@ -164,8 +173,8 @@ end
 比如说对一个以 atom 为 key 的 map 里面，`%{a: 1, b: 2}` 冒号后面必须有空格，不然就会报错。虽然 Python 也很奇葩的用缩进来表示代码块，但至少还是说得过去。这个冒号必须要空格就不知道是为什么了，难道是因为 Erlang 的函数调用的形式是 `erlang:some_func` ？
 
 ### 参考文档
-- [Functional Programming For The Rest of Us](http://www.defmacro.org/ramblings/fp.html)，[译文](https://github.com/justinyhuang/Functional-Programming-For-The-Rest-of-Us-Cn/blob/master/FunctionalProgrammingForTheRestOfUs.cn.md)
 
+- [Functional Programming For The Rest of Us](http://www.defmacro.org/ramblings/fp.html)，[译文](https://github.com/justinyhuang/Functional-Programming-For-The-Rest-of-Us-Cn/blob/master/FunctionalProgrammingForTheRestOfUs.cn.md)
 
 ### 后记
 

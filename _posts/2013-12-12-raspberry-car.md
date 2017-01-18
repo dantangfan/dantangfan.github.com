@@ -6,8 +6,11 @@ category: blog
 ---
 
 <!-- more -->
-##树莓派小车
-###材料
+  
+## 树莓派小车
+
+### 材料
+
 * [树莓派](http://trade.taobao.com/trade/detail/tradeSnap.htm?spm=a1z09.2.9.8.M4n9cw&tradeID=567688753132954)
 * [SD卡](http://item.taobao.com/item.htm?id=19142619516)
 * 拓展板(可选)
@@ -18,9 +21,10 @@ category: blog
 * [底盘](http://item.taobao.com/item.htm?id=36903458968)
 
 
-###raspberry基本系统搭建
+### raspberry基本系统搭建
 
-####系统刷写
+#### 系统刷写
+
 可以选择的系统非常多，有Raspbian，Archlinuxarm，Pidora等等，按需选择。
 
 刷系统，主要是往SD卡中写入系统，Linux下可以使用dd命令，windows下可以使用Win32DiskImager。
@@ -33,10 +37,12 @@ category: blog
 * [浙大课程： Lab1:初见树莓派(Raspberry)(windows平台)](http://mall.egoman.com.cn/index.php?option=com_content&view=article&id=99:-lab1raspberrywindows-&catid=47:shiyongfangan-&Itemid=222)
 * [mac下给树莓派安装raspbian系统(DD命令)](http://zhangshenjia.com/it/raspberry_pi/mac-raspbian/)
 
-###小车底板组装
+### 小车底板组装
+
 根据实际情况或者买家提供的教程组装
 
-###配置静态ip
+### 配置静态ip
+
 无线控制希望每次登录都可以使用同一个ip，省去了查找ip的麻烦。
 
 配置固定IP，不管是有线还是无线都配置静态ip
@@ -74,9 +80,9 @@ service networking restart
 
 ```
 
-###wifi控制小车
+### wifi控制小车
 
-####摄像头
+#### 摄像头
 
 * 将USB摄像头插上，查看是否找到设备，输入：
 
@@ -184,7 +190,7 @@ sudo ./video.sh
 kill $(pgrep video.sh)
 ```
 
-####控制代码
+#### 控制代码
 
 小车的控制可以用任何raspberry上能运行的语言编写，这里为方便，直接使用python
 
@@ -515,11 +521,12 @@ if __name__ == '__main__':
 ![ ](/images/raspberry-car/pc_client.png)
 
 
-###管理和应用
-* [berryio](https://github.com/NeonHorizon/berryio),[项目介绍](http://www.geekfan.net/3251/）
+### 管理和应用
 
+* [berryio](https://github.com/NeonHorizon/berryio),[项目介绍](http://www.geekfan.net/3251/）
 * [webiopi](https://code.google.com/p/webiopi/),[项目介绍](http://www.2fz1.com/?tag=webiopi）
-####相关文档
+
+#### 相关文档
 
 * [GY-26电子指南针资料（串口+IIC+温度）](http://ishare.iask.sina.com.cn/f/61335036.html)
 * [黑白 红外壁障模块 资料](http://share.eepw.com.cn/share/download/id/165040)
@@ -528,7 +535,7 @@ if __name__ == '__main__':
 * [HC-SR04超声波测距模块说明书](http://wenku.baidu.com/view/ce9e5e48767f5acfa1c7cd8a.html)
 * [人体红外感应器](http://forum.stmlabs.com/showthread.php?tid=5549)
 
-###其他
+### 其他
 
 * [raspberrytank](http://raspberrytank.ianrenton.com/)
 * [传感器的简单应用](http://www.apinglai.com/category/arm/)

@@ -6,6 +6,7 @@ category: blog
 ---
 
 本文译自[stackoverflow](http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python)
+
 <!-- more -->
 
 
@@ -203,7 +204,7 @@ True
 
 在你使用class关键字的时候python就是这样做的，python是利用`元类`(metaclass)来实现的.(This is what Python does when you use the keyword class, and it does so by using a metaclass.)
 
-##什么是元类(metaclass)
+## 什么是元类(metaclass)
 
 元类是用来创建类的，我们定义类就是为了创建对象，但是我们知道类本身也是对象，元类就是用来创建类这些对象的，它们是类的类，你可以形象化地理解为:
 
@@ -299,7 +300,7 @@ class Foo(Bar):
 
 那什么能创建类呢？`type`或者它的子类，或者使用它的类
 
-##普通元类
+## 普通元类
 
 设计元类的主要目的就是允许我们在类创建的时候动态的修改它。这经常用在API的设计上，这些API需要动态创建符合上下文的类。
 
@@ -442,14 +443,14 @@ class UpperAttrMetaclass(type):
 - 编辑类
 - 返回编辑后的类
 
-##为什么该使用类而不是函数来作为元类？
+## 为什么该使用类而不是函数来作为元类？
 
 - 意思更清晰
 - 可以使用OOP。元类可以继承，重载父类函数，元类甚至也可以使用元类
 - 可以更好的组织代码
 - 可以用__call__,__init__,__new__等多种内省来实现。毕竟，有些人就是喜欢用__init__不喜欢用__new__
 
-##什么时候才需要使用元类呢
+## 什么时候才需要使用元类呢
 
  **元类是比99%的magic更deep的特性，99%的用户根本不用考虑。一旦你在考虑是否需要使用元类，那就意味着你不需要使用元类**
 
@@ -472,7 +473,7 @@ print(guy.age)
 
 之所以能这样做，是因为Model实现了__metaclass__
 
-##最后再说两句
+## 最后再说两句
 
 首先，我们知道类是一个可以产生自身实例的对象，实际上，类就是他们自己的实例。
 

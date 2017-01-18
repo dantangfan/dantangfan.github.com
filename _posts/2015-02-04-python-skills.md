@@ -365,6 +365,7 @@ if all(number < 10000 for number in numbers):
 ```
 
 ### 16. filter函数
+
 相对于map、reduce而言，filter使用量相对要少些，就像他的名字一样，filter的作用就是按照规则过滤一些元素
 
 ```
@@ -392,6 +393,7 @@ print >> file("test.txt", 'w'), "message"
 seq = range(10)
 zip(*[iter(seq)]*3)
 ```
+
 ### 19.一行筛选质数
 
 ```python
@@ -450,6 +452,7 @@ def tree(): return defaultdict(tree)
 对，就是这样，你没看错。。简单地来说，一颗树就是一个默认值是其子树的字典。
 
 #### 举个例子，json风格
+
 现在我们可以创建一个 JSON 风格的嵌套字典，我们不需要显式地创建子字典——当我们需要时，它们神奇地自动出现了：
 
 ```python
