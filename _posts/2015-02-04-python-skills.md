@@ -5,10 +5,9 @@ description: <持续更新> 平时使用python的时候总结出来的一些小�
 category: blog
 ---
 
- <持续更新> 平时使用python的时候总结出来的一些小技巧，不算常用的 python 特性
-<!-- more -->
+>  <持续更新> 平时使用python的时候总结出来的一些小技巧，不算常用的 python 特性
 
----
+<!-- more -->
 
 #### 1. 比较大小
 
