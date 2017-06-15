@@ -50,3 +50,9 @@ class Node:
     def __init(self, key, value):
         self.next = None
         self.hash = xx
+
+## python list 的线程安全问题
+https://stackoverflow.com/questions/6319207/are-lists-thread-safe
+
+python 对象本身是线程安全的，可以保证并发访问对象的原子性，也就是说，例如list，append，pop操作是线程安全的（不会释放 GIL 锁）
+但是 list 对象的元素却是不受保护的，比如 list[0] += 1，这些 operation（操作）大都不是原子性的（用dis.dis将函数翻译成汇编，就可以看到一个 += 操作会有多条汇编）

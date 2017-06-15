@@ -17,3 +17,6 @@
 ## inspect
 ## locale
 ## decimal
+## dis
+## Queue
+## deque
